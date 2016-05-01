@@ -1,0 +1,20 @@
+############
+# ToDo list for package rutils
+
+https://cran.r-project.org/doc/manuals/r-release/R-admin.html
+R CMD INSTALL rutils
+or
+install.packages("C:/Develop/R/rutils", repos=NULL, type="source")
+
+# create package vignette from *.Rd files
+R CMD Rd2pdf rutils
+
+
+### tasks pending
+
+- [ ] add qmao functions: 
+gaa() for "get, apply, assign"
+gsa() stands for "get, subset, assign".
+To, get data for some tickers, subset the data, and then assign into an environment
+http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment?rq=1
+
