@@ -2,16 +2,14 @@ Package: rutils
 Type: Package
 Title: Utility Functions for Simplifying Financial Data Management and Modeling
 Version: 0.1
-Date: 2016-04-30
+Date: 2016-05-28
 Author: Jerzy Pawlowski
 Maintainer: Jerzy Pawlowski <algoquant@algoquants.ch>
 Description: Functions for managing object names and attributes, applying
     functions over lists, managing objects in environments.
 License: GPL (>= 2)
 Depends:
-    xts,
-    quantmod,
-    lubridate
+    quantmod, 
 LazyData: true
 Repository: GitHub
 URL: https://github.com/algoquant/rutils

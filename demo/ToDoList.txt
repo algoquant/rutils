@@ -2,9 +2,14 @@
 # ToDo list for package rutils
 
 https://cran.r-project.org/doc/manuals/r-release/R-admin.html
+
+# Install package from source on local drive
+install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source")
+# Install package from source on local drive using R CMD
 R CMD INSTALL rutils
-or
-install.packages("C:/Develop/R/rutils", repos=NULL, type="source")
+# Install package from github
+library(devtools)
+install_github(repo="algoquant/rutils", force=TRUE)
 
 # create package vignette from *.Rd files
 R CMD Rd2pdf rutils
@@ -17,4 +22,28 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment?rq=1
+
+
+
+### tasks finished
+
+- [x] create function chart_xts() which accepts argument ylim and in_dex - adapt chart_xts() from chartLib.new.R  
+
+- [x] create functions lag_it() and diff_it() that apply a lags and difference vectors and matrices  
+
+- [x] create functions lag.xts() and diff.xts() that pad xts series with 0 instead of NA  
+
+- [x] create function end_points()  
+
+- [x] rename function get_close() to clo_se()  
+
+- [x] rename function col_name() to na_me()  
+
+- [x] add @export to roxygen code  
+
+- [x] convert all code from nrow() and ncol() to NROW() and NCOL()  
+
+- [x] create issue for file extension error when using .Rdata instead of .RData
+https://github.com/klutometis/roxygen
+http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-package
 

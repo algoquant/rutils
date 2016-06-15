@@ -1,6 +1,4 @@
-# rutils
-` Utility Functions for Simplifying Financial Data Management and Modeling
+## rutils package for simplifying financial data management and modeling  
 
 ========
-Functions for managing object names and attributes, applying functions over lists, managing objects in environments.  
-
+Contains utility functions for managing object names and attributes, applying functions over lists, managing objects in environments.  
