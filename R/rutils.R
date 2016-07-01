@@ -393,9 +393,11 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #'   Finally the function \code{chart_xts()} plots the chart object and returns
 #'   it invisibly.
 #' @examples
+#' \dontrun{
 #' chart_xts(env_etf$VTI["2015-11"],
 #'   name="VTI in Nov 2015", ylim=c(102, 108),
 #'   in_dex=zoo::index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+#' }
 #' @export
 
 chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
