@@ -1,6 +1,5 @@
 #' Extract the name of an \code{OHLC} time series from its first column name.
 #'
-#' @import xts quantmod
 #' @param x_ts \code{OHLC} time series.
 #' @param field the integer index of the field to be extracted.
 #' @return \code{string} with name of time series.
@@ -21,7 +20,6 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 #' Calculate an index (integer vector) of equally spaced end points for a time
 #' series.
 #'
-#' @import xts quantmod
 #' @param x_ts vector or time series.
 #' @param inter_val the number of data points per interval.
 #' @param off_set the number of data points in the first interval (stub
@@ -58,7 +56,6 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
 
 #' Extract close prices from an \code{OHLC} time series.
 #'
-#' @import xts quantmod
 #' @param x_ts an \code{OHLC} time series.
 #' @param which_col partial name of the column to be be extracted.
 #' @return single column \code{OHLC} time series in \code{xts} format.
@@ -87,7 +84,6 @@ clo_se <- function(x_ts, which_col="Close") {
 
 #' Apply a lag to a \code{numeric} vector or matrix.
 #'
-#' @import xts quantmod
 #' @param in_put a \code{numeric} vector or matrix.
 #' @param lag integer equal to the number of periods of lag.
 #' @return vector or matrix with the same dimensions as the input object.
@@ -137,7 +133,6 @@ lag_it <- function(in_put, lag=1) {
 
 #' Calculate the row differences of a \code{numeric} vector or matrix.
 #'
-#' @import xts quantmod
 #' @param in_put a \code{numeric} vector or matrix.
 #' @param lag integer equal to the number of periods of lag.
 #' @return vector or matrix with the same dimensions as the input object.
@@ -187,7 +182,6 @@ diff_it <- function(in_put, lag=1) {
 
 #' Apply a time lag to an \code{xts} time series.
 #'
-#' @import xts quantmod
 #' @param x_ts an \code{xts} time series.
 #' @param k integer equal to the number of time periods of lag.
 #' @param ... additional arguments to function \code{xts::lag_xts()}.
@@ -216,7 +210,6 @@ lag_xts <- function(x_ts, k=1, ...) {
 
 #' Calculate the time differences of an \code{xts} time series.
 #'
-#' @import xts quantmod
 #' @param x_ts an \code{xts} time series.
 #' @param lag integer equal to the number of time periods of lag.
 #' @param ... additional arguments to function \code{xts::diff_xts()}.
@@ -251,7 +244,6 @@ diff_xts <- function(x_ts, lag=1, ...) {
 #' function as \sQuote{\code{\link[qmao]{do.call.rbind}}} from package
 #' \sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
 #'
-#' @import xts quantmod
 #' @param li_st list of objects, such as \code{vectors}, \code{matrices},
 #'   \code{data frames}, or \code{time series}.
 #' @return single \code{vector}, \code{matrix}, \code{data frame}, or
@@ -297,7 +289,6 @@ do_call_rbind <- function(li_st) {
 #' is much faster and uses less memory. The function \code{do_call()} is a
 #' generalization of function \code{do_call_rbind()}.
 #'
-#' @import xts quantmod
 #' @param func_tion name of function that returns a single object from a list of
 #'   objects.
 #' @param li_st list of objects, such as \code{vectors}, \code{matrices},
@@ -344,7 +335,6 @@ do_call <- function(func_tion, li_st, ...) {
 #' Apply a function to a list of objects, merge the outputs into a single
 #' object, and assign the object to the output environment.
 #'
-#' @import xts quantmod
 #' @param func_tion name of function that returns a single object
 #'   (\code{vector}, \code{xts} time series, etc.)
 #' @param sym_bols vector of strings with names of input objects.
@@ -387,7 +377,6 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #' A wrapper for function \code{chart_Series()} from package
 #' \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 #'
-#' @import xts quantmod
 #' @param x_ts \code{xts} time series.
 #' @param ylim \code{numeric} vector with two elements containing the y-axis
 #'   range.
@@ -406,7 +395,7 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #' @examples
 #' chart_xts(env_etf$VTI["2015-11"],
 #'   name="VTI in Nov 2015", ylim=c(102, 108),
-#'   in_dex=index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+#'   in_dex=zoo::index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
 #' @export
 
 chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {

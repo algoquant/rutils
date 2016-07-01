@@ -2,11 +2,14 @@
 .Rhistory
 .Rapp.history
 
-# Session Data files
+# Data files
 .RData
 
 # Example code in package build process
 *-Ex.R
+
+# Rcheck files
+rutils.Rcheck/
 
 # RStudio files
 .Rproj.user/

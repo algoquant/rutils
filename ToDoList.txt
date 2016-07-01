@@ -19,6 +19,7 @@ R CMD Rd2pdf rutils
 
 - [ ] run on travis, add .travis.yml file, add Build Status tag to README.Rmd
 devtools::check()
+R CMD check C:\Develop\R\rutils
 http://stackoverflow.com/questions/5564564/r-2-functions-with-the-same-name-in-2-different-packages
 http://stackoverflow.com/questions/6254744/override-a-function-that-is-imported-in-a-namespace
 
