@@ -22,7 +22,9 @@ Applies a lag to a vector or matrix, by shifting its values by a
   certain number of rows, equal to the integer \code{lag}, and pads the
   leading or trailing stub periods with \code{zeros}. Positive \code{lag}
   means that values in the current row are replaced with values from the row
-  that are \code{lag} rows above. (vice versa negative \code{lag}).
+  that are \code{lag} rows above. (vice versa negative \code{lag}).  This
+  also applies to vectors, since they can be viewed as single-column
+  matrices.
 }
 \examples{
 # lag vector by 2 periods

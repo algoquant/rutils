@@ -2,7 +2,7 @@
 % Please edit documentation in R/rutils.R
 \name{end_points}
 \alias{end_points}
-\title{Create an index (integer vector) of equally spaced end points for a time
+\title{Calculate an index (integer vector) of equally spaced end points for a time
 series.}
 \usage{
 end_points(x_ts, inter_val = 10, off_set = 0)
@@ -19,7 +19,7 @@ interval).}
 \code{integer} vector of equally spaced end points.
 }
 \description{
-Create an index (integer vector) of equally spaced end points for a time
+Calculate an index (integer vector) of equally spaced end points for a time
 series.
 }
 \details{
@@ -28,7 +28,7 @@ The end points divide the time series into equally spaced intervals.
   stub interval.
 }
 \examples{
-# create end points with initial stub interval
+# calculate end points with initial stub interval
 end_points(env_etf$VTI, inter_val=7, off_set=4)
 }
 

@@ -2,8 +2,7 @@
 % Please edit documentation in R/rutils.R
 \name{na_me}
 \alias{na_me}
-\title{Extract the name of an \code{OHLC} time series, corresponding to its symbol
-(ticker).}
+\title{Extract the name of an \code{OHLC} time series from its first column name.}
 \usage{
 na_me(x_ts, field = 1)
 }
@@ -16,14 +15,13 @@ na_me(x_ts, field = 1)
 \code{string} with name of time series.
 }
 \description{
-Extract the name of an \code{OHLC} time series, corresponding to its symbol
-(ticker).
+Extract the name of an \code{OHLC} time series from its first column name.
 }
 \details{
-Extracts a name (string) from the first column of an \code{OHLC}
-  time series, assumed to be in the format "symbol.Open".
-  Also extracts the field name after the "." separator, for example "Open"
-  from "SPY.Open".
+Extracts the symbol name (ticker) from the name of the first column
+  of an \code{OHLC} time series.  The column name is assumed to be in the
+  format "symbol.Open". It can also extract the field name after the "."
+  separator, for example "Open" from "SPY.Open".
 }
 \examples{
 # get name for VTI

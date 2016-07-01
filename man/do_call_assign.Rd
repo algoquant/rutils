@@ -3,7 +3,7 @@
 \name{do_call_assign}
 \alias{do_call_assign}
 \title{Apply a function to a list of objects, merge the outputs into a single
-object, and create the object in the output environment.}
+object, and assign the object to the output environment.}
 \usage{
 do_call_assign(func_tion, sym_bols = NULL, out_put, env_in = .GlobalEnv,
   env_out = .GlobalEnv, ...)
@@ -27,7 +27,7 @@ single object (\code{matrix}, \code{xts} time series, etc.)
 }
 \description{
 Apply a function to a list of objects, merge the outputs into a single
-object, and create the object in the output environment.
+object, and assign the object to the output environment.
 }
 \details{
 Performs an lapply loop over \code{sym_bols}, applies the function
