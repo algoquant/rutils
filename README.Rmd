@@ -97,7 +97,7 @@ diff_it(matrix(1:10, ncol=2), lag=-2)
 Calculate the time differences of an *xts* time series and pad with zeros:  
 ```{r eval=FALSE}
 # calculate time differences over lag by 10 periods
-rutils::diff.xts(env_etf$VTI, lag=10)
+rutils::diff_xts(env_etf$VTI, lag=10)
 ```
 
 

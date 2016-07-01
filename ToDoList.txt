@@ -17,9 +17,21 @@ R CMD Rd2pdf rutils
 
 ### tasks pending
 
+- [ ] run on travis, add .travis.yml file, add Build Status tag to README.Rmd
+devtools::check()
+http://stackoverflow.com/questions/5564564/r-2-functions-with-the-same-name-in-2-different-packages
+http://stackoverflow.com/questions/6254744/override-a-function-that-is-imported-in-a-namespace
+
+https://github.com/hadley/r-pkgs/issues/203
+
+
+- [ ] rename functions *.xts to *_xts
+
+- [ ] use testthat 
+
 - [ ] automatically build vignette  
 
-- [ ] create project website for HighFreq on GitHub Pages using R Markdown  
+- [ ] create project website for rutils on GitHub Pages using R Markdown  
 
 - [ ] rename README.md to .Rmd and add more detailed description similar this to README.md:  
 

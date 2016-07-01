@@ -36,6 +36,7 @@ Performs an lapply loop over \code{sym_bols}, applies the function
   as a side effect, while its name is returned invisibly.
 }
 \examples{
+new_env <- new.env()
 do_call_assign(
    func_tion=clo_se,
    sym_bols=env_etf$sym_bols,

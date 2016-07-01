@@ -37,7 +37,7 @@ Extracts the chart object and modifies its ylim parameter using
 }
 \examples{
 chart_xts(env_etf$VTI["2015-11"],
-name="VTI in Nov 2015", ylim=c(102, 108),
-in_dex=index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+  name="VTI in Nov 2015", ylim=c(102, 108),
+  in_dex=index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
 }
 

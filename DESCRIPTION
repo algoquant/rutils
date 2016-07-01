@@ -9,6 +9,7 @@ Description: Functions for managing object names and attributes, applying
     functions over lists, managing objects in environments.
 License: GPL (>= 2)
 Depends:
+    xts, 
     quantmod, 
 LazyData: true
 Repository: GitHub

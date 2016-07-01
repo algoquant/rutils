@@ -1,6 +1,6 @@
 #' Extract the name of an \code{OHLC} time series from its first column name.
 #'
-#' @export
+#' @import xts quantmod
 #' @param x_ts \code{OHLC} time series.
 #' @param field the integer index of the field to be extracted.
 #' @return \code{string} with name of time series.
@@ -11,6 +11,7 @@
 #' @examples
 #' # get name for VTI
 #' na_me(env_etf$VTI)
+#' @export
 
 na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][field]
 
@@ -20,7 +21,7 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 #' Calculate an index (integer vector) of equally spaced end points for a time
 #' series.
 #'
-#' @export
+#' @import xts quantmod
 #' @param x_ts vector or time series.
 #' @param inter_val the number of data points per interval.
 #' @param off_set the number of data points in the first interval (stub
@@ -32,6 +33,7 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 #' @examples
 #' # calculate end points with initial stub interval
 #' end_points(env_etf$VTI, inter_val=7, off_set=4)
+#' @export
 
 end_points <- function(x_ts, inter_val=10, off_set=0) {
   if (off_set >= inter_val)
@@ -56,7 +58,7 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
 
 #' Extract close prices from an \code{OHLC} time series.
 #'
-#' @export
+#' @import xts quantmod
 #' @param x_ts an \code{OHLC} time series.
 #' @param which_col partial name of the column to be be extracted.
 #' @return single column \code{OHLC} time series in \code{xts} format.
@@ -69,11 +71,12 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
 #' clo_se(env_etf$VTI)
 #' # get volumes for VTI
 #' clo_se(env_etf$VTI, which_col="vol")
+#' @export
 
 clo_se <- function(x_ts, which_col="Close") {
   in_dex <- grep(which_col, colnames(x_ts), ignore.case=TRUE)
   if (length(in_dex)>0)
-#    out_put <- xts:::.subset_xts(x_ts, 1:NROW(x_ts), in_dex:in_dex)
+#    out_put <- xts::.subset_xts(x_ts, 1:NROW(x_ts), in_dex:in_dex)
     x_ts[, in_dex]
   else
     stop(paste0("No column name containing \"", which_col, "\""))
@@ -84,7 +87,7 @@ clo_se <- function(x_ts, which_col="Close") {
 
 #' Apply a lag to a \code{numeric} vector or matrix.
 #'
-#' @export
+#' @import xts quantmod
 #' @param in_put a \code{numeric} vector or matrix.
 #' @param lag integer equal to the number of periods of lag.
 #' @return vector or matrix with the same dimensions as the input object.
@@ -100,6 +103,7 @@ clo_se <- function(x_ts, which_col="Close") {
 #' lag_it(1:10, lag=2)
 #' # lag matrix by negative 2 periods
 #' lag_it(matrix(1:10, ncol=2), lag=-2)
+#' @export
 
 lag_it <- function(in_put, lag=1) {
   if (!is.numeric(in_put)) {  # in_put is not numeric
@@ -133,7 +137,7 @@ lag_it <- function(in_put, lag=1) {
 
 #' Calculate the row differences of a \code{numeric} vector or matrix.
 #'
-#' @export
+#' @import xts quantmod
 #' @param in_put a \code{numeric} vector or matrix.
 #' @param lag integer equal to the number of periods of lag.
 #' @return vector or matrix with the same dimensions as the input object.
@@ -148,6 +152,7 @@ lag_it <- function(in_put, lag=1) {
 #' diff_it(1:10, lag=2)
 #' # diff matrix by negative 2 periods
 #' diff_it(matrix(1:10, ncol=2), lag=-2)
+#' @export
 
 diff_it <- function(in_put, lag=1) {
   if (!is.numeric(in_put)) {  # in_put is not numeric
@@ -182,54 +187,58 @@ diff_it <- function(in_put, lag=1) {
 
 #' Apply a time lag to an \code{xts} time series.
 #'
-#' @export
+#' @import xts quantmod
 #' @param x_ts an \code{xts} time series.
 #' @param k integer equal to the number of time periods of lag.
+#' @param ... additional arguments to function \code{xts::lag_xts()}.
 #' @return \code{xts} time series with the same dimensions and the same time
 #'   index as the input series.
 #' @details Applies a time lag to an \code{xts} time series and pads with
 #'   \code{zeros} instead of \code{NAs}.  Positive lag \code{k} means values
 #'   from \code{k} periods in the past are moved to the present.  Negative lag
 #'   \code{k} moves values from the future to the present.  The function
-#'   \code{lag()} is just a wrapper for function \code{lag.xts()} from package
+#'   \code{lag()} is just a wrapper for function \code{lag_xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts},
 #'   but it pads with \code{zeros} instead of \code{NAs}.
 #' @examples
 #' # lag by 10 periods
-#' rutils::lag.xts(env_etf$VTI, k=10)
+#' rutils::lag_xts(env_etf$VTI, k=10)
+#' @export
 
-lag.xts <- function(x_ts, k=1) {
-  x_ts <- xts::lag.xts(x_ts, k=k)
+lag_xts <- function(x_ts, k=1, ...) {
+  x_ts <- xts::lag.xts(x_ts, k=k, ...)
   x_ts[!complete.cases(x_ts), ] <- 0
   x_ts
-}  # end lag.xts
+}  # end lag_xts
 
 
 
 
 #' Calculate the time differences of an \code{xts} time series.
 #'
-#' @export
+#' @import xts quantmod
 #' @param x_ts an \code{xts} time series.
 #' @param lag integer equal to the number of time periods of lag.
+#' @param ... additional arguments to function \code{xts::diff_xts()}.
 #' @return \code{xts} time series with the same dimensions and the same time
 #'   index as the input series.
 #' @details Calculates the time differences of an \code{xts} time series and
 #'   pads with \code{zeros} instead of \code{NAs}.  Positive \code{lag} means
 #'   differences are calculated with values from \code{lag} periods in the past
 #'   (vice versa negative \code{lag}).  The function \code{diff()} is just a
-#'   wrapper for \code{diff.xts()} from package
+#'   wrapper for \code{diff_xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
 #'   pads with \code{zeros} instead of \code{NAs}.
 #' @examples
 #' # calculate time differences over lag by 10 periods
-#' rutils::diff.xts(env_etf$VTI, lag=10)
+#' rutils::diff_xts(env_etf$VTI, lag=10)
+#' @export
 
-diff.xts <- function(x_ts, lag=1) {
-  x_ts <- xts::diff.xts(x_ts, lag=lag)
+diff_xts <- function(x_ts, lag=1, ...) {
+  x_ts <- xts::diff.xts(x_ts, lag=lag, ...)
   x_ts[!complete.cases(x_ts), ] <- 0
   x_ts
-}  # end diff.xts
+}  # end diff_xts
 
 
 
@@ -242,7 +251,7 @@ diff.xts <- function(x_ts, lag=1) {
 #' function as \sQuote{\code{\link[qmao]{do.call.rbind}}} from package
 #' \sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
 #'
-#' @export
+#' @import xts quantmod
 #' @param li_st list of objects, such as \code{vectors}, \code{matrices},
 #'   \code{data frames}, or \code{time series}.
 #' @return single \code{vector}, \code{matrix}, \code{data frame}, or
@@ -260,6 +269,7 @@ diff.xts <- function(x_ts, lag=1) {
 #' list_xts <- split(x_ts, "days")
 #' # rbind the list back into a time series and compare with the original
 #' identical(x_ts, do_call_rbind(list_xts))
+#' @export
 
 do_call_rbind <- function(li_st) {
   while (length(li_st) > 1) {
@@ -287,7 +297,7 @@ do_call_rbind <- function(li_st) {
 #' is much faster and uses less memory. The function \code{do_call()} is a
 #' generalization of function \code{do_call_rbind()}.
 #'
-#' @export
+#' @import xts quantmod
 #' @param func_tion name of function that returns a single object from a list of
 #'   objects.
 #' @param li_st list of objects, such as \code{vectors}, \code{matrices},
@@ -308,6 +318,7 @@ do_call_rbind <- function(li_st) {
 #' list_xts <- split(x_ts, "days")
 #' # rbind the list back into a time series and compare with the original
 #' identical(x_ts, do_call(rbind, list_xts))
+#' @export
 
 do_call <- function(func_tion, li_st, ...) {
 # produce function name from argument
@@ -333,7 +344,7 @@ do_call <- function(func_tion, li_st, ...) {
 #' Apply a function to a list of objects, merge the outputs into a single
 #' object, and assign the object to the output environment.
 #'
-#' @export
+#' @import xts quantmod
 #' @param func_tion name of function that returns a single object
 #'   (\code{vector}, \code{xts} time series, etc.)
 #' @param sym_bols vector of strings with names of input objects.
@@ -347,11 +358,13 @@ do_call <- function(func_tion, li_st, ...) {
 #'   the object in the environment \code{env_out}.  The output object is created
 #'   as a side effect, while its name is returned invisibly.
 #' @examples
+#' new_env <- new.env()
 #' do_call_assign(
 #'    func_tion=clo_se,
 #'    sym_bols=env_etf$sym_bols,
 #'    out_put="price_s",
 #'    env_in=env_etf, env_out=new_env)
+#' @export
 
 do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
                            env_in=.GlobalEnv, env_out=.GlobalEnv, ...) {
@@ -374,7 +387,7 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #' A wrapper for function \code{chart_Series()} from package
 #' \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 #'
-#' @export
+#' @import xts quantmod
 #' @param x_ts \code{xts} time series.
 #' @param ylim \code{numeric} vector with two elements containing the y-axis
 #'   range.
@@ -392,8 +405,9 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #'   it invisibly.
 #' @examples
 #' chart_xts(env_etf$VTI["2015-11"],
-#' name="VTI in Nov 2015", ylim=c(102, 108),
-#' in_dex=index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+#'   name="VTI in Nov 2015", ylim=c(102, 108),
+#'   in_dex=index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+#' @export
 
 chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
   stopifnot(inherits(x_ts, "xts"))
@@ -406,11 +420,11 @@ chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
   }  # end if
 # add vertical background shading
   if (!is.null(in_dex)) {
-    if (!is.xts(in_dex))
-      in_dex <- xts(in_dex, order.by=index(x_ts))
+    if (!xts::is.xts(in_dex))
+      in_dex <- xts(in_dex, order.by=zoo::index(x_ts))
     add_TA(in_dex, on=-1, col="lightgreen", border=NA)
     add_TA(!in_dex, on=-1, col="lightgrey", border=NA)
-  }
+  }  # end if
 # render the plot and return the chob invisibly
   plot(ch_ob)
   invisible(ch_ob)
