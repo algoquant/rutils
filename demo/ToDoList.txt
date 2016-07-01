@@ -17,6 +17,12 @@ R CMD Rd2pdf rutils
 
 ### tasks pending
 
+- [ ] automatically build vignette  
+
+- [ ] create project website for HighFreq on GitHub Pages using R Markdown  
+
+- [ ] rename README.md to .Rmd and add more detailed description similar this to README.md:  
+
 - [ ] add qmao functions: 
 gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".

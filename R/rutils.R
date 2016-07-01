@@ -17,7 +17,7 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 
 
 
-#' Create an index (integer vector) of equally spaced end points for a time
+#' Calculate an index (integer vector) of equally spaced end points for a time
 #' series.
 #'
 #' @export
@@ -30,7 +30,7 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 #'   The off_set argument shifts the end points forward and creates an initial
 #'   stub interval.
 #' @examples
-#' # create end points with initial stub interval
+#' # calculate end points with initial stub interval
 #' end_points(env_etf$VTI, inter_val=7, off_set=4)
 
 end_points <- function(x_ts, inter_val=10, off_set=0) {
@@ -331,7 +331,7 @@ do_call <- function(func_tion, li_st, ...) {
 
 
 #' Apply a function to a list of objects, merge the outputs into a single
-#' object, and create the object in the output environment.
+#' object, and assign the object to the output environment.
 #'
 #' @export
 #' @param func_tion name of function that returns a single object

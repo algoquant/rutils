@@ -6,7 +6,7 @@
 #'   which contains daily \code{OHLC} time series data for a portfolio of
 #'   symbols.
 #'
-#' @description 
+#' @description
 #' The env_etf environment contains daily \code{OHLC} time series
 #' data for a portfolio of symbols, and other accompanying data:
 #' \describe{
@@ -33,7 +33,7 @@
 #'
 #' @examples
 #' # data(etf_data)  # not needed - data is lazy load
-#' # get first six rows of prices
+#' # get first six rows of OHLC prices
 #' head(env_etf$VTI)
 #' \donttest{chart_Series(x=env_etf$VTI["2009-11"])}
 "env_etf"
