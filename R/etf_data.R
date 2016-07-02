@@ -3,12 +3,12 @@
 #' @keywords datasets
 #'
 #' @title The etf_data dataset contains a single environment called env_etf,
-#'   which contains daily \code{OHLC} time series data for a portfolio of
+#'   which includes daily \code{OHLC} time series data for a portfolio of
 #'   symbols.
 #'
 #' @description
-#' The env_etf environment contains daily \code{OHLC} time series
-#' data for a portfolio of symbols, and other accompanying data:
+#' The env_etf environment includes daily \code{OHLC} time series
+#' data for a portfolio of symbols, and reference data:
 #' \describe{
 #'   \item{sym_bols}{a \code{vector} of \code{strings} with the portfolio symbols.}
 #'   \item{price_s}{a single \code{xts} time series containing daily closing

@@ -22,6 +22,15 @@ The **rutils** package contains functions for:
 * recursively applying a function to a list of objects, 
 * plotting time series with custom axis range and background shading. 
 
+The **rutils** package also includes a dataset with *OHLC* time series data for a portfolio of symbols.  The data is contained in an environment called *env_etf*, which includes: 
+
+* *sym_bols*: a vector of strings with the portfolio symbols.
+* individual time series *VTI*, *VEU*, etc., containing daily *OHLC* prices for all the sym_bols.
+* *price_s*: a single *xts* time series containing daily closing prices for all the sym_bols.
+* *re_turns*: a single *xts* time series containing daily returns for all the sym_bols.
+
+Each individual *xts* time series contains the columns: Open prices, High prices, Low prices, Close prices, trading Volume, Adjusted prices.
+
 
 ========
 
@@ -52,7 +61,7 @@ chart_Series(x=env_etf$VTI["2009-11"])
 
 ### Examples
 
-Extract the name of an \code{OHLC} time series from its first column name:  
+Extract the name of an *OHLC* time series from its first column name:  
 ```{r eval=FALSE}
 # get name for VTI
 na_me(env_etf$VTI)
@@ -67,7 +76,7 @@ end_points(env_etf$VTI, inter_val=7, off_set=4)
 ```
 
 
-Extract close prices from an \code{OHLC} time series:  
+Extract close prices from an *OHLC* time series:  
 ```{r eval=FALSE}
 # get close prices for VTI
 clo_se(env_etf$VTI)

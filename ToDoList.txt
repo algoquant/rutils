@@ -17,6 +17,8 @@ R CMD Rd2pdf rutils
 
 ### tasks pending
 
+- [ ] add more detailed description about etf_data.RData in README.Rmd
+
 - [ ] run on travis, add .travis.yml file, add Build Status tag to README.Rmd
 devtools::check()
 R CMD check C:\Develop\R\rutils
@@ -25,6 +27,7 @@ http://stackoverflow.com/questions/6254744/override-a-function-that-is-imported-
 
 https://github.com/hadley/r-pkgs/issues/203
 
+- [x] Deleted etf_data.Rdata in the GitHub remote repository because it had wrong extension, and replaced it with etf_data.RData.  GitHub Desktop is case-insensitive to extension, so it didn't replace etf_data.Rdata in the remote repository, even after I replaced it locally with etf_data.RData. 
 
 - [ ] rename functions *.xts to *_xts
 
