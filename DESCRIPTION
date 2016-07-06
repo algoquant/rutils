@@ -11,6 +11,9 @@ License: GPL (>= 2)
 Depends:
     xts, 
     quantmod, 
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
 LazyData: true
 Repository: GitHub
 URL: https://github.com/algoquant/rutils

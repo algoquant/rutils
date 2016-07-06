@@ -2,17 +2,10 @@
 .Rhistory
 .Rapp.history
 
-# Data files
-.RData
-
-# Example code in package build process
-*-Ex.R
-
 # Rcheck files
 rutils.Rcheck/
-
-# RStudio files
-.Rproj.user/
+# Example code in package build process
+*-Ex.R
 
 # produced vignettes
 vignettes/*.html

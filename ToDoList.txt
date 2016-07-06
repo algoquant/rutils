@@ -17,27 +17,21 @@ R CMD Rd2pdf rutils
 
 ### tasks pending
 
-- [ ] add more detailed description about etf_data.RData in README.Rmd
+- [x] add vignette and automatically build vignette  
 
-- [ ] run on travis, add .travis.yml file, add Build Status tag to README.Rmd
-devtools::check()
-R CMD check C:\Develop\R\rutils
-http://stackoverflow.com/questions/5564564/r-2-functions-with-the-same-name-in-2-different-packages
-http://stackoverflow.com/questions/6254744/override-a-function-that-is-imported-in-a-namespace
+- [x] add more detailed description about etf_data.RData in README.Rmd
 
-https://github.com/hadley/r-pkgs/issues/203
+- [x] add travis Build Status tag to README.Rmd, add .travis.yml file
 
 - [x] Deleted etf_data.Rdata in the GitHub remote repository because it had wrong extension, and replaced it with etf_data.RData.  GitHub Desktop is case-insensitive to extension, so it didn't replace etf_data.Rdata in the remote repository, even after I replaced it locally with etf_data.RData. 
 
-- [ ] rename functions *.xts to *_xts
+- [x] rename functions *.xts to *_xts
 
 - [ ] use testthat 
 
-- [ ] automatically build vignette  
+- [x] create project website for rutils on GitHub Pages using R Markdown  
 
-- [ ] create project website for rutils on GitHub Pages using R Markdown  
-
-- [ ] rename README.md to .Rmd and add more detailed description similar this to README.md:  
+- [x] rename README.md to .Rmd and add more detailed description similar this to README.md
 
 - [ ] add qmao functions: 
 gaa() for "get, apply, assign"

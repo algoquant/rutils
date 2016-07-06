@@ -1,17 +1,15 @@
 ---
-title: Utility Functions for Simplifying Financial Data Management and Modeling
-author: Jerzy Pawlowski (algoquant)
-abstract: Functions for managing object names and attributes, applying functions over lists, managing objects in environments.
-tags: high frequency, time series, plot, xts
+title: rutils Package for Simplifying Financial Data Management and Modeling
+author: algoquant (Jerzy Pawlowski)
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{"rutils Package"}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-[![Build Status](https://travis-ci.org/algoquant/rutils.svg?branch=master)](https://travis-ci.org/algoquant/rutils)
-
-
-## rutils package for simplifying financial data management and modeling  
-
-========
-
+The *rutils* package is a collection of functions for simplifying data management and modeling, and is used by most of my other packages.  
 The *rutils* package contains functions for:
 
 - extracting names and columns from time series, 
@@ -36,7 +34,7 @@ Each individual *xts* time series contains the columns: Open prices, High prices
 
 ### Installation and loading
 
-Installing *rutils* package from github:  
+Installing *rutils* package from *GitHub*:  
 ```{r eval=FALSE}
 install.packages("devtools")
 library(devtools)
@@ -49,8 +47,9 @@ library(rutils)
 ### Data
 
 The *rutils* package contains a dataset of daily *OHLC* time series in *xts* format, for a portfolio of stock symbols.  The time series are contained in an environment called *env_etf*.  The data is set up for lazy loading, so it doesn't require calling `data(etf_data)` to load it before being able to call it.  
-```{r eval=FALSE}
-# get first six rows of OHLC prices
+```{r echo=-1, eval=FALSE}
+library(rutils)
+# get first six rows of VTI prices
 head(env_etf$VTI)
 # plot
 chart_Series(x=env_etf$VTI["2009-11"])
@@ -62,9 +61,18 @@ chart_Series(x=env_etf$VTI["2009-11"])
 ### Examples
 
 Extract the name of an *OHLC* time series from its first column name:  
-```{r eval=FALSE}
+```{r echo=-1, eval=TRUE}
+suppressMessages(suppressWarnings(library(rutils)))
+# show portfolio symbols
+env_etf$sym_bols
 # get name for VTI
 na_me(env_etf$VTI)
+# get first six rows of VTI prices
+head(env_etf$VTI)
+# get first six rows of price_s
+env_etf$price_s[1:6, 1:4]
+# get first six rows of re_turns
+env_etf$re_turns[1:6, 1:4]
 ```
 
 
@@ -143,7 +151,8 @@ do_call_assign(
 
 
 Plot an *xts* time series with custom y-axis range and with vertical background shading:  
-```{r eval=FALSE}
+```{r echo=-1, eval=TRUE, fig.width=6, fig.height=4}
+suppressMessages(suppressWarnings(library(rutils)))
 chart_xts(env_etf$VTI["2015-11"],
 name="VTI in Nov 2015", ylim=c(102, 108),
 in_dex=index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))

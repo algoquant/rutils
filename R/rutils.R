@@ -42,11 +42,11 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
   end_points <- off_set + inter_val*(0:(num_agg+1))
   if (off_set > 0)
     end_points <- c(0, end_points)
-  if (last(end_points) > n_row)
+  if (xts::last(end_points) > n_row)
     end_points <- end_points[-length(end_points)]
-  if (last(end_points) > n_row)
+  if (xts::last(end_points) > n_row)
     end_points <- end_points[-length(end_points)]
-  if (last(end_points) < n_row)
+  if (xts::last(end_points) < n_row)
     end_points <- c(end_points, n_row)
   as.integer(end_points)
 }  # end end_points
@@ -394,7 +394,7 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #'   Finally the function \code{chart_xts()} plots the chart object and returns
 #'   it invisibly.
 #' @examples
-#' chart_xts(env_etf$VTI["2015-11"],
+#' quantmod::chart_xts(env_etf$VTI["2015-11"],
 #'   name="VTI in Nov 2015", ylim=c(102, 108),
 #'   in_dex=zoo::index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
 
@@ -410,9 +410,9 @@ chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
 # add vertical background shading
   if (!is.null(in_dex)) {
     if (!xts::is.xts(in_dex))
-      in_dex <- xts(in_dex, order.by=zoo::index(x_ts))
-    add_TA(in_dex, on=-1, col="lightgreen", border=NA)
-    add_TA(!in_dex, on=-1, col="lightgrey", border=NA)
+      in_dex <- xts::xts(in_dex, order.by=zoo::index(x_ts))
+    quantmod::add_TA(in_dex, on=-1, col="lightgreen", border=NA)
+    quantmod::add_TA(!in_dex, on=-1, col="lightgrey", border=NA)
   }  # end if
 # render the plot and return the chob invisibly
   plot(ch_ob)

@@ -135,7 +135,7 @@ Functions for managing object names and attributes, applying functions over list
 </div>
 
 
-<p><a href="https://travis-ci.org/algoquant/rutils"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MSIgaGVpZ2h0PSIyMCI+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4Mj0iMCIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPjwvbGluZWFyR3JhZGllbnQ+PHJlY3Qgcng9IjMiIHdpZHRoPSI4MSIgaGVpZ2h0PSIyMCIgZmlsbD0iIzU1NSIvPjxyZWN0IHJ4PSIzIiB4PSIzNyIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjIwIiBmaWxsPSIjZTA1ZDQ0Ii8+PHBhdGggZmlsbD0iI2UwNWQ0NCIgZD0iTTM3IDBoNHYyMGgtNHoiLz48cmVjdCByeD0iMyIgd2lkdGg9IjgxIiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI2EpIi8+PGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkRlamFWdSBTYW5zLFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPjx0ZXh0IHg9IjE5LjUiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5idWlsZDwvdGV4dD48dGV4dCB4PSIxOS41IiB5PSIxNCI+YnVpbGQ8L3RleHQ+PHRleHQgeD0iNTgiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5mYWlsaW5nPC90ZXh0Pjx0ZXh0IHg9IjU4IiB5PSIxNCI+ZmFpbGluZzwvdGV4dD48L2c+PC9zdmc+" alt="Build Status" /></a></p>
+<p><a href="https://travis-ci.org/algoquant/rutils"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MCIgaGVpZ2h0PSIyMCI+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4Mj0iMCIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPjwvbGluZWFyR3JhZGllbnQ+PHJlY3Qgcng9IjMiIHdpZHRoPSI5MCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzU1NSIvPjxyZWN0IHJ4PSIzIiB4PSIzNyIgd2lkdGg9IjUzIiBoZWlnaHQ9IjIwIiBmaWxsPSIjNGMxIi8+PHBhdGggZmlsbD0iIzRjMSIgZD0iTTM3IDBoNHYyMGgtNHoiLz48cmVjdCByeD0iMyIgd2lkdGg9IjkwIiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI2EpIi8+PGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkRlamFWdSBTYW5zLFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPjx0ZXh0IHg9IjE5LjUiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5idWlsZDwvdGV4dD48dGV4dCB4PSIxOS41IiB5PSIxNCI+YnVpbGQ8L3RleHQ+PHRleHQgeD0iNjIuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPnBhc3Npbmc8L3RleHQ+PHRleHQgeD0iNjIuNSIgeT0iMTQiPnBhc3Npbmc8L3RleHQ+PC9nPjwvc3ZnPg==" alt="Build Status" /></a></p>
 <div id="rutils-package-for-simplifying-financial-data-management-and-modeling" class="section level2">
 <h2>rutils package for simplifying financial data management and modeling</h2>
 <p>========</p>
@@ -149,6 +149,14 @@ Functions for managing object names and attributes, applying functions over list
 <li>recursively applying a function to a list of objects,</li>
 <li>plotting time series with custom axis range and background shading.</li>
 </ul>
+<p>The <strong>rutils</strong> package also includes a dataset with <em>OHLC</em> time series data for a portfolio of symbols. The data is contained in an environment called <em>env_etf</em>, which includes:</p>
+<ul>
+<li><em>sym_bols</em>: a vector of strings with the portfolio symbols.</li>
+<li>individual time series <em>VTI</em>, <em>VEU</em>, etc., containing daily <em>OHLC</em> prices for all the sym_bols.</li>
+<li><em>price_s</em>: a single <em>xts</em> time series containing daily closing prices for all the sym_bols.</li>
+<li><em>re_turns</em>: a single <em>xts</em> time series containing daily returns for all the sym_bols.</li>
+</ul>
+<p>Each individual <em>xts</em> time series contains the columns: Open prices, High prices, Low prices, Close prices, trading Volume, Adjusted prices.</p>
 <p>========</p>
 <div id="installation-and-loading" class="section level3">
 <h3>Installation and loading</h3>
@@ -161,7 +169,7 @@ library(rutils)</code></pre>
 </div>
 <div id="data" class="section level3">
 <h3>Data</h3>
-<p>The <strong>rutils</strong> package contains a dataset of daily <em>OHLC</em> time series in <em>xts</em> format, for a portfolio of stock symbols. The time series are contained in an environment called <em>env_etf</em>.</p>
+<p>The <strong>rutils</strong> package contains a dataset of daily <em>OHLC</em> time series in <em>xts</em> format, for a portfolio of stock symbols. The time series are contained in an environment called <em>env_etf</em>. The data is set up for lazy loading, so it doesn’t require calling <code>data(etf_data)</code> to load it before being able to call it.</p>
 <pre class="r"><code># get first six rows of OHLC prices
 head(env_etf$VTI)
 # plot
@@ -170,13 +178,13 @@ chart_Series(x=env_etf$VTI[&quot;2009-11&quot;])</code></pre>
 </div>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
-<p>Extract the name of an  time series from its first column name:</p>
+<p>Extract the name of an <em>OHLC</em> time series from its first column name:</p>
 <pre class="r"><code># get name for VTI
 na_me(env_etf$VTI)</code></pre>
 <p>Calculate a vector of equally spaced end points for a time series:</p>
 <pre class="r"><code># calculate end points with initial stub interval
 end_points(env_etf$VTI, inter_val=7, off_set=4)</code></pre>
-<p>Extract close prices from an  time series:</p>
+<p>Extract close prices from an <em>OHLC</em> time series:</p>
 <pre class="r"><code># get close prices for VTI
 clo_se(env_etf$VTI)
 # get volumes for VTI
@@ -193,7 +201,7 @@ diff_it(1:10, lag=2)
 diff_it(matrix(1:10, ncol=2), lag=-2)</code></pre>
 <p>Calculate the time differences of an <em>xts</em> time series and pad with zeros:</p>
 <pre class="r"><code># calculate time differences over lag by 10 periods
-rutils::diff.xts(env_etf$VTI, lag=10)</code></pre>
+rutils::diff_xts(env_etf$VTI, lag=10)</code></pre>
 <p>Recursively rbind a list of objects:</p>
 <pre class="r"><code># create xts time series
 x_ts &lt;- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
