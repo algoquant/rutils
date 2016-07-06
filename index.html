@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Rutils by algoquant</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Rutils</h1>
+        <h2>Utility functions for simplifying financial data management and modeling</h2>
+        <a href="https://github.com/algoquant/rutils" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <hr>
+
+<p>title: Utility Functions for Simplifying Financial Data Management and Modeling
+author: Jerzy Pawlowski (algoquant)
+abstract: Functions for managing object names and attributes, applying functions over lists, managing objects in environments.</p>
+
+<h2>
+<a id="tags-high-frequency-time-series-plot-xts" class="anchor" href="#tags-high-frequency-time-series-plot-xts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tags: high frequency, time series, plot, xts</h2>
+
+<p><a href="https://travis-ci.org/algoquant/rutils"><img src="https://travis-ci.org/algoquant/rutils.svg?branch=master" alt="Build Status"></a></p>
+
+<h2>
+<a id="rutils-package-for-simplifying-financial-data-management-and-modeling" class="anchor" href="#rutils-package-for-simplifying-financial-data-management-and-modeling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>rutils package for simplifying financial data management and modeling</h2>
+
+<h1></h1>
+
+<p>The <em>rutils</em> package contains functions for:</p>
+
+<ul>
+<li>extracting names and columns from time series, </li>
+<li>calculating the end points of a time series, </li>
+<li>applying lags to vectors and matrices, </li>
+<li>calculating row differences of vectors and matrices, </li>
+<li>recursively binding a list of objects into time series, </li>
+<li>recursively applying a function to a list of objects, </li>
+<li>plotting time series with custom axis range and background shading. </li>
+</ul>
+
+<p>The <em>rutils</em> package also includes a dataset with <em>OHLC</em> time series data for a portfolio of symbols.  The data is contained in an environment called <em>env_etf</em>, which includes: </p>
+
+<ul>
+<li>
+<em>sym_bols</em>: a vector of strings with the portfolio symbols.</li>
+<li>individual time series <em>VTI</em>, <em>VEU</em>, etc., containing daily <em>OHLC</em> prices for all the sym_bols.</li>
+<li>
+<em>price_s</em>: a single <em>xts</em> time series containing daily closing prices for all the sym_bols.</li>
+<li>
+<em>re_turns</em>: a single <em>xts</em> time series containing daily returns for all the sym_bols.</li>
+</ul>
+
+<p>Each individual <em>xts</em> time series contains the columns: Open prices, High prices, Low prices, Close prices, trading Volume, Adjusted prices.</p>
+
+<h1></h1>
+
+<h3>
+<a id="installation-and-loading" class="anchor" href="#installation-and-loading" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation and loading</h3>
+
+<p>Installing <em>rutils</em> package from github:  </p>
+
+<div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>devtools<span class="pl-pds">"</span></span>)
+library(<span class="pl-smi">devtools</span>)
+install_github(<span class="pl-v">repo</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>algoquant/rutils<span class="pl-pds">"</span></span>)
+library(<span class="pl-smi">rutils</span>)</pre></div>
+
+<h1></h1>
+
+<h3>
+<a id="data" class="anchor" href="#data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data</h3>
+
+<p>The <em>rutils</em> package contains a dataset of daily <em>OHLC</em> time series in <em>xts</em> format, for a portfolio of stock symbols.  The time series are contained in an environment called <em>env_etf</em>.  The data is set up for lazy loading, so it doesn't require calling <code>data(etf_data)</code> to load it before being able to call it.  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># get first six rows of OHLC prices</span>
+head(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
+<span class="pl-c"># plot</span>
+chart_Series(<span class="pl-v">x</span><span class="pl-k">=</span><span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2009-11<span class="pl-pds">"</span></span>])</pre></div>
+
+<h1></h1>
+
+<h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h3>
+
+<p>Extract the name of an <em>OHLC</em> time series from its first column name:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># get name for VTI</span>
+na_me(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)</pre></div>
+
+<p>Calculate a vector of equally spaced end points for a time
+series:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># calculate end points with initial stub interval</span>
+end_points(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>, <span class="pl-v">inter_val</span><span class="pl-k">=</span><span class="pl-c1">7</span>, <span class="pl-v">off_set</span><span class="pl-k">=</span><span class="pl-c1">4</span>)</pre></div>
+
+<p>Extract close prices from an <em>OHLC</em> time series:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># get close prices for VTI</span>
+clo_se(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
+<span class="pl-c"># get volumes for VTI</span>
+clo_se(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>, <span class="pl-v">which_col</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>vol<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>Apply a lag to a vector or matrix:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># lag vector by 2 periods</span>
+lag_it(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>, <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-c1">2</span>)
+<span class="pl-c"># lag matrix by negative 2 periods</span>
+lag_it(<span class="pl-k">matrix</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>, <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">2</span>), <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-k">-</span><span class="pl-c1">2</span>)</pre></div>
+
+<p>Calculate the row differences of a vector or matrix:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># diff vector by 2 periods</span>
+diff_it(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>, <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-c1">2</span>)
+<span class="pl-c"># diff matrix by negative 2 periods</span>
+diff_it(<span class="pl-k">matrix</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>, <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">2</span>), <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-k">-</span><span class="pl-c1">2</span>)</pre></div>
+
+<p>Calculate the time differences of an <em>xts</em> time series and pad with zeros:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># calculate time differences over lag by 10 periods</span>
+<span class="pl-e">rutils</span><span class="pl-k">::</span>diff_xts(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>, <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-c1">10</span>)</pre></div>
+
+<p>Recursively rbind a list of objects:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># create xts time series</span>
+<span class="pl-smi">x_ts</span> <span class="pl-k">&lt;-</span> xts(<span class="pl-v">x</span><span class="pl-k">=</span>rnorm(<span class="pl-c1">1000</span>), <span class="pl-v">order.by</span><span class="pl-k">=</span>(Sys.time()<span class="pl-k">-</span><span class="pl-c1">3600</span><span class="pl-k">*</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">1000</span>)))
+<span class="pl-c"># split time series into daily list</span>
+<span class="pl-smi">list_xts</span> <span class="pl-k">&lt;-</span> split(<span class="pl-smi">x_ts</span>, <span class="pl-s"><span class="pl-pds">"</span>days<span class="pl-pds">"</span></span>)
+<span class="pl-c"># rbind the list back into a time series and compare with the original</span>
+identical(<span class="pl-smi">x_ts</span>, do_call_rbind(<span class="pl-smi">list_xts</span>))</pre></div>
+
+<p>Recursively apply a function to a list of objects:  </p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># create xts time series</span>
+<span class="pl-smi">x_ts</span> <span class="pl-k">&lt;-</span> xts(<span class="pl-v">x</span><span class="pl-k">=</span>rnorm(<span class="pl-c1">1000</span>), <span class="pl-v">order.by</span><span class="pl-k">=</span>(Sys.time()<span class="pl-k">-</span><span class="pl-c1">3600</span><span class="pl-k">*</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">1000</span>)))
+<span class="pl-c"># split time series into daily list</span>
+<span class="pl-smi">list_xts</span> <span class="pl-k">&lt;-</span> split(<span class="pl-smi">x_ts</span>, <span class="pl-s"><span class="pl-pds">"</span>days<span class="pl-pds">"</span></span>)
+<span class="pl-c"># rbind the list back into a time series and compare with the original</span>
+identical(<span class="pl-smi">x_ts</span>, do_call(<span class="pl-smi">rbind</span>, <span class="pl-smi">list_xts</span>))</pre></div>
+
+<p>Apply a function to a list of objects, merge the outputs into a single object, and assign the object to the output environment:  </p>
+
+<div class="highlight highlight-source-r"><pre>do_call_assign(
+   <span class="pl-v">func_tion</span><span class="pl-k">=</span><span class="pl-smi">clo_se</span>,
+   <span class="pl-v">sym_bols</span><span class="pl-k">=</span><span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">sym_bols</span>,
+   <span class="pl-v">out_put</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>price_s<span class="pl-pds">"</span></span>,
+   <span class="pl-v">env_in</span><span class="pl-k">=</span><span class="pl-smi">env_etf</span>, <span class="pl-v">env_out</span><span class="pl-k">=</span><span class="pl-smi">new_env</span>)</pre></div>
+
+<p>Plot an <em>xts</em> time series with custom y-axis range and with vertical background shading:  </p>
+
+<div class="highlight highlight-source-r"><pre>chart_xts(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>],
+<span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>VTI in Nov 2015<span class="pl-pds">"</span></span>, <span class="pl-v">ylim</span><span class="pl-k">=</span>c(<span class="pl-c1">102</span>, <span class="pl-c1">108</span>),
+<span class="pl-v">in_dex</span><span class="pl-k">=</span>index(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>]) <span class="pl-k">&gt;</span> as.Date(<span class="pl-s"><span class="pl-pds">"</span>2015-11-18<span class="pl-pds">"</span></span>))</pre></div>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/algoquant/rutils/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/algoquant/rutils/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/algoquant/rutils"></a> is maintained by <a href="https://github.com/algoquant">algoquant</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
