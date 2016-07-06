@@ -10,8 +10,10 @@ rutils.Rcheck/
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-*.pdf
 
+# RStudio files
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+.Rproj.user/
 .httr-oauth
+inst/doc
 .Rproj.user
