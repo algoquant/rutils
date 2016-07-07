@@ -28,23 +28,8 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <hr>
-
-<p>title: Utility Functions for Simplifying Financial Data Management and Modeling
-author: Jerzy Pawlowski (algoquant)
-abstract: Functions for managing object names and attributes, applying functions over lists, managing objects in environments.</p>
-
-<h2>
-<a id="tags-high-frequency-time-series-plot-xts" class="anchor" href="#tags-high-frequency-time-series-plot-xts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tags: high frequency, time series, plot, xts</h2>
-
-<p><a href="https://travis-ci.org/algoquant/rutils"><img src="https://travis-ci.org/algoquant/rutils.svg?branch=master" alt="Build Status"></a></p>
-
-<h2>
-<a id="rutils-package-for-simplifying-financial-data-management-and-modeling" class="anchor" href="#rutils-package-for-simplifying-financial-data-management-and-modeling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>rutils package for simplifying financial data management and modeling</h2>
-
-<h1></h1>
-
-<p>The <em>rutils</em> package contains functions for:</p>
+          <p>The <em>rutils</em> package is a collection of functions for simplifying data management and modeling, and is used by many other algoquant packages.<br>
+The <em>rutils</em> package contains functions for:</p>
 
 <ul>
 <li>extracting names and columns from time series, </li>
@@ -75,7 +60,7 @@ abstract: Functions for managing object names and attributes, applying functions
 <h3>
 <a id="installation-and-loading" class="anchor" href="#installation-and-loading" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation and loading</h3>
 
-<p>Installing <em>rutils</em> package from github:  </p>
+<p>Installing <em>rutils</em> package from <em>GitHub</em>:  </p>
 
 <div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>devtools<span class="pl-pds">"</span></span>)
 library(<span class="pl-smi">devtools</span>)
@@ -89,7 +74,8 @@ library(<span class="pl-smi">rutils</span>)</pre></div>
 
 <p>The <em>rutils</em> package contains a dataset of daily <em>OHLC</em> time series in <em>xts</em> format, for a portfolio of stock symbols.  The time series are contained in an environment called <em>env_etf</em>.  The data is set up for lazy loading, so it doesn't require calling <code>data(etf_data)</code> to load it before being able to call it.  </p>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-c"># get first six rows of OHLC prices</span>
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">rutils</span>)
+<span class="pl-c"># get first six rows of VTI prices</span>
 head(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
 <span class="pl-c"># plot</span>
 chart_Series(<span class="pl-v">x</span><span class="pl-k">=</span><span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2009-11<span class="pl-pds">"</span></span>])</pre></div>
@@ -101,8 +87,17 @@ chart_Series(<span class="pl-v">x</span><span class="pl-k">=</span><span class="
 
 <p>Extract the name of an <em>OHLC</em> time series from its first column name:  </p>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-c"># get name for VTI</span>
-na_me(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)</pre></div>
+<div class="highlight highlight-source-r"><pre>suppressMessages(suppressWarnings(library(<span class="pl-smi">rutils</span>)))
+<span class="pl-c"># show portfolio symbols</span>
+<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">sym_bols</span>
+<span class="pl-c"># get name for VTI</span>
+na_me(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
+<span class="pl-c"># get first six rows of VTI prices</span>
+head(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
+<span class="pl-c"># get first six rows of price_s</span>
+<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">price_s</span>[<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">6</span>, <span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>]
+<span class="pl-c"># get first six rows of re_turns</span>
+<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">re_turns</span>[<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">6</span>, <span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>]</pre></div>
 
 <p>Calculate a vector of equally spaced end points for a time
 series:  </p>
@@ -164,7 +159,8 @@ identical(<span class="pl-smi">x_ts</span>, do_call(<span class="pl-smi">rbind</
 
 <p>Plot an <em>xts</em> time series with custom y-axis range and with vertical background shading:  </p>
 
-<div class="highlight highlight-source-r"><pre>chart_xts(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>],
+<div class="highlight highlight-source-r"><pre>suppressMessages(suppressWarnings(library(<span class="pl-smi">rutils</span>)))
+chart_xts(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>],
 <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>VTI in Nov 2015<span class="pl-pds">"</span></span>, <span class="pl-v">ylim</span><span class="pl-k">=</span>c(<span class="pl-c1">102</span>, <span class="pl-c1">108</span>),
 <span class="pl-v">in_dex</span><span class="pl-k">=</span>index(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>]) <span class="pl-k">&gt;</span> as.Date(<span class="pl-s"><span class="pl-pds">"</span>2015-11-18<span class="pl-pds">"</span></span>))</pre></div>
         </section>
