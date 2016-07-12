@@ -1,4 +1,4 @@
-# History files
+# history files
 .Rhistory
 .Rapp.history
 
@@ -7,13 +7,9 @@ rutils.Rcheck/
 # Example code in package build process
 *-Ex.R
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
-
 # RStudio files
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+.Rproj.user
 .Rproj.user/
 .httr-oauth
 inst/doc
-.Rproj.user

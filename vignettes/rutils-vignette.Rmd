@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The *rutils* package is a collection of functions for simplifying data management and modeling, and is used by most of my other packages.  
+The *rutils* package is a collection of functions for simplifying data management and modeling, and is used by many other algoquant packages.  
 The *rutils* package contains functions for:
 
 - extracting names and columns from time series, 

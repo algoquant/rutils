@@ -1,5 +1,5 @@
 ---
-title: Utility Functions for Simplifying Financial Data Management and Modeling
+title: rutils Package for Simplifying Financial Data Management and Modeling
 author: Jerzy Pawlowski (algoquant)
 abstract: Functions for managing object names and attributes, applying functions over lists, managing objects in environments.
 tags: high frequency, time series, plot, xts
@@ -8,25 +8,32 @@ tags: high frequency, time series, plot, xts
 [![Build Status](https://travis-ci.org/algoquant/rutils.svg?branch=master)](https://travis-ci.org/algoquant/rutils)
 
 
-## rutils package for simplifying financial data management and modeling  
-
-========
+### Utility functions for simplifying financial data management and modeling  
 
 The *rutils* package contains functions for:
 
 - extracting names and columns from time series, 
+
 - calculating the end points of a time series, 
+
 - applying lags to vectors and matrices, 
+
 - calculating row differences of vectors and matrices, 
+
 - recursively binding a list of objects into time series, 
+
 - recursively applying a function to a list of objects, 
+
 - plotting time series with custom axis range and background shading. 
 
 The *rutils* package also includes a dataset with *OHLC* time series data for a portfolio of symbols.  The data is contained in an environment called *env_etf*, which includes: 
 
-- *sym_bols*: a vector of strings with the portfolio symbols.
-- individual time series *VTI*, *VEU*, etc., containing daily *OHLC* prices for all the sym_bols.
-- *price_s*: a single *xts* time series containing daily closing prices for all the sym_bols.
+- *sym_bols*: a vector of strings with the portfolio symbols,
+
+- individual time series *VTI*, *VEU*, etc., containing daily *OHLC* prices for all the sym_bols,
+
+- *price_s*: a single *xts* time series containing daily closing prices for all the sym_bols,
+
 - *re_turns*: a single *xts* time series containing daily returns for all the sym_bols.
 
 Each individual *xts* time series contains the columns: Open prices, High prices, Low prices, Close prices, trading Volume, Adjusted prices.
@@ -36,13 +43,30 @@ Each individual *xts* time series contains the columns: Open prices, High prices
 
 ### Installation and loading
 
-Installing *rutils* package from github:  
+Install package *rutils* from github:  
 ```{r eval=FALSE}
 install.packages("devtools")
-library(devtools)
-install_github(repo="algoquant/rutils")
+devtools::install_github(repo="algoquant/rutils")
 library(rutils)
 ```
+<br>
+
+Install package *rutils* from source on local drive:  
+```{r eval=FALSE}
+install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source")
+# Install package from source on local drive using R CMD
+R CMD INSTALL C:\Develop\R\rutils
+library(rutils)
+```
+<br>
+
+Build reference manual for package *rutils* from *.Rd* files:  
+```{r eval=FALSE}
+system("R CMD Rd2pdf C:/Develop/R/rutils")
+R CMD Rd2pdf C:\Develop\R\rutils
+```
+<br>
+
 
 ========
 
@@ -66,6 +90,7 @@ Extract the name of an *OHLC* time series from its first column name:
 # get name for VTI
 na_me(env_etf$VTI)
 ```
+<br>
 
 
 Calculate a vector of equally spaced end points for a time
@@ -74,6 +99,7 @@ series:
 # calculate end points with initial stub interval
 end_points(env_etf$VTI, inter_val=7, off_set=4)
 ```
+<br>
 
 
 Extract close prices from an *OHLC* time series:  
@@ -83,15 +109,17 @@ clo_se(env_etf$VTI)
 # get volumes for VTI
 clo_se(env_etf$VTI, which_col="vol")
 ```
+<br>
 
 
-Apply a lag to a vector or matrix:  
+Apply a *lag* to a vector or matrix:  
 ```{r eval=FALSE}
 # lag vector by 2 periods
 lag_it(1:10, lag=2)
 # lag matrix by negative 2 periods
 lag_it(matrix(1:10, ncol=2), lag=-2)
 ```
+<br>
 
 
 Calculate the row differences of a vector or matrix:  
@@ -101,6 +129,7 @@ diff_it(1:10, lag=2)
 # diff matrix by negative 2 periods
 diff_it(matrix(1:10, ncol=2), lag=-2)
 ```
+<br>
 
 
 Calculate the time differences of an *xts* time series and pad with zeros:  
@@ -108,9 +137,10 @@ Calculate the time differences of an *xts* time series and pad with zeros:
 # calculate time differences over lag by 10 periods
 rutils::diff_xts(env_etf$VTI, lag=10)
 ```
+<br>
 
 
-Recursively rbind a list of objects:  
+Recursively *rbind* a list of objects:  
 ```{r eval=FALSE}
 # create xts time series
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
@@ -119,9 +149,10 @@ list_xts <- split(x_ts, "days")
 # rbind the list back into a time series and compare with the original
 identical(x_ts, do_call_rbind(list_xts))
 ```
+<br>
 
 
-Recursively apply a function to a list of objects:  
+Recursively *apply* a function to a list of objects:  
 ```{r eval=FALSE}
 # create xts time series
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
@@ -130,9 +161,10 @@ list_xts <- split(x_ts, "days")
 # rbind the list back into a time series and compare with the original
 identical(x_ts, do_call(rbind, list_xts))
 ```
+<br>
 
 
-Apply a function to a list of objects, merge the outputs into a single object, and assign the object to the output environment:  
+Apply a function to a list of objects, merge the outputs into a single object, and *assign* the object to the output environment:  
 ```{r eval=FALSE}
 do_call_assign(
    func_tion=clo_se,
@@ -140,6 +172,7 @@ do_call_assign(
    out_put="price_s",
    env_in=env_etf, env_out=new_env)
 ```
+<br>
 
 
 Plot an *xts* time series with custom y-axis range and with vertical background shading:  

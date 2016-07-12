@@ -1,37 +1,21 @@
 ############
 # ToDo list for package rutils
 
-https://cran.r-project.org/doc/manuals/r-release/R-admin.html
-
+### scripts for package building
 # Install package from source on local drive
 install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source")
 # Install package from source on local drive using R CMD
-R CMD INSTALL rutils
+R CMD INSTALL C:\Develop\R\rutils
 # Install package from github
-library(devtools)
-install_github(repo="algoquant/rutils", force=TRUE)
+devtools::install_github(repo="algoquant/rutils", force=TRUE)
+# build package reference manual from *.Rd files
+system("R CMD Rd2pdf C:/Develop/R/rutils")
+R CMD Rd2pdf C:\Develop\R\rutils
 
-# create package vignette from *.Rd files
-R CMD Rd2pdf rutils
 
+### tasks to-do
 
-### tasks pending
-
-- [x] add vignette and automatically build vignette  
-
-- [x] add more detailed description about etf_data.RData in README.Rmd
-
-- [x] add travis Build Status tag to README.Rmd, add .travis.yml file
-
-- [x] Deleted etf_data.Rdata in the GitHub remote repository because it had wrong extension, and replaced it with etf_data.RData.  GitHub Desktop is case-insensitive to extension, so it didn't replace etf_data.Rdata in the remote repository, even after I replaced it locally with etf_data.RData. 
-
-- [x] rename functions *.xts to *_xts
-
-- [ ] use testthat 
-
-- [x] create project website for rutils on GitHub Pages using R Markdown  
-
-- [x] rename README.md to .Rmd and add more detailed description similar this to README.md
+- [x] introduce unit testing using testthat and devtools: create /tests directory
 
 - [ ] add qmao functions: 
 gaa() for "get, apply, assign"
@@ -39,9 +23,24 @@ gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment?rq=1
 
+- [x] remotely create package description on gh-pages branch without YAML
 
+- [ ] create locally package description in HTML and upload it to gh-pages branch
 
-### tasks finished
+- [x] add vignette and automatically build vignette  
+
+- [x] add more detailed description about etf_data.RData in README.Rmd
+
+- [x] add travis Build Status tag to README.Rmd, add .travis.yml file
+
+- [x] Delete etf_data.Rdata in the GitHub remote repository because it has wrong extension, and replace it with etf_data.RData.  
+GitHub Desktop is case-insensitive to extension, so it didn't replace etf_data.Rdata in the remote repository, even after I replaced it locally with etf_data.RData. 
+
+- [x] rename functions *.xts to *_xts
+
+- [x] create project website for rutils on GitHub Pages using R Markdown  
+
+- [x] rename README.md to .Rmd and add more detailed description similar this to README.md
 
 - [x] create function chart_xts() which accepts argument ylim and in_dex - adapt chart_xts() from chartLib.new.R  
 

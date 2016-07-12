@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="algoquant (Jerzy Pawlowski)" />
+
+<meta name="date" content="2016-07-11" />
+
+<title>rutils Package for Simplifying Financial Data Management and Modeling</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">rutils Package for Simplifying Financial Data Management and Modeling</h1>
+<h4 class="author"><em>algoquant (Jerzy Pawlowski)</em></h4>
+<h4 class="date"><em>2016-07-11</em></h4>
+
+
+
+<p>The <em>rutils</em> package is a collection of functions for simplifying data management and modeling, and is used by many other algoquant packages.<br />
+The <em>rutils</em> package contains functions for:</p>
+<ul>
+<li>extracting names and columns from time series,</li>
+<li>calculating the end points of a time series,</li>
+<li>applying lags to vectors and matrices,</li>
+<li>calculating row differences of vectors and matrices,</li>
+<li>recursively binding a list of objects into time series,</li>
+<li>recursively applying a function to a list of objects,</li>
+<li>plotting time series with custom axis range and background shading.</li>
+</ul>
+<p>The <em>rutils</em> package also includes a dataset with <em>OHLC</em> time series data for a portfolio of symbols. The data is contained in an environment called <em>env_etf</em>, which includes:</p>
+<ul>
+<li><em>sym_bols</em>: a vector of strings with the portfolio symbols.</li>
+<li>individual time series <em>VTI</em>, <em>VEU</em>, etc., containing daily <em>OHLC</em> prices for all the sym_bols.</li>
+<li><em>price_s</em>: a single <em>xts</em> time series containing daily closing prices for all the sym_bols.</li>
+<li><em>re_turns</em>: a single <em>xts</em> time series containing daily returns for all the sym_bols.</li>
+</ul>
+<p>Each individual <em>xts</em> time series contains the columns: Open prices, High prices, Low prices, Close prices, trading Volume, Adjusted prices.</p>
+<p>========</p>
+<div id="installation-and-loading" class="section level3">
+<h3>Installation and loading</h3>
+<p>Installing <em>rutils</em> package from <em>GitHub</em>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
+<span class="kw">library</span>(devtools)
+<span class="kw">install_github</span>(<span class="dt">repo=</span><span class="st">&quot;algoquant/rutils&quot;</span>)
+<span class="kw">library</span>(rutils)</code></pre></div>
+<p>========</p>
+</div>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>The <em>rutils</em> package contains a dataset of daily <em>OHLC</em> time series in <em>xts</em> format, for a portfolio of stock symbols. The time series are contained in an environment called <em>env_etf</em>. The data is set up for lazy loading, so it doesn’t require calling <code>data(etf_data)</code> to load it before being able to call it.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get first six rows of VTI prices</span>
+<span class="kw">head</span>(env_etf$VTI)
+<span class="co"># plot</span>
+<span class="kw">chart_Series</span>(<span class="dt">x=</span>env_etf$VTI[<span class="st">&quot;2009-11&quot;</span>])</code></pre></div>
+<p>========</p>
+</div>
+<div id="examples" class="section level3">
+<h3>Examples</h3>
+<p>Extract the name of an <em>OHLC</em> time series from its first column name:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># show portfolio symbols</span>
+env_etf$sym_bols</code></pre></div>
+<pre><code>##  [1] &quot;VTI&quot; &quot;VEU&quot; &quot;IEF&quot; &quot;VNQ&quot; &quot;DBC&quot; &quot;VXX&quot; &quot;XLY&quot; &quot;XLP&quot; &quot;XLE&quot; &quot;XLF&quot; &quot;XLV&quot;
+## [12] &quot;XLI&quot; &quot;XLB&quot; &quot;XLK&quot; &quot;XLU&quot; &quot;VYM&quot; &quot;IVW&quot; &quot;IWB&quot; &quot;IWD&quot; &quot;IWF&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get name for VTI</span>
+<span class="kw">na_me</span>(env_etf$VTI)</code></pre></div>
+<pre><code>## [1] &quot;VTI&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get first six rows of VTI prices</span>
+<span class="kw">head</span>(env_etf$VTI)</code></pre></div>
+<pre><code>##            VTI.Open VTI.High  VTI.Low VTI.Close VTI.Volume VTI.Adjusted
+## 2007-01-03 58.67240 58.75969 57.79948  58.17359     798600     58.17359
+## 2007-01-04 58.17359 58.43962 57.84936  58.28998    3305000     58.28998
+## 2007-01-05 58.19437 58.19437 57.71635  57.82858     382000     57.82858
+## 2007-01-08 57.99485 58.11539 57.63321  58.04058     299000     58.04057
+## 2007-01-09 58.15280 58.15280 57.71635  58.04058     267000     58.04057
+## 2007-01-10 57.85352 58.23594 57.76623  58.16943     359200     58.16943</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get first six rows of price_s</span>
+env_etf$price_s[<span class="dv">1</span>:<span class="dv">6</span>, <span class="dv">1</span>:<span class="dv">4</span>]</code></pre></div>
+<pre><code>##                 DBC      IEF      IVW      IWB
+## 2007-01-03 22.86394 63.61983 56.29234 64.31569
+## 2007-01-04 22.26832 63.85067 56.44878 64.40781
+## 2007-01-05 22.19147 63.64291 56.24019 64.02258
+## 2007-01-08 22.30675 63.68908 56.31842 64.20682
+## 2007-01-09 22.11461 63.67369 56.37056 64.14820
+## 2007-01-10 21.78799 63.56596 56.50961 64.33244</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get first six rows of re_turns</span>
+env_etf$re_turns[<span class="dv">1</span>:<span class="dv">6</span>, <span class="dv">1</span>:<span class="dv">4</span>]</code></pre></div>
+<pre><code>##                     DBC           IEF           IVW           IWB
+## 2007-01-03  0.000000000  0.0000000000  0.0000000000  0.0000000000
+## 2007-01-04 -0.026050371  0.0036284915  0.0027790639  0.0014322944
+## 2007-01-05 -0.003451226 -0.0032538577 -0.0036951200 -0.0059811071
+## 2007-01-08  0.005194744  0.0007254068  0.0013908914  0.0028777192
+## 2007-01-09 -0.008613224 -0.0002415956  0.0009258783 -0.0009130027
+## 2007-01-10 -0.014769781 -0.0016918448  0.0024668019  0.0028720839</code></pre>
+<p>Calculate a vector of equally spaced end points for a time series:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate end points with initial stub interval</span>
+<span class="kw">end_points</span>(env_etf$VTI, <span class="dt">inter_val=</span><span class="dv">7</span>, <span class="dt">off_set=</span><span class="dv">4</span>)</code></pre></div>
+<p>Extract close prices from an <em>OHLC</em> time series:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get close prices for VTI</span>
+<span class="kw">clo_se</span>(env_etf$VTI)
+<span class="co"># get volumes for VTI</span>
+<span class="kw">clo_se</span>(env_etf$VTI, <span class="dt">which_col=</span><span class="st">&quot;vol&quot;</span>)</code></pre></div>
+<p>Apply a lag to a vector or matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lag vector by 2 periods</span>
+<span class="kw">lag_it</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">lag=</span><span class="dv">2</span>)
+<span class="co"># lag matrix by negative 2 periods</span>
+<span class="kw">lag_it</span>(<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">ncol=</span><span class="dv">2</span>), <span class="dt">lag=</span>-<span class="dv">2</span>)</code></pre></div>
+<p>Calculate the row differences of a vector or matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># diff vector by 2 periods</span>
+<span class="kw">diff_it</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">lag=</span><span class="dv">2</span>)
+<span class="co"># diff matrix by negative 2 periods</span>
+<span class="kw">diff_it</span>(<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">ncol=</span><span class="dv">2</span>), <span class="dt">lag=</span>-<span class="dv">2</span>)</code></pre></div>
+<p>Calculate the time differences of an <em>xts</em> time series and pad with zeros:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate time differences over lag by 10 periods</span>
+rutils::<span class="kw">diff_xts</span>(env_etf$VTI, <span class="dt">lag=</span><span class="dv">10</span>)</code></pre></div>
+<p>Recursively rbind a list of objects:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create xts time series</span>
+x_ts &lt;-<span class="st"> </span><span class="kw">xts</span>(<span class="dt">x=</span><span class="kw">rnorm</span>(<span class="dv">1000</span>), <span class="dt">order.by=</span>(<span class="kw">Sys.time</span>()-<span class="dv">3600</span>*(<span class="dv">1</span>:<span class="dv">1000</span>)))
+<span class="co"># split time series into daily list</span>
+list_xts &lt;-<span class="st"> </span><span class="kw">split</span>(x_ts, <span class="st">&quot;days&quot;</span>)
+<span class="co"># rbind the list back into a time series and compare with the original</span>
+<span class="kw">identical</span>(x_ts, <span class="kw">do_call_rbind</span>(list_xts))</code></pre></div>
+<p>Recursively apply a function to a list of objects:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create xts time series</span>
+x_ts &lt;-<span class="st"> </span><span class="kw">xts</span>(<span class="dt">x=</span><span class="kw">rnorm</span>(<span class="dv">1000</span>), <span class="dt">order.by=</span>(<span class="kw">Sys.time</span>()-<span class="dv">3600</span>*(<span class="dv">1</span>:<span class="dv">1000</span>)))
+<span class="co"># split time series into daily list</span>
+list_xts &lt;-<span class="st"> </span><span class="kw">split</span>(x_ts, <span class="st">&quot;days&quot;</span>)
+<span class="co"># rbind the list back into a time series and compare with the original</span>
+<span class="kw">identical</span>(x_ts, <span class="kw">do_call</span>(rbind, list_xts))</code></pre></div>
+<p>Apply a function to a list of objects, merge the outputs into a single object, and assign the object to the output environment:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">do_call_assign</span>(
+   <span class="dt">func_tion=</span>clo_se,
+   <span class="dt">sym_bols=</span>env_etf$sym_bols,
+   <span class="dt">out_put=</span><span class="st">&quot;price_s&quot;</span>,
+   <span class="dt">env_in=</span>env_etf, <span class="dt">env_out=</span>new_env)</code></pre></div>
+<p>Plot an <em>xts</em> time series with custom y-axis range and with vertical background shading:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">chart_xts</span>(env_etf$VTI[<span class="st">&quot;2015-11&quot;</span>],
+<span class="dt">name=</span><span class="st">&quot;VTI in Nov 2015&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">102</span>, <span class="dv">108</span>),
+<span class="dt">in_dex=</span><span class="kw">index</span>(env_etf$VTI[<span class="st">&quot;2015-11&quot;</span>]) &gt;<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2015-11-18&quot;</span>))</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
