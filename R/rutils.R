@@ -188,20 +188,26 @@ diff_it <- function(in_put, lag=1) {
 #' @param ... additional arguments to function \code{xts::lag_xts()}.
 #' @return \code{xts} time series with the same dimensions and the same time
 #'   index as the input series.
-#' @details Applies a time lag to an \code{xts} time series and pads with
-#'   \code{zeros} instead of \code{NAs}.  Positive lag \code{k} means values
-#'   from \code{k} periods in the past are moved to the present.  Negative lag
-#'   \code{k} moves values from the future to the present.  The function
+#' @details Applies a time lag to an \code{xts} time series and pads with the
+#'   first and last values instead of \code{NAs}.  Positive lag \code{k} means
+#'   values from \code{k} periods in the past are moved to the present. Negative
+#'   lag \code{k} moves values from the future to the present.  The function
 #'   \code{lag()} is just a wrapper for function \code{lag_xts()} from package
-#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts},
-#'   but it pads with \code{zeros} instead of \code{NAs}.
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
+#'   pads with the first and last values instead of \code{NAs}.
 #' @examples
 #' # lag by 10 periods
 #' rutils::lag_xts(env_etf$VTI, k=10)
 
 lag_xts <- function(x_ts, k=1, ...) {
+  n_rows <- NROW(x_ts)
+  fir_st <- x_ts[1, ]
+  la_st <- x_ts[n_rows, ]
   x_ts <- xts::lag.xts(x_ts, k=k, ...)
-  x_ts[!complete.cases(x_ts), ] <- 0
+  if (k>0)
+    x_ts[1:k, ] <- fir_st
+  else
+    x_ts[(n_rows+k+1):n_rows, ] <- la_st
   x_ts
 }  # end lag_xts
 
@@ -232,6 +238,70 @@ diff_xts <- function(x_ts, lag=1, ...) {
   x_ts[!complete.cases(x_ts), ] <- 0
   x_ts
 }  # end diff_xts
+
+
+
+
+#' Calculate the rolling sum of an \code{xts} time series over a sliding window
+#' (lookback period).
+#'
+#' Performs the same operation as function \code{runSum()} from package
+#' \href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR},
+#' but using vectorized functions, so it's a little faster.
+#'
+#' @export
+#' @param x_ts an \code{xts} time series containing one or more columns of data.
+#' @param win_dow the size of the lookback window, equal to the number of data
+#'   points for calculating the rolling sum.
+#' @return \code{xts} time series with the same dimensions as the input series.
+#' @details For example, if win_dow=3, then the rolling sum at any point is
+#'   equal to the sum of \code{x_ts} values for that point plus two preceding
+#'   points.
+#'   The initial values of roll_sum() are equal to cumsum() values, so that
+#'   roll_sum() doesn't return any NA values.
+#' @examples
+#' # create xts time series
+#' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+#' roll_sum(x_ts, win_dow=3)
+
+roll_sum <- function(x_ts, win_dow) {
+  cum_sum <- cumsum(x_ts)
+  roll_sum <- cum_sum - lag(x=cum_sum, k=win_dow)
+  roll_sum[1:win_dow, ] <- cum_sum[1:win_dow, ]
+  roll_sum
+}  # end roll_sum
+
+
+
+
+#' Calculate the rolling maximum of an \code{xts} time series over a sliding
+#' window (lookback period).
+#'
+#' Performs the same operation as function \code{runMax()} from package
+#' \href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR},
+#' but using vectorized functions, so it's a little faster.
+#'
+#' @export
+#' @param x_ts an \code{xts} time series containing one or more columns of data.
+#' @param win_dow the size of the lookback window, equal to the number of data
+#'   points for calculating the rolling sum.
+#' @return \code{xts} time series with the same dimensions as the input series.
+#' @details For example, if win_dow=3, then the rolling sum at any point is
+#'   equal to the sum of \code{x_ts} values for that point plus two preceding
+#'   points.
+#'   The initial values of roll_max() are equal to cumsum() values, so that
+#'   roll_max() doesn't return any NA values.
+#' @examples
+#' # create xts time series
+#' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+#' roll_max(x_ts, win_dow=3)
+
+roll_max <- function(x_ts, win_dow) {
+  roll_max <- RcppRoll::roll_max(c(rep(0,win_dow-1), coredata(x_ts)), n=win_dow, align="right")
+  roll_max <- xts(x=roll_max, order.by=index(x_ts))
+  colnames(roll_max) <- colnames(x_ts)
+  roll_max
+}  # end roll_max
 
 
 

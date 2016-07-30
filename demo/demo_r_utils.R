@@ -16,12 +16,12 @@ options(stringsAsFactors=FALSE)
 options(max.print=80)
 rm(list=ls())  # remove all objects
 
-# install rutils from github
+# install rutils from GitHub
 install.packages("devtools")
 library(devtools)
 install_github(repo="algoquant/rutils")
 
-# install rutils using install.packages()
+# install rutils ffrom local drive using install.packages()
 install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source")
 install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source", lib="C:/Users/Jerzy/Downloads")
 install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source", lib="C:/Users/Jerzy/Documents/R/win-library/3.2")
@@ -38,6 +38,8 @@ output_dir <- "E:/output/data/"
 data_dir <- "C:/Develop/data/hfreq/src/"
 output_dir <- "C:/Develop/data/hfreq/scrub/"
 
+
+### extractors
 # extract the name of the time series from its column name
 na_me(env_etf$VTI)
 
@@ -49,7 +51,7 @@ foo <- clo_se(env_etf$VTI, which_col="High")
 foo <- clo_se(env_etf$VTI, which_col="blah")
 
 
-
+### do_call_rbind()
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # split time series into daily list
 list_xts <- split(x_ts, "days")
@@ -65,6 +67,7 @@ do_call(paste, c("a", "b", "c"), sep="/")
 
 
 
+### do_call_assign()
 # perform do_call_assign() and compare to benchmark
 load(file="C:/Develop/data/etf_data.RData")
 rm(price_s, envir=new_env)
@@ -97,142 +100,38 @@ ls(new_env)
 identical(new_env$price_s, new_env$price_s2)
 
 
+### estimating rolling moments using package rutils
+### estimating rolling aggregations and moments using package TTR
+library(TTR)
+library(roll)
+library(RcppRoll)
 
-###########
-# process single day of data
+median_rolling <- runMedian(x=Cl(SPY), n=win_dow)
+var_rolling <- runSD(x=Cl(SPY), n=win_dow)
+chart_xts(var_rolling)
 
-# load list of symbols from file in cwd
-# sym_bols <- read.csv(file="etf_list_hf.csv")
-# sym_bols <- sym_bols[[1]]
-# the file "hf_data.RData" is part of "rutils" package, and contains "sym_bols"
-data("hf_data")
+sum_rolling <- rutils::roll_sum(Cl(SPY), win_dow=win_dow)
+sum_rolling <- RcppRoll::roll_sum(Cl(SPY), n=win_dow, align="right")
+sum_rolling <- roll::roll_mean(Cl(SPY), width=win_dow)
+sum_rolling <- TTR::runSum(x=Cl(SPY), n=win_dow)
 
-# define sym_bol
-sym_bol <- "SPY"
+# benchmark the speed of the functionals
+library(microbenchmark)
+summary(microbenchmark(
+  roll_sum=rutils::roll_sum(Cl(SPY), win_dow=win_dow),
+  runSum=TTR::runSum(x=Cl(SPY), n=win_dow),
+  times=10))[, c(1, 4, 5)]
 
-# load a single day of TAQ data
-sym_bol <- load(
-  file.path(data_dir,
-            paste0(sym_bol, "/2014.05.02.", sym_bol, ".RData")))
+summary(microbenchmark(
+  roll_sum=rutils::roll_sum(Cl(SPY), win_dow=win_dow),
+  roll_sum_rcpp=RcppRoll::roll_sum(Cl(SPY), n=win_dow, align="right"),
+  roll_mean=roll::roll_mean(Cl(SPY), width=win_dow),
+  runSum=TTR::runSum(x=Cl(SPY), n=win_dow),
+  times=10))[, c(1, 4, 5)]
 
-### scrub a single day of TAQ data (don't aggregate)
-taq_data <- scrub_TAQ(taq_data=get(sym_bol))
-
-# calculate returns
-xts_rets <- calc_rets(xts_data=taq_data)
-
-### scrub and aggregate a single day of TAQ data to OHLC
-ohlc_data <- scrub_agg(taq_data=get(sym_bol))
-chartSeries(ohlc_data, name=sym_bol, theme=chartTheme("white"))
-
-
-###########
-# process TAQ data using package 'rutils': load TAQ data, aggregate to OHLC, and save to file
-
-# aggregate TAQ data for a single symbol, and save to file
-save_scrub_agg(sym_bol, data_dir=data_dir, output_dir=output_dir, period="15 min")
-
-save_TAQ(sym_bol, data_dir=data_dir, output_dir=output_dir)
-
-# calculate returns for a single symbol, and save to file
-save_rets(sym_bol, data_dir=data_dir, output_dir=output_dir, period="15 min")
-
-# aggregate data for list of symbols, and save to multiple files
-sapply(head(sym_bols), save_scrub_agg, data_dir=data_dir, output_dir=output_dir, period="15 min")
-
-# calculate returns for list of symbols, and save to file
-sapply(head(sym_bols), save_rets, data_dir=data_dir, output_dir=output_dir, period="15 min")
-
-# load processed OHLC data for a single symbol
-# load(file=paste0(sym_bol, ".RData"))
-load(file.path(output_dir, paste0(sym_bol, ".RData")))
-# load(file="SPY.RData")
-# plot OHLC data
-chartSeries(get(sym_bol), name=sym_bol, theme=chartTheme("white"))
-
-
-###########
-### estimating variance, skewness, and kurtosis using package TTR
-
-# function volatility() from package TTR
-ran_ge <- "2013-11-11/2013-11-15"
-vol_at <- volatility(OHLC=get(sym_bol)[ran_ge],
-                     calc="yang.zhang", n=20)
-vol_at <- volatility(OHLC=get(sym_bol)[ran_ge],
-                     calc="rogers.satchell", n=20)
-vol_at <- volatility(OHLC=get(sym_bol)[ran_ge],
-                     calc="garman.klass", n=20)
-
-
-# estimating rolling aggregations and moments using package TTR
-vol_at <- runMedian(x=get(sym_bol)[ran_ge], n=100)
-vol_at <- runSD(x=get(sym_bol)[ran_ge], n=100)
-chart_xts(vol_at)
-
-
-###########
-# estimating rolling moments using package rutils
-library(rutils)
-
-# daily open to close volatility
-vol_at <- apply.daily(x=get(sym_bol), FUN=moment_ohlc)
-colnames(vol_at) <- paste(
-  strsplit(colnames(get(sym_bol))[1], split="[.]")[[1]][1],
-  "Vol", sep=".")
-sk_ew <- apply.daily(x=get(sym_bol), FUN=moment_ohlc, mom_fun="skew_ohlc")
-sk_ew <- sk_ew/(vol_at)^(1.5)
-colnames(sk_ew) <- paste(
-  strsplit(colnames(get(sym_bol))[1], split="[.]")[[1]][1],
-  "Skew", sep=".")
-
-chart_xts_panels(cbind(10^5*vol_at, sk_ew))
-chart_xts_panels(cbind(10^5*vol_at["2013-10"], sk_ew["2013-10"]), in_dex=(abs(sk_ew["2013-10"])>1))
-
-
-# daily close to close volatility
-
-
-
-# minutely volatility and skew
-re_turns <- calc_rets(xts_data=get(sym_bol)[ran_ge])
-# rolling vol
-vol_at <- roll_moment_ohlc(ohlc=get(sym_bol)[ran_ge])
-tail(vol_at, 11)
-# rolling skew
-sk_ew <- roll_moment_ohlc(ohlc=get(sym_bol)[ran_ge], mom_fun="skew_ohlc")
-sk_ew <- sk_ew/(vol_at)^(1.5)
-sk_ew[1, ] <- 0
-sk_ew <- na.locf(sk_ew)
-tail(sk_ew, 11)
-
-
-
-###########
-# ploting
-
-x11()
-in_dex <- index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18")
-in_dex <- xts(in_dex, order.by=index(env_etf$VTI["2015-11"]))
-# in_dex <- ifelse(in_dex, "lightgreen", "lightgrey")
-chart_Series(x=env_etf$VTI["2015-11"], name="VTI in Nov 2015")
-# add background shading of areas
-# add_TA(env_etf$VTI["2015-11"], on=-1, col=in_dex)
-add_TA(in_dex, on=-1, col="lightgreen", border="lightgreen")
-add_TA(!in_dex, on=-1, col="lightgrey", border="lightgrey")
-
-
-
-ch_ob <- chart_Series(x=env_etf$VTI["2015-11"], name="VTI in Nov 2015", plot=FALSE)
-y_lim <- ch_ob$get_ylim()
-y_lim[[2]] <- structure(c(102, 108), fixed=TRUE)
-ch_ob$set_ylim(y_lim)
-add_TA(in_dex, on=-1, col="lightgreen", border=NA)
-add_TA(!in_dex, on=-1, col="lightgrey", border=NA)
-
-
-chart_xts(env_etf$VTI["2015-11"],
-          name="VTI in Nov 2015",
-          ylim=c(102, 108),
-          in_dex=index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
-
-
+summary(microbenchmark(
+  roll_max=rutils::roll_max(Cl(SPY), win_dow=win_dow),
+  roll_max_rcpp=RcppRoll::roll_max(Cl(SPY), n=win_dow, align="right"),
+  roll_mean=roll::roll_mean(Cl(SPY), width=win_dow),
+  runMax=TTR::runMax(x=Cl(SPY), n=win_dow),
+  times=10))[, c(1, 4, 5)]

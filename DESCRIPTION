@@ -11,6 +11,7 @@ License: GPL (>= 2)
 Depends:
     xts, 
     quantmod, 
+    RcppRoll, 
 Suggests: knitr,
     rmarkdown,
     testthat

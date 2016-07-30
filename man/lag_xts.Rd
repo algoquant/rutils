@@ -21,13 +21,13 @@ lag_xts(x_ts, k = 1, ...)
 Apply a time lag to an \code{xts} time series.
 }
 \details{
-Applies a time lag to an \code{xts} time series and pads with
-  \code{zeros} instead of \code{NAs}.  Positive lag \code{k} means values
-  from \code{k} periods in the past are moved to the present.  Negative lag
-  \code{k} moves values from the future to the present.  The function
+Applies a time lag to an \code{xts} time series and pads with the
+  first and last values instead of \code{NAs}.  Positive lag \code{k} means
+  values from \code{k} periods in the past are moved to the present. Negative
+  lag \code{k} moves values from the future to the present.  The function
   \code{lag()} is just a wrapper for function \code{lag_xts()} from package
-  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts},
-  but it pads with \code{zeros} instead of \code{NAs}.
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
+  pads with the first and last values instead of \code{NAs}.
 }
 \examples{
 # lag by 10 periods

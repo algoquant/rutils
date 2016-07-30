@@ -15,17 +15,22 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
-- [x] introduce unit testing using testthat and devtools: create /tests directory
-
 - [ ] add qmao functions: 
 gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment?rq=1
 
-- [x] remotely create package description on gh-pages branch without YAML
-
 - [ ] create locally package description in HTML and upload it to gh-pages branch
+
+- [x] create function roll_max() using RcppRoll::roll_max()  
+it's not any faster than TTR::runMax()  
+
+- [x] introduce unit testing using testthat and devtools: create /tests directory
+
+- [x] move function roll_sum() from HighFreq to rutils
+
+- [x] remotely create package description on gh-pages branch without YAML
 
 - [x] add vignette and automatically build vignette  
 
@@ -61,4 +66,10 @@ GitHub Desktop is case-insensitive to extension, so it didn't replace etf_data.R
 - [x] create issue for file extension error when using .Rdata instead of .RData
 https://github.com/klutometis/roxygen
 http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-package
+
+
+### tasks deprecated
+
+- [ ] rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
+
 
