@@ -187,7 +187,7 @@ diff_it <- function(in_put, lag=1) {
 #' @param k integer equal to the number of time periods of lag.
 #' @param ... additional arguments to function \code{xts::lag_xts()}.
 #' @return \code{xts} time series with the same dimensions and the same time
-#'   index as the input series.
+#'   index as the input \code{x_ts} time series.
 #' @details Applies a time lag to an \code{xts} time series and pads with the
 #'   first and last values instead of \code{NAs}.  Positive lag \code{k} means
 #'   values from \code{k} periods in the past are moved to the present. Negative
@@ -219,14 +219,14 @@ lag_xts <- function(x_ts, k=1, ...) {
 #' @export
 #' @param x_ts an \code{xts} time series.
 #' @param lag integer equal to the number of time periods of lag.
-#' @param ... additional arguments to function \code{xts::diff_xts()}.
+#' @param ... additional arguments to function \code{xts::diff.xts()}.
 #' @return \code{xts} time series with the same dimensions and the same time
 #'   index as the input series.
 #' @details Calculates the time differences of an \code{xts} time series and
 #'   pads with \code{zeros} instead of \code{NAs}.  Positive \code{lag} means
 #'   differences are calculated with values from \code{lag} periods in the past
 #'   (vice versa negative \code{lag}).  The function \code{diff()} is just a
-#'   wrapper for \code{diff_xts()} from package
+#'   wrapper for \code{diff.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
 #'   pads with \code{zeros} instead of \code{NAs}.
 #' @examples
@@ -238,6 +238,51 @@ diff_xts <- function(x_ts, lag=1, ...) {
   x_ts[!complete.cases(x_ts), ] <- 0
   x_ts
 }  # end diff_xts
+
+
+
+
+#' Calculate the reduced form of an \code{OHLC} time series, or calculate the
+#' standard form from the reduced form of an \code{OHLC} time series.
+#'
+#' @export
+#' @param oh_lc an \code{OHLC} time series of prices in \code{xts} format.
+#' @param re_duce \code{Boolean} should the reduced form be calculated or the
+#'   standard form? (default is \code{TRUE})
+#' @param ... additional arguments to function \code{xts::diff.xts()}.
+#' @return \code{OHLC} time series with five columns for the \code{Open},
+#'   \code{High}, \code{Low}, \code{Close} prices, and the \code{Volume}, and
+#'   with the same time index as the input series.
+#' @details The reduced form of an \code{OHLC} time series is obtained by
+#'   calculating the time differences of its \code{Close} prices, and by
+#'   calculating the differences between its \code{Open}, \code{High}, and
+#'   \code{Low} prices minus the \code{Close} prices. The standard form is the
+#'   original \code{OHLC} time series, and can be calculated from its reduced
+#'   form by reversing those operations.
+#' @examples
+#' # calculate reduced form of an OHLC time series
+#' diff_VTI <- rutils::diff_ohlc(env_etf$VTI)
+#' # calculate standard form of an OHLC time series
+#' VTI <- rutils::diff_ohlc(diff_VTI, re_duce=FALSE)
+#' identical(VTI, env_etf$VTI[, 1:5])
+
+diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
+  if (re_duce) {
+    cl_ose <- xts::diff.xts(Cl(oh_lc), lag=1, ...)
+    cl_ose[1] <- Cl(oh_lc)[1]
+    op_en <- Op(oh_lc) - Cl(oh_lc)
+    hi_gh <- Hi(oh_lc) - Cl(oh_lc)
+    lo_w <- Lo(oh_lc) - Cl(oh_lc)
+    cbind(op_en, hi_gh, lo_w, cl_ose, Vo(oh_lc))
+  }
+  else {
+    cl_ose <- cumsum(Cl(oh_lc))
+    op_en <- Op(oh_lc) + cl_ose
+    hi_gh <- Hi(oh_lc) + cl_ose
+    lo_w <- Lo(oh_lc) + cl_ose
+    cbind(op_en, hi_gh, lo_w, cl_ose, Vo(oh_lc))
+  }
+}  # end diff_ohlc
 
 
 

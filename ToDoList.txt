@@ -23,6 +23,10 @@ http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-envir
 
 - [ ] create locally package description in HTML and upload it to gh-pages branch
 
+- [x] create function diff_OHLC()
+returns reduced form of OHLC data using differences  
+returns standard form of OHLC data using cumsum  
+
 - [x] create function roll_max() using RcppRoll::roll_max()  
 it's not any faster than TTR::runMax()  
 
@@ -32,7 +36,7 @@ it's not any faster than TTR::runMax()
 
 - [x] remotely create package description on gh-pages branch without YAML
 
-- [x] add vignette and automatically build vignette  
+- [x] add vignettes directory and automatically build vignette  
 
 - [x] add more detailed description about etf_data.RData in README.Rmd
 

@@ -11,7 +11,7 @@ diff_xts(x_ts, lag = 1, ...)
 
 \item{lag}{integer equal to the number of time periods of lag.}
 
-\item{...}{additional arguments to function \code{xts::diff_xts()}.}
+\item{...}{additional arguments to function \code{xts::diff.xts()}.}
 }
 \value{
 \code{xts} time series with the same dimensions and the same time
@@ -25,7 +25,7 @@ Calculates the time differences of an \code{xts} time series and
   pads with \code{zeros} instead of \code{NAs}.  Positive \code{lag} means
   differences are calculated with values from \code{lag} periods in the past
   (vice versa negative \code{lag}).  The function \code{diff()} is just a
-  wrapper for \code{diff_xts()} from package
+  wrapper for \code{diff.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
   pads with \code{zeros} instead of \code{NAs}.
 }

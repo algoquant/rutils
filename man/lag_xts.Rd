@@ -15,7 +15,7 @@ lag_xts(x_ts, k = 1, ...)
 }
 \value{
 \code{xts} time series with the same dimensions and the same time
-  index as the input series.
+  index as the input \code{x_ts} time series.
 }
 \description{
 Apply a time lag to an \code{xts} time series.
