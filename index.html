@@ -28,29 +28,39 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <p>The <em>rutils</em> package is a collection of functions for simplifying data management and modeling, and is used by many other algoquant packages.<br>
-The <em>rutils</em> package contains functions for:</p>
+          <hr>
+
+<p>title: rutils Package for Simplifying Financial Data Management and Modeling
+author: Jerzy Pawlowski (algoquant)
+abstract: Functions for managing object names and attributes, applying functions over lists, managing objects in environments.</p>
+
+<h2>
+<a id="tags-high-frequency-time-series-plot-xts" class="anchor" href="#tags-high-frequency-time-series-plot-xts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tags: high frequency, time series, plot, xts</h2>
+
+<p><a href="https://travis-ci.org/algoquant/rutils"><img src="https://travis-ci.org/algoquant/rutils.svg?branch=master" alt="Build Status"></a></p>
+
+<h3>
+<a id="utility-functions-for-simplifying-financial-data-management-and-modeling" class="anchor" href="#utility-functions-for-simplifying-financial-data-management-and-modeling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Utility functions for simplifying financial data management and modeling</h3>
+
+<p>The <em>rutils</em> package contains functions for:</p>
 
 <ul>
-<li>extracting names and columns from time series, </li>
-<li>calculating the end points of a time series, </li>
-<li>applying lags to vectors and matrices, </li>
-<li>calculating row differences of vectors and matrices, </li>
-<li>recursively binding a list of objects into time series, </li>
-<li>recursively applying a function to a list of objects, </li>
-<li>plotting time series with custom axis range and background shading. </li>
+<li><p>extracting names and columns from time series, </p></li>
+<li><p>calculating the end points of a time series, </p></li>
+<li><p>applying lags to vectors and matrices, </p></li>
+<li><p>calculating row differences of vectors and matrices, </p></li>
+<li><p>recursively binding a list of objects into time series, </p></li>
+<li><p>recursively applying a function to a list of objects, </p></li>
+<li><p>plotting time series with custom axis range and background shading. </p></li>
 </ul>
 
 <p>The <em>rutils</em> package also includes a dataset with <em>OHLC</em> time series data for a portfolio of symbols.  The data is contained in an environment called <em>env_etf</em>, which includes: </p>
 
 <ul>
-<li>
-<em>sym_bols</em>: a vector of strings with the portfolio symbols.</li>
-<li>individual time series <em>VTI</em>, <em>VEU</em>, etc., containing daily <em>OHLC</em> prices for all the sym_bols.</li>
-<li>
-<em>price_s</em>: a single <em>xts</em> time series containing daily closing prices for all the sym_bols.</li>
-<li>
-<em>re_turns</em>: a single <em>xts</em> time series containing daily returns for all the sym_bols.</li>
+<li><p><em>sym_bols</em>: a vector of strings with the portfolio symbols,</p></li>
+<li><p>individual time series <em>VTI</em>, <em>VEU</em>, etc., containing daily <em>OHLC</em> prices for all the sym_bols,</p></li>
+<li><p><em>price_s</em>: a single <em>xts</em> time series containing daily closing prices for all the sym_bols,</p></li>
+<li><p><em>re_turns</em>: a single <em>xts</em> time series containing daily returns for all the sym_bols.</p></li>
 </ul>
 
 <p>Each individual <em>xts</em> time series contains the columns: Open prices, High prices, Low prices, Close prices, trading Volume, Adjusted prices.</p>
@@ -60,12 +70,29 @@ The <em>rutils</em> package contains functions for:</p>
 <h3>
 <a id="installation-and-loading" class="anchor" href="#installation-and-loading" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation and loading</h3>
 
-<p>Installing <em>rutils</em> package from <em>GitHub</em>:  </p>
+<p>Install package <em>rutils</em> from github:  </p>
 
 <div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>devtools<span class="pl-pds">"</span></span>)
-library(<span class="pl-smi">devtools</span>)
-install_github(<span class="pl-v">repo</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>algoquant/rutils<span class="pl-pds">"</span></span>)
+<span class="pl-e">devtools</span><span class="pl-k">::</span>install_github(<span class="pl-v">repo</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>algoquant/rutils<span class="pl-pds">"</span></span>)
 library(<span class="pl-smi">rutils</span>)</pre></div>
+
+<p><br></p>
+
+<p>Install package <em>rutils</em> from source on local drive:  </p>
+
+<div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-v">pkgs</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>C:/Develop/R/rutils<span class="pl-pds">"</span></span>, <span class="pl-v">repos</span><span class="pl-k">=</span><span class="pl-c1">NULL</span>, <span class="pl-v">type</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>source<span class="pl-pds">"</span></span>)
+<span class="pl-c"># Install package from source on local drive using R CMD</span>
+<span class="pl-smi">R</span> <span class="pl-smi">CMD</span> <span class="pl-smi">INSTALL</span> <span class="pl-smi">C</span><span class="pl-k">:</span>\<span class="pl-smi">Develop</span>\<span class="pl-smi">R</span>\<span class="pl-smi">rutils</span>
+library(<span class="pl-smi">rutils</span>)</pre></div>
+
+<p><br></p>
+
+<p>Build reference manual for package <em>rutils</em> from <em>.Rd</em> files:  </p>
+
+<div class="highlight highlight-source-r"><pre>system(<span class="pl-s"><span class="pl-pds">"</span>R CMD Rd2pdf C:/Develop/R/rutils<span class="pl-pds">"</span></span>)
+<span class="pl-smi">R</span> <span class="pl-smi">CMD</span> <span class="pl-smi">Rd2pdf</span> <span class="pl-smi">C</span><span class="pl-k">:</span>\<span class="pl-smi">Develop</span>\<span class="pl-smi">R</span>\<span class="pl-smi">rutils</span></pre></div>
+
+<p><br></p>
 
 <h1></h1>
 
@@ -74,8 +101,7 @@ library(<span class="pl-smi">rutils</span>)</pre></div>
 
 <p>The <em>rutils</em> package contains a dataset of daily <em>OHLC</em> time series in <em>xts</em> format, for a portfolio of stock symbols.  The time series are contained in an environment called <em>env_etf</em>.  The data is set up for lazy loading, so it doesn't require calling <code>data(etf_data)</code> to load it before being able to call it.  </p>
 
-<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">rutils</span>)
-<span class="pl-c"># get first six rows of VTI prices</span>
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># get first six rows of OHLC prices</span>
 head(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
 <span class="pl-c"># plot</span>
 chart_Series(<span class="pl-v">x</span><span class="pl-k">=</span><span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2009-11<span class="pl-pds">"</span></span>])</pre></div>
@@ -87,23 +113,18 @@ chart_Series(<span class="pl-v">x</span><span class="pl-k">=</span><span class="
 
 <p>Extract the name of an <em>OHLC</em> time series from its first column name:  </p>
 
-<div class="highlight highlight-source-r"><pre>suppressMessages(suppressWarnings(library(<span class="pl-smi">rutils</span>)))
-<span class="pl-c"># show portfolio symbols</span>
-<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">sym_bols</span>
-<span class="pl-c"># get name for VTI</span>
-na_me(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
-<span class="pl-c"># get first six rows of VTI prices</span>
-head(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)
-<span class="pl-c"># get first six rows of price_s</span>
-<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">price_s</span>[<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">6</span>, <span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>]
-<span class="pl-c"># get first six rows of re_turns</span>
-<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">re_turns</span>[<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">6</span>, <span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>]</pre></div>
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># get name for VTI</span>
+na_me(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>)</pre></div>
+
+<p><br></p>
 
 <p>Calculate a vector of equally spaced end points for a time
 series:  </p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-c"># calculate end points with initial stub interval</span>
 end_points(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>, <span class="pl-v">inter_val</span><span class="pl-k">=</span><span class="pl-c1">7</span>, <span class="pl-v">off_set</span><span class="pl-k">=</span><span class="pl-c1">4</span>)</pre></div>
+
+<p><br></p>
 
 <p>Extract close prices from an <em>OHLC</em> time series:  </p>
 
@@ -112,12 +133,16 @@ clo_se(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class
 <span class="pl-c"># get volumes for VTI</span>
 clo_se(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>, <span class="pl-v">which_col</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>vol<span class="pl-pds">"</span></span>)</pre></div>
 
-<p>Apply a lag to a vector or matrix:  </p>
+<p><br></p>
+
+<p>Apply a <em>lag</em> to a vector or matrix:  </p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-c"># lag vector by 2 periods</span>
 lag_it(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>, <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-c1">2</span>)
 <span class="pl-c"># lag matrix by negative 2 periods</span>
 lag_it(<span class="pl-k">matrix</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>, <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">2</span>), <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-k">-</span><span class="pl-c1">2</span>)</pre></div>
+
+<p><br></p>
 
 <p>Calculate the row differences of a vector or matrix:  </p>
 
@@ -126,12 +151,16 @@ diff_it(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c
 <span class="pl-c"># diff matrix by negative 2 periods</span>
 diff_it(<span class="pl-k">matrix</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">10</span>, <span class="pl-v">ncol</span><span class="pl-k">=</span><span class="pl-c1">2</span>), <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-k">-</span><span class="pl-c1">2</span>)</pre></div>
 
+<p><br></p>
+
 <p>Calculate the time differences of an <em>xts</em> time series and pad with zeros:  </p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-c"># calculate time differences over lag by 10 periods</span>
 <span class="pl-e">rutils</span><span class="pl-k">::</span>diff_xts(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>, <span class="pl-v">lag</span><span class="pl-k">=</span><span class="pl-c1">10</span>)</pre></div>
 
-<p>Recursively rbind a list of objects:  </p>
+<p><br></p>
+
+<p>Recursively <em>rbind</em> a list of objects:  </p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-c"># create xts time series</span>
 <span class="pl-smi">x_ts</span> <span class="pl-k">&lt;-</span> xts(<span class="pl-v">x</span><span class="pl-k">=</span>rnorm(<span class="pl-c1">1000</span>), <span class="pl-v">order.by</span><span class="pl-k">=</span>(Sys.time()<span class="pl-k">-</span><span class="pl-c1">3600</span><span class="pl-k">*</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">1000</span>)))
@@ -140,7 +169,9 @@ diff_it(<span class="pl-k">matrix</span>(<span class="pl-c1">1</span><span class
 <span class="pl-c"># rbind the list back into a time series and compare with the original</span>
 identical(<span class="pl-smi">x_ts</span>, do_call_rbind(<span class="pl-smi">list_xts</span>))</pre></div>
 
-<p>Recursively apply a function to a list of objects:  </p>
+<p><br></p>
+
+<p>Recursively <em>apply</em> a function to a list of objects:  </p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-c"># create xts time series</span>
 <span class="pl-smi">x_ts</span> <span class="pl-k">&lt;-</span> xts(<span class="pl-v">x</span><span class="pl-k">=</span>rnorm(<span class="pl-c1">1000</span>), <span class="pl-v">order.by</span><span class="pl-k">=</span>(Sys.time()<span class="pl-k">-</span><span class="pl-c1">3600</span><span class="pl-k">*</span>(<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">1000</span>)))
@@ -149,7 +180,9 @@ identical(<span class="pl-smi">x_ts</span>, do_call_rbind(<span class="pl-smi">l
 <span class="pl-c"># rbind the list back into a time series and compare with the original</span>
 identical(<span class="pl-smi">x_ts</span>, do_call(<span class="pl-smi">rbind</span>, <span class="pl-smi">list_xts</span>))</pre></div>
 
-<p>Apply a function to a list of objects, merge the outputs into a single object, and assign the object to the output environment:  </p>
+<p><br></p>
+
+<p>Apply a function to a list of objects, merge the outputs into a single object, and <em>assign</em> the object to the output environment:  </p>
 
 <div class="highlight highlight-source-r"><pre>do_call_assign(
    <span class="pl-v">func_tion</span><span class="pl-k">=</span><span class="pl-smi">clo_se</span>,
@@ -157,10 +190,11 @@ identical(<span class="pl-smi">x_ts</span>, do_call(<span class="pl-smi">rbind</
    <span class="pl-v">out_put</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>price_s<span class="pl-pds">"</span></span>,
    <span class="pl-v">env_in</span><span class="pl-k">=</span><span class="pl-smi">env_etf</span>, <span class="pl-v">env_out</span><span class="pl-k">=</span><span class="pl-smi">new_env</span>)</pre></div>
 
+<p><br></p>
+
 <p>Plot an <em>xts</em> time series with custom y-axis range and with vertical background shading:  </p>
 
-<div class="highlight highlight-source-r"><pre>suppressMessages(suppressWarnings(library(<span class="pl-smi">rutils</span>)))
-chart_xts(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>],
+<div class="highlight highlight-source-r"><pre>chart_xts(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>],
 <span class="pl-v">name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>VTI in Nov 2015<span class="pl-pds">"</span></span>, <span class="pl-v">ylim</span><span class="pl-k">=</span>c(<span class="pl-c1">102</span>, <span class="pl-c1">108</span>),
 <span class="pl-v">in_dex</span><span class="pl-k">=</span>index(<span class="pl-smi">env_etf</span><span class="pl-k">$</span><span class="pl-smi">VTI</span>[<span class="pl-s"><span class="pl-pds">"</span>2015-11<span class="pl-pds">"</span></span>]) <span class="pl-k">&gt;</span> as.Date(<span class="pl-s"><span class="pl-pds">"</span>2015-11-18<span class="pl-pds">"</span></span>))</pre></div>
         </section>
