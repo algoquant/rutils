@@ -184,7 +184,7 @@ diff_it <- function(in_put, lag=1) {
 #'
 #' @export
 #' @param x_ts an \code{xts} time series.
-#' @param k integer equal to the number of time periods of lag.
+#' @param k integer equal to the number of time periods of lag. (default is 1)
 #' @param ... additional arguments to function \code{xts::lag_xts()}.
 #' @return \code{xts} time series with the same dimensions and the same time
 #'   index as the input \code{x_ts} time series.
@@ -268,19 +268,19 @@ diff_xts <- function(x_ts, lag=1, ...) {
 
 diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
   if (re_duce) {
-    cl_ose <- xts::diff.xts(Cl(oh_lc), lag=1, ...)
-    cl_ose[1] <- Cl(oh_lc)[1]
-    op_en <- Op(oh_lc) - Cl(oh_lc)
-    hi_gh <- Hi(oh_lc) - Cl(oh_lc)
-    lo_w <- Lo(oh_lc) - Cl(oh_lc)
-    cbind(op_en, hi_gh, lo_w, cl_ose, Vo(oh_lc))
+    cl_ose <- xts::diff.xts(oh_lc[, 4], lag=1, ...)
+    cl_ose[1] <- oh_lc[, 4][1]
+    op_en <- oh_lc[, 1] - oh_lc[, 4]
+    hi_gh <- oh_lc[, 2] - oh_lc[, 4]
+    lo_w <- oh_lc[, 3] - oh_lc[, 4]
+    cbind(op_en, hi_gh, lo_w, cl_ose, oh_lc[, 5])
   }
   else {
-    cl_ose <- cumsum(Cl(oh_lc))
-    op_en <- Op(oh_lc) + cl_ose
-    hi_gh <- Hi(oh_lc) + cl_ose
-    lo_w <- Lo(oh_lc) + cl_ose
-    cbind(op_en, hi_gh, lo_w, cl_ose, Vo(oh_lc))
+    cl_ose <- cumsum(oh_lc[, 4])
+    op_en <- oh_lc[, 1] + cl_ose
+    hi_gh <- oh_lc[, 2] + cl_ose
+    lo_w <- oh_lc[, 3] + cl_ose
+    cbind(op_en, hi_gh, lo_w, cl_ose, oh_lc[, 5])
   }
 }  # end diff_ohlc
 
@@ -455,8 +455,8 @@ do_call <- function(func_tion, li_st, ...) {
 #'   (\code{vector}, \code{xts} time series, etc.)
 #' @param sym_bols vector of strings with names of input objects.
 #' @param out_put string with name of output object.
-#' @param env_in environment containing \code{sym_bols}.
-#' @param env_out environment for creating \code{out_put}.
+#' @param env_in environment containing the input \code{sym_bols}.
+#' @param env_out environment for creating the \code{out_put}.
 #' @param ... additional arguments to function \code{func_tion()}.
 #' @return single object (\code{matrix}, \code{xts} time series, etc.)
 #' @details Performs an lapply loop over \code{sym_bols}, applies the function
