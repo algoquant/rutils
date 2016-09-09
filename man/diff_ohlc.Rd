@@ -16,7 +16,7 @@ standard form? (default is \code{TRUE})}
 \item{...}{additional arguments to function \code{xts::diff.xts()}.}
 }
 \value{
-\code{OHLC} time series with five columns for the \code{Open},
+An \code{OHLC} time series with five columns for the \code{Open},
   \code{High}, \code{Low}, \code{Close} prices, and the \code{Volume}, and
   with the same time index as the input series.
 }

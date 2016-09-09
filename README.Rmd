@@ -102,12 +102,12 @@ end_points(env_etf$VTI, inter_val=7, off_set=4)
 <br>
 
 
-Extract close prices from an *OHLC* time series:  
+Extract columns of prices from an *OHLC* time series:  
 ```{r eval=FALSE}
 # get close prices for VTI
-clo_se(env_etf$VTI)
+ex_tract(env_etf$VTI)
 # get volumes for VTI
-clo_se(env_etf$VTI, which_col="vol")
+ex_tract(env_etf$VTI, col_name="vol")
 ```
 <br>
 

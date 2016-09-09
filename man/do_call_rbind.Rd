@@ -12,7 +12,7 @@ do_call_rbind(li_st)
 \code{data frames}, or \code{time series}.}
 }
 \value{
-single \code{vector}, \code{matrix}, \code{data frame}, or
+A single \code{vector}, \code{matrix}, \code{data frame}, or
   \code{time series}.
 }
 \description{

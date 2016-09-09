@@ -12,7 +12,7 @@ lag_it(in_put, lag = 1)
 \item{lag}{integer equal to the number of periods of lag.}
 }
 \value{
-vector or matrix with the same dimensions as the input object.
+A vector or matrix with the same dimensions as the input object.
 }
 \description{
 Apply a lag to a \code{numeric} vector or matrix.

@@ -4,17 +4,17 @@
 #  install_github(repo="algoquant/rutils")
 #  library(rutils)
 
-## ----echo=-1, eval=FALSE-------------------------------------------------
-#  library(rutils)
-#  # get first six rows of VTI prices
-#  head(env_etf$VTI)
-#  # plot
-#  chart_Series(x=env_etf$VTI["2009-11"])
+## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
+library(rutils)
+# show list of ETF time series in env_etf
+env_etf$sym_bols
+# get first six rows of VTI prices
+head(env_etf$VTI)
+# plot
+chart_Series(x=env_etf$VTI["2009-11"])
 
 ## ----echo=-1, eval=TRUE--------------------------------------------------
 suppressMessages(suppressWarnings(library(rutils)))
-# show portfolio symbols
-env_etf$sym_bols
 # get name for VTI
 na_me(env_etf$VTI)
 # get first six rows of VTI prices
@@ -30,9 +30,9 @@ env_etf$re_turns[1:6, 1:4]
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # get close prices for VTI
-#  clo_se(env_etf$VTI)
+#  ex_tract(env_etf$VTI)
 #  # get volumes for VTI
-#  clo_se(env_etf$VTI, which_col="vol")
+#  ex_tract(env_etf$VTI, col_name="vol")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # lag vector by 2 periods
@@ -68,7 +68,7 @@ env_etf$re_turns[1:6, 1:4]
 
 ## ----eval=FALSE----------------------------------------------------------
 #  do_call_assign(
-#     func_tion=clo_se,
+#     func_tion=ex_tract,
 #     sym_bols=env_etf$sym_bols,
 #     out_put="price_s",
 #     env_in=env_etf, env_out=new_env)

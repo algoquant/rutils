@@ -14,7 +14,7 @@ diff_xts(x_ts, lag = 1, ...)
 \item{...}{additional arguments to function \code{xts::diff.xts()}.}
 }
 \value{
-\code{xts} time series with the same dimensions and the same time
+An \code{xts} time series with the same dimensions and the same time
   index as the input series.
 }
 \description{

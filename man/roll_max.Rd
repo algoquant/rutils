@@ -14,7 +14,8 @@ roll_max(x_ts, win_dow)
 points for calculating the rolling sum.}
 }
 \value{
-\code{xts} time series with the same dimensions as the input series.
+An \code{xts} time series with the same dimensions as the input
+  series.
 }
 \description{
 Performs the same operation as function \code{runMax()} from package

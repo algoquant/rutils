@@ -12,7 +12,7 @@ diff_it(in_put, lag = 1)
 \item{lag}{integer equal to the number of periods of lag.}
 }
 \value{
-vector or matrix with the same dimensions as the input object.
+A vector or matrix with the same dimensions as the input object.
 }
 \description{
 Calculate the row differences of a \code{numeric} vector or matrix.

@@ -46,9 +46,11 @@ library(rutils)
 
 ### Data
 
-The *rutils* package contains a dataset of daily *OHLC* time series in *xts* format, for a portfolio of stock symbols.  The time series are contained in an environment called *env_etf*.  The data is set up for lazy loading, so it doesn't require calling `data(etf_data)` to load it before being able to call it.  
-```{r echo=-1, eval=FALSE}
+The *rutils* package contains a dataset of daily *OHLC* time series in *xts* format, for a portfolio of stock (ETF) symbols.  The time series are contained in an environment called *env_etf*.  The data is set up for lazy loading, so it doesn't require calling `data(etf_data)` to load it before being able to call it.  
+```{r echo=-1, eval=TRUE, fig.width=6, fig.height=4}
 library(rutils)
+# show list of ETF time series in env_etf
+env_etf$sym_bols
 # get first six rows of VTI prices
 head(env_etf$VTI)
 # plot
@@ -63,8 +65,6 @@ chart_Series(x=env_etf$VTI["2009-11"])
 Extract the name of an *OHLC* time series from its first column name:  
 ```{r echo=-1, eval=TRUE}
 suppressMessages(suppressWarnings(library(rutils)))
-# show portfolio symbols
-env_etf$sym_bols
 # get name for VTI
 na_me(env_etf$VTI)
 # get first six rows of VTI prices
@@ -84,12 +84,12 @@ end_points(env_etf$VTI, inter_val=7, off_set=4)
 ```
 
 
-Extract close prices from an *OHLC* time series:  
+Extract columns of prices from an *OHLC* time series:  
 ```{r eval=FALSE}
 # get close prices for VTI
-clo_se(env_etf$VTI)
+ex_tract(env_etf$VTI)
 # get volumes for VTI
-clo_se(env_etf$VTI, which_col="vol")
+ex_tract(env_etf$VTI, col_name="vol")
 ```
 
 
@@ -143,7 +143,7 @@ identical(x_ts, do_call(rbind, list_xts))
 Apply a function to a list of objects, merge the outputs into a single object, and assign the object to the output environment:  
 ```{r eval=FALSE}
 do_call_assign(
-   func_tion=clo_se,
+   func_tion=ex_tract,
    sym_bols=env_etf$sym_bols,
    out_put="price_s",
    env_in=env_etf, env_out=new_env)

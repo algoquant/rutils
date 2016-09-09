@@ -3,7 +3,7 @@
 #' @export
 #' @param x_ts \code{OHLC} time series.
 #' @param field the integer index of the field to be extracted.
-#' @return \code{string} with name of time series.
+#' @return A \code{string} with the name of time series.
 #' @details Extracts the symbol name (ticker) from the name of the first column
 #'   of an \code{OHLC} time series.  The column name is assumed to be in the
 #'   format "symbol.Open". It can also extract the field name after the "."
@@ -25,7 +25,7 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 #' @param inter_val the number of data points per interval.
 #' @param off_set the number of data points in the first interval (stub
 #'   interval).
-#' @return \code{integer} vector of equally spaced end points.
+#' @return An \code{integer} vector of equally spaced end points.
 #' @details The end points divide the time series into equally spaced intervals.
 #'   The off_set argument shifts the end points forward and creates an initial
 #'   stub interval.
@@ -54,30 +54,37 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
 
 
 
-#' Extract close prices from an \code{OHLC} time series.
+#' Extract columns of prices from an \code{OHLC} time series.
 #'
 #' @export
-#' @param x_ts an \code{OHLC} time series.
-#' @param which_col partial name of the column to be be extracted.
-#' @return single column \code{OHLC} time series in \code{xts} format.
-#' @details Extracts close prices from an \code{OHLC} time series.  Assigns a
-#'   column name corresponding to its symbol (ticker) and the column name, for
-#'   example "VTI.Close".  The which_col argument is partially matched, for
-#'   example "vol" is matched to "Volume".
+#' @param oh_lc an \code{OHLC} time series.
+#' @param col_name string with the field name of the column to be be extracted.
+#'   (default is "Close")
+#' @return A single column \code{OHLC} time series in \code{xts} format.
+#' @details Extracts columns of prices from an \code{OHLC} time series by
+#'   \code{grepping} column names for the \code{col_name} string. The
+#'   \code{OHLC} column names are assumed to be in the format
+#'   \code{"symbol.field_name"}, for example \code{"VTI.Close"}. Performs a
+#'   similar operation to the extractor functions \code{Op()}, \code{Hi()},
+#'   \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
+#'   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
+#'    But \code{ex_tract()} is able to handle symbols like \code{"LOW"}, which
+#'   the function \code{Lo()} can't handle. The col_name argument is partially
+#'   matched, for example "vol" is matched to "Volume".
 #' @examples
 #' # get close prices for VTI
-#' clo_se(env_etf$VTI)
+#' ex_tract(env_etf$VTI)
 #' # get volumes for VTI
-#' clo_se(env_etf$VTI, which_col="vol")
+#' ex_tract(env_etf$VTI, col_name="vol")
 
-clo_se <- function(x_ts, which_col="Close") {
-  in_dex <- grep(which_col, colnames(x_ts), ignore.case=TRUE)
+ex_tract <- function(oh_lc, col_name="Close") {
+  in_dex <- grep(paste0(".", col_name), colnames(oh_lc), ignore.case=TRUE)
   if (length(in_dex)>0)
-#    out_put <- xts::.subset_xts(x_ts, 1:NROW(x_ts), in_dex:in_dex)
-    x_ts[, in_dex]
+#    out_put <- xts::.subset_xts(oh_lc, 1:NROW(oh_lc), in_dex:in_dex)
+    oh_lc[, in_dex]
   else
-    stop(paste0("No column name containing \"", which_col, "\""))
-}  # end clo_se
+    stop(paste0("No column name containing \"", col_name, "\""))
+}  # end ex_tract
 
 
 
@@ -87,7 +94,7 @@ clo_se <- function(x_ts, which_col="Close") {
 #' @export
 #' @param in_put a \code{numeric} vector or matrix.
 #' @param lag integer equal to the number of periods of lag.
-#' @return vector or matrix with the same dimensions as the input object.
+#' @return A vector or matrix with the same dimensions as the input object.
 #' @details Applies a lag to a vector or matrix, by shifting its values by a
 #'   certain number of rows, equal to the integer \code{lag}, and pads the
 #'   leading or trailing stub periods with \code{zeros}. Positive \code{lag}
@@ -136,7 +143,7 @@ lag_it <- function(in_put, lag=1) {
 #' @export
 #' @param in_put a \code{numeric} vector or matrix.
 #' @param lag integer equal to the number of periods of lag.
-#' @return vector or matrix with the same dimensions as the input object.
+#' @return A vector or matrix with the same dimensions as the input object.
 #' @details Calculates the row differences between rows that are \code{lag} rows
 #'   apart. The leading or trailing stub periods are padded with \code{zeros}.
 #'   Positive \code{lag} means that the difference is calculated as the current
@@ -186,7 +193,7 @@ diff_it <- function(in_put, lag=1) {
 #' @param x_ts an \code{xts} time series.
 #' @param k integer equal to the number of time periods of lag. (default is 1)
 #' @param ... additional arguments to function \code{xts::lag_xts()}.
-#' @return \code{xts} time series with the same dimensions and the same time
+#' @return An \code{xts} time series with the same dimensions and the same time
 #'   index as the input \code{x_ts} time series.
 #' @details Applies a time lag to an \code{xts} time series and pads with the
 #'   first and last values instead of \code{NAs}.  Positive lag \code{k} means
@@ -220,7 +227,7 @@ lag_xts <- function(x_ts, k=1, ...) {
 #' @param x_ts an \code{xts} time series.
 #' @param lag integer equal to the number of time periods of lag.
 #' @param ... additional arguments to function \code{xts::diff.xts()}.
-#' @return \code{xts} time series with the same dimensions and the same time
+#' @return An \code{xts} time series with the same dimensions and the same time
 #'   index as the input series.
 #' @details Calculates the time differences of an \code{xts} time series and
 #'   pads with \code{zeros} instead of \code{NAs}.  Positive \code{lag} means
@@ -250,7 +257,7 @@ diff_xts <- function(x_ts, lag=1, ...) {
 #' @param re_duce \code{Boolean} should the reduced form be calculated or the
 #'   standard form? (default is \code{TRUE})
 #' @param ... additional arguments to function \code{xts::diff.xts()}.
-#' @return \code{OHLC} time series with five columns for the \code{Open},
+#' @return An \code{OHLC} time series with five columns for the \code{Open},
 #'   \code{High}, \code{Low}, \code{Close} prices, and the \code{Volume}, and
 #'   with the same time index as the input series.
 #' @details The reduced form of an \code{OHLC} time series is obtained by
@@ -298,7 +305,8 @@ diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
 #' @param x_ts an \code{xts} time series containing one or more columns of data.
 #' @param win_dow the size of the lookback window, equal to the number of data
 #'   points for calculating the rolling sum.
-#' @return \code{xts} time series with the same dimensions as the input series.
+#' @return An \code{xts} time series with the same dimensions as the input
+#'   series.
 #' @details For example, if win_dow=3, then the rolling sum at any point is
 #'   equal to the sum of \code{x_ts} values for that point plus two preceding
 #'   points.
@@ -330,7 +338,8 @@ roll_sum <- function(x_ts, win_dow) {
 #' @param x_ts an \code{xts} time series containing one or more columns of data.
 #' @param win_dow the size of the lookback window, equal to the number of data
 #'   points for calculating the rolling sum.
-#' @return \code{xts} time series with the same dimensions as the input series.
+#' @return An \code{xts} time series with the same dimensions as the input
+#'   series.
 #' @details For example, if win_dow=3, then the rolling sum at any point is
 #'   equal to the sum of \code{x_ts} values for that point plus two preceding
 #'   points.
@@ -362,7 +371,7 @@ roll_max <- function(x_ts, win_dow) {
 #' @export
 #' @param li_st list of objects, such as \code{vectors}, \code{matrices},
 #'   \code{data frames}, or \code{time series}.
-#' @return single \code{vector}, \code{matrix}, \code{data frame}, or
+#' @return A single \code{vector}, \code{matrix}, \code{data frame}, or
 #'   \code{time series}.
 #' @details Performs lapply loop, each time binding neighboring elements and
 #'   dividing the length of \code{li_st} by half. The result of performing
@@ -410,7 +419,7 @@ do_call_rbind <- function(li_st) {
 #' @param li_st list of objects, such as \code{vectors}, \code{matrices},
 #'   \code{data frames}, or \code{time series}.
 #' @param ... additional arguments to function \code{func_tion()}.
-#' @return single \code{vector}, \code{matrix}, \code{data frame}, or
+#' @return A single \code{vector}, \code{matrix}, \code{data frame}, or
 #'   \code{time series}.
 #' @details Performs lapply loop, each time binding neighboring elements and
 #'   dividing the length of \code{li_st} by half. The result of performing
@@ -458,7 +467,7 @@ do_call <- function(func_tion, li_st, ...) {
 #' @param env_in environment containing the input \code{sym_bols}.
 #' @param env_out environment for creating the \code{out_put}.
 #' @param ... additional arguments to function \code{func_tion()}.
-#' @return single object (\code{matrix}, \code{xts} time series, etc.)
+#' @return A single object (\code{matrix}, \code{xts} time series, etc.)
 #' @details Performs an lapply loop over \code{sym_bols}, applies the function
 #'   \code{func_tion()}, merges the outputs into a single object, and creates
 #'   the object in the environment \code{env_out}.  The output object is created
@@ -466,7 +475,7 @@ do_call <- function(func_tion, li_st, ...) {
 #' @examples
 #' new_env <- new.env()
 #' do_call_assign(
-#'    func_tion=clo_se,
+#'    func_tion=ex_tract,
 #'    sym_bols=env_etf$sym_bols,
 #'    out_put="price_s",
 #'    env_in=env_etf, env_out=new_env)
@@ -500,7 +509,7 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #'   the shading areas, with TRUE indicating "lightgreen" shading, and FALSE
 #'   indicating "lightgrey" shading.
 #' @param ... additional arguments to function \code{chart_Series()}.
-#' @return chart object \code{chob} returned invisibly.
+#' @return A chart object \code{chob} returned invisibly.
 #' @details Extracts the chart object and modifies its ylim parameter using
 #'   accessor and setter functions.
 #'   Also adds background shading using function \code{add_TA()}. The

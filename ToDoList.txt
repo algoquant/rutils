@@ -23,6 +23,8 @@ http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-envir
 
 - [ ] create locally a package description in HTML format and upload it to gh-pages branch
 
+- [x] rename function clo_se() to ex_tract()
+
 - [x] replace quantmod extractor functions Op(), Hi(), Lo(), Cl(), Vo() with direct subsetting: oh_lc[, 3] instead of Lo(oh_lc)
 
 - [x] create function diff_OHLC()

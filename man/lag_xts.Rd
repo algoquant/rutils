@@ -14,7 +14,7 @@ lag_xts(x_ts, k = 1, ...)
 \item{...}{additional arguments to function \code{xts::lag_xts()}.}
 }
 \value{
-\code{xts} time series with the same dimensions and the same time
+An \code{xts} time series with the same dimensions and the same time
   index as the input \code{x_ts} time series.
 }
 \description{

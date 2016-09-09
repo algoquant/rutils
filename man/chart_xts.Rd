@@ -20,7 +20,7 @@ indicating "lightgrey" shading.}
 \item{...}{additional arguments to function \code{chart_Series()}.}
 }
 \value{
-chart object \code{chob} returned invisibly.
+A chart object \code{chob} returned invisibly.
 }
 \description{
 A wrapper for function \code{chart_Series()} from package

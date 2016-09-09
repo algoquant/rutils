@@ -12,7 +12,7 @@ na_me(x_ts, field = 1)
 \item{field}{the integer index of the field to be extracted.}
 }
 \value{
-\code{string} with name of time series.
+A \code{string} with the name of time series.
 }
 \description{
 Extract the name of an \code{OHLC} time series from its first column name.
