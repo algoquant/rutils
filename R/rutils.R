@@ -54,6 +54,49 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
 
 
 
+#' Aggregate an \code{OHLC} time series to a lower periodicity.
+#'
+#' Given an \code{OHLC} time series at high periodicity (say seconds),
+#' calculates the \code{OHLC} prices at lower periodicity (say minutes).
+#'
+#' @export
+#' @param oh_lc an \code{OHLC} time series of prices in \code{xts} format.
+#' @param period aggregation interval ("seconds", "minutes", "hours", "days",
+#'   "weeks", "months", "quarters", and "years").
+#' @param k number of periods to aggregate over (for example if period="minutes"
+#'   and k=2, then aggregate over two minute intervals.)
+#' @param end_points an integer vector of end points.
+#' @return A \code{OHLC} time series of prices in \code{xts} format, with a
+#'   lower periodicity defined by the end_points.
+#' @details The function \code{to_period()} performs a similar aggregation as
+#'   function \code{to.period()} from package
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but has
+#'   the flexibility to aggregate to a user-specified vector of end points. The
+#'   function \code{to_period()} simply calls the compiled function
+#'   \code{toPeriod()} (from package
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}), to
+#'   perform the actual aggregations.  If \code{end_points} are passed in
+#'   explicitly, then the \code{period} argument is ignored.
+#' @examples
+#' # define end points at 10-minute intervals (SPY is minutely bars)
+#' end_points <- rutils::end_points(SPY["2009"], inter_val=10)
+#' # aggregate over 10-minute end_points:
+#' to_period(oh_lc=SPY["2009"], end_points=end_points)
+#' # aggregate over days:
+#' to_period(oh_lc=SPY["2009"], period="days")
+#' # equivalent to:
+#' to.period(x=SPY["2009"], period="days", name=rutils::na_me(SPY))
+
+to_period <- function(oh_lc,
+                      period="minutes", k=1,
+                      end_points=xts::endpoints(oh_lc, period, k)) {
+  .Call("toPeriod", oh_lc, as.integer(end_points), TRUE, NCOL(oh_lc),
+        FALSE, FALSE, colnames(oh_lc), PACKAGE="xts")
+}  # end to_period
+
+
+
+
 #' Extract columns of prices from an \code{OHLC} time series.
 #'
 #' @export
@@ -85,6 +128,29 @@ ex_tract <- function(oh_lc, col_name="Close") {
   else
     stop(paste0("No column name containing \"", col_name, "\""))
 }  # end ex_tract
+
+
+
+
+#' Adjust the first four columns of \code{OHLC} data using the "adjusted" price
+#' column.
+#'
+#' @export
+#' @param oh_lc an \code{OHLC} time series of prices in \code{xts} format.
+#' @return An \code{OHLC} time series with the same dimensions as the input
+#'   series.
+#' @details Adjusts the first four \code{OHLC} price columns by multiplying them
+#'   by the ratio of the "adjusted" (sixth) price column, divided by the "close"
+#'   (fourth) price column.
+#' @examples
+#' # adjust VTI prices
+#' VTI <- adjust_ohlc(env_etf$VTI)
+
+adjust_ohlc <- function(oh_lc) {
+  # adjust OHLC prices
+  oh_lc[, 1:4] <- as.vector(oh_lc[, 6] / oh_lc[, 4]) * coredata(oh_lc[, 1:4])
+  oh_lc
+}  # end adjust_ohlc
 
 
 
@@ -542,5 +608,59 @@ chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
   plot(ch_ob)
   invisible(ch_ob)
 }  # end chart_xts
+
+
+
+
+#' Download time series data from an external source (by default \code{OHLC}
+#' prices from \code{YAHOO}), and save it into an environment.
+#'
+#' @export
+#' @param sym_bols vector of strings representing instrument symbols (tickers).
+#' @param env_out environment for saving the data.
+#' @param start_date start date of time series data.  (default is "2007-01-01")
+#' @param end_date end date of time series data.  (default is \code{Sys.Date()})
+#' @return A vector of \code{sym_bols} returned invisibly.
+#' @details The function \code{get_symbols} downloads \code{OHLC} prices from
+#'   \code{YAHOO} into an environment, adjusts the prices, and saves them back
+#'   to that environment. The function \code{get_symbols()} calls the function
+#'   \code{getSymbols.yahoo()} to download the \code{OHLC} prices, and performs
+#'   a similar operation to the function \code{getSymbols()} from package
+#'   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
+#'   But \code{get_symbols()} is faster (because it's more specialized), and is
+#'   able to handle symbols like \code{"LOW"}, which \code{getSymbols()} can't
+#'   handle because the function \code{Lo()} can't handle them. The
+#'   \code{start_date} and \code{end_date} must be either of class \code{Date},
+#'   or a string in the format "YYYY-mm-dd".
+#'   \code{get_symbols()} returns invisibly the vector of \code{sym_bols}.
+#' @examples
+#' \dontrun{
+#' new_env <- new.env()
+#' get_symbols(sym_bols=c("MSFT", "XOM"),
+#'             env_out=new_env,
+#'             start_date="2012-12-01",
+#'             end_date="2015-12-01")
+#' }
+
+get_symbols <- function(sym_bols,
+                        env_out,
+                        start_date="2007-01-01",
+                        end_date=Sys.Date()) {
+  # download prices from YAHOO
+  quantmod::getSymbols.yahoo(sym_bols,
+                             env=env_out,
+                             from=start_date,
+                             to=end_date)
+  # adjust the OHLC prices and save back to env_out
+  out_put <- lapply(sym_bols,
+                    function(sym_bol) {
+                      assign(sym_bol,
+                             value=adjust_ohlc(get(sym_bol, envir=env_out)),
+                             envir=env_out)
+                      sym_bol
+                    }
+  )  # end lapply
+  invisible(out_put)
+}  # end get_symbols
 
 

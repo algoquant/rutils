@@ -19,6 +19,7 @@ The *rutils* package contains functions for:
 + recursively binding a list of objects into time series, 
 + recursively applying a function to a list of objects, 
 + plotting time series with custom axis range and background shading. 
++ downloading time series data from external sources. 
 
 The *rutils* package also includes a dataset with *OHLC* time series data for a portfolio of symbols.  The data is contained in an environment called *env_etf*, which includes: 
 
@@ -61,6 +62,19 @@ chart_Series(x=env_etf$VTI["2009-11"])
 ========
 
 ### Examples
+
+Download time series data from an external source (by default *OHLC* prices from *YAHOO*), and save it into an environment.
+```{r echo=TRUE, eval=FALSE}
+library(rutils)
+# new environment for data
+env_etf <- new.env()
+# download data and copy it into environment
+get_symbols("XOM", env_out=env_etf, start_date="1990-01-01")
+# plot
+x11()
+chart_Series(x=env_etf$XOM["2016/"], TA="add_Vo()", name="XOM stock")
+```
+
 
 Extract the name of an *OHLC* time series from its first column name:  
 ```{r echo=-1, eval=TRUE}
@@ -114,7 +128,7 @@ diff_it(matrix(1:10, ncol=2), lag=-2)
 Calculate the time differences of an *xts* time series and pad with zeros:  
 ```{r eval=FALSE}
 # calculate time differences over lag by 10 periods
-rutils::diff_xts(env_etf$VTI, lag=10)
+diff_xts(env_etf$VTI, lag=10)
 ```
 
 

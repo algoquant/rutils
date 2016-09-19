@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jerzy Pawlowski (algoquant)" />
 
-<meta name="date" content="2016-09-09" />
+<meta name="date" content="2016-09-14" />
 
 <title>rutils Package for Simplifying Financial Data Management and Modeling</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">rutils Package for Simplifying Financial Data Management and Modeling</h1>
 <h4 class="author"><em>Jerzy Pawlowski (algoquant)</em></h4>
-<h4 class="date"><em>2016-09-09</em></h4>
+<h4 class="date"><em>2016-09-14</em></h4>
 
 
 
@@ -84,6 +84,7 @@ The <em>rutils</em> package contains functions for:</p>
 <li>recursively binding a list of objects into time series,</li>
 <li>recursively applying a function to a list of objects,</li>
 <li>plotting time series with custom axis range and background shading.</li>
+<li>downloading time series data from external sources.</li>
 </ul>
 <p>The <em>rutils</em> package also includes a dataset with <em>OHLC</em> time series data for a portfolio of symbols. The data is contained in an environment called <em>env_etf</em>, which includes:</p>
 <ul>
@@ -126,6 +127,15 @@ env_etf$sym_bols</code></pre></div>
 </div>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
+<p>Download time series data from an external source (by default <em>OHLC</em> prices from <em>YAHOO</em>), and save it into an environment.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rutils)
+<span class="co"># new environment for data</span>
+env_etf &lt;-<span class="st"> </span><span class="kw">new.env</span>()
+<span class="co"># download data and copy it into environment</span>
+<span class="kw">get_symbols</span>(<span class="st">&quot;XOM&quot;</span>, <span class="dt">env_out=</span>env_etf, <span class="dt">start_date=</span><span class="st">&quot;1990-01-01&quot;</span>)
+<span class="co"># plot</span>
+<span class="kw">x11</span>()
+<span class="kw">chart_Series</span>(<span class="dt">x=</span>env_etf$XOM[<span class="st">&quot;2016/&quot;</span>], <span class="dt">TA=</span><span class="st">&quot;add_Vo()&quot;</span>, <span class="dt">name=</span><span class="st">&quot;XOM stock&quot;</span>)</code></pre></div>
 <p>Extract the name of an <em>OHLC</em> time series from its first column name:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get name for VTI</span>
 <span class="kw">na_me</span>(env_etf$VTI)</code></pre></div>
@@ -177,7 +187,7 @@ env_etf$re_turns[<span class="dv">1</span>:<span class="dv">6</span>, <span clas
 <span class="kw">diff_it</span>(<span class="kw">matrix</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">ncol=</span><span class="dv">2</span>), <span class="dt">lag=</span>-<span class="dv">2</span>)</code></pre></div>
 <p>Calculate the time differences of an <em>xts</em> time series and pad with zeros:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate time differences over lag by 10 periods</span>
-rutils::<span class="kw">diff_xts</span>(env_etf$VTI, <span class="dt">lag=</span><span class="dv">10</span>)</code></pre></div>
+<span class="kw">diff_xts</span>(env_etf$VTI, <span class="dt">lag=</span><span class="dv">10</span>)</code></pre></div>
 <p>Recursively rbind a list of objects:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create xts time series</span>
 x_ts &lt;-<span class="st"> </span><span class="kw">xts</span>(<span class="dt">x=</span><span class="kw">rnorm</span>(<span class="dv">1000</span>), <span class="dt">order.by=</span>(<span class="kw">Sys.time</span>()-<span class="dv">3600</span>*(<span class="dv">1</span>:<span class="dv">1000</span>)))

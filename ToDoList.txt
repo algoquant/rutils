@@ -15,17 +15,23 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
+- [ ] create new roll functions using RcppRoll::rollit()  
+
+- [ ] convert roll_*() functions to RcppRoll  
+
 - [ ] add qmao functions: 
 gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment?rq=1
 
-- [ ] create locally a package description in HTML format and upload it to gh-pages branch
+- [ ] create locally a package description in HTML format and upload it to gh-pages branch  
 
-- [x] rename function clo_se() to ex_tract()
+- [x] move functions adjust_ohlc(), to_period() and get_symbols() from HighFreq to rutils  
 
-- [x] replace quantmod extractor functions Op(), Hi(), Lo(), Cl(), Vo() with direct subsetting: oh_lc[, 3] instead of Lo(oh_lc)
+- [x] rename function clo_se() to ex_tract()  
+
+- [x] replace quantmod extractor functions Op(), Hi(), Lo(), Cl(), Vo() with direct subsetting: oh_lc[, 3] instead of Lo(oh_lc)  
 
 - [x] create function diff_OHLC()
 returns reduced form of OHLC data using differences  
@@ -37,6 +43,8 @@ it's not any faster than TTR::runMax()
 - [x] introduce unit testing using testthat and devtools: create /tests directory
 
 - [x] move function roll_sum() from HighFreq to rutils
+
++ [x] create functionals do_call_assign() and do_call_rbind()  
 
 - [x] remotely create package description on gh-pages branch without YAML
 

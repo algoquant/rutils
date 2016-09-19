@@ -13,6 +13,16 @@ head(env_etf$VTI)
 # plot
 chart_Series(x=env_etf$VTI["2009-11"])
 
+## ----echo=TRUE, eval=FALSE-----------------------------------------------
+#  library(rutils)
+#  # new environment for data
+#  env_etf <- new.env()
+#  # download data and copy it into environment
+#  get_symbols("XOM", env_out=env_etf, start_date="1990-01-01")
+#  # plot
+#  x11()
+#  chart_Series(x=env_etf$XOM["2016/"], TA="add_Vo()", name="XOM stock")
+
 ## ----echo=-1, eval=TRUE--------------------------------------------------
 suppressMessages(suppressWarnings(library(rutils)))
 # get name for VTI
@@ -48,7 +58,7 @@ env_etf$re_turns[1:6, 1:4]
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # calculate time differences over lag by 10 periods
-#  rutils::diff_xts(env_etf$VTI, lag=10)
+#  diff_xts(env_etf$VTI, lag=10)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # create xts time series
