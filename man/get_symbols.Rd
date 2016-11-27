@@ -2,8 +2,8 @@
 % Please edit documentation in R/rutils.R
 \name{get_symbols}
 \alias{get_symbols}
-\title{Download time series data from an external source (by default \code{OHLC}
-prices from \code{YAHOO}), and save it into an environment.}
+\title{Download time series data from an external source (by default \emph{OHLC}
+prices from \emph{YAHOO}), and save it into an environment.}
 \usage{
 get_symbols(sym_bols, env_out, start_date = "2007-01-01",
   end_date = Sys.Date())
@@ -21,20 +21,20 @@ get_symbols(sym_bols, env_out, start_date = "2007-01-01",
 A vector of \code{sym_bols} returned invisibly.
 }
 \description{
-Download time series data from an external source (by default \code{OHLC}
-prices from \code{YAHOO}), and save it into an environment.
+Download time series data from an external source (by default \emph{OHLC}
+prices from \emph{YAHOO}), and save it into an environment.
 }
 \details{
-The function \code{get_symbols} downloads \code{OHLC} prices from
-  \code{YAHOO} into an environment, adjusts the prices, and saves them back
+The function \code{get_symbols()} downloads \emph{OHLC} prices from
+  \emph{YAHOO} into an environment, adjusts the prices, and saves them back
   to that environment. The function \code{get_symbols()} calls the function
-  \code{getSymbols.yahoo()} to download the \code{OHLC} prices, and performs
+  \code{getSymbols.yahoo()} to download the \emph{OHLC} prices, and performs
   a similar operation to the function \code{getSymbols()} from package
   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
   But \code{get_symbols()} is faster (because it's more specialized), and is
-  able to handle symbols like \code{"LOW"}, which \code{getSymbols()} can't
+  able to handle symbols like \emph{LOW}, which \code{getSymbols()} can't
   handle because the function \code{Lo()} can't handle them. The
-  \code{start_date} and \code{end_date} must be either of class \code{Date},
+  \code{start_date} and \code{end_date} must be either of class \emph{Date},
   or a string in the format "YYYY-mm-dd".
   \code{get_symbols()} returns invisibly the vector of \code{sym_bols}.
 }

@@ -2,13 +2,13 @@
 % Please edit documentation in R/rutils.R
 \name{to_period}
 \alias{to_period}
-\title{Aggregate an \code{OHLC} time series to a lower periodicity.}
+\title{Aggregate an \emph{OHLC} time series to a lower periodicity.}
 \usage{
 to_period(oh_lc, period = "minutes", k = 1,
   end_points = xts::endpoints(oh_lc, period, k))
 }
 \arguments{
-\item{oh_lc}{an \code{OHLC} time series of prices in \code{xts} format.}
+\item{oh_lc}{an \emph{OHLC} time series of prices in \emph{xts} format.}
 
 \item{period}{aggregation interval ("seconds", "minutes", "hours", "days",
 "weeks", "months", "quarters", and "years").}
@@ -19,12 +19,12 @@ and k=2, then aggregate over two minute intervals.)}
 \item{end_points}{an integer vector of end points.}
 }
 \value{
-A \code{OHLC} time series of prices in \code{xts} format, with a
+A \emph{OHLC} time series of prices in \emph{xts} format, with a
   lower periodicity defined by the end_points.
 }
 \description{
-Given an \code{OHLC} time series at high periodicity (say seconds),
-calculates the \code{OHLC} prices at lower periodicity (say minutes).
+Given an \emph{OHLC} time series at high periodicity (say seconds),
+calculates the \emph{OHLC} prices at lower periodicity (say minutes).
 }
 \details{
 The function \code{to_period()} performs a similar aggregation as
@@ -41,7 +41,7 @@ The function \code{to_period()} performs a similar aggregation as
 # define end points at 10-minute intervals (SPY is minutely bars)
 end_points <- rutils::end_points(SPY["2009"], inter_val=10)
 # aggregate over 10-minute end_points:
-to_period(x_ts=SPY["2009"], end_points=end_points)
+to_period(oh_lc=SPY["2009"], end_points=end_points)
 # aggregate over days:
 to_period(oh_lc=SPY["2009"], period="days")
 # equivalent to:

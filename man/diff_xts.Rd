@@ -2,32 +2,32 @@
 % Please edit documentation in R/rutils.R
 \name{diff_xts}
 \alias{diff_xts}
-\title{Calculate the time differences of an \code{xts} time series.}
+\title{Calculate the time differences of an \emph{xts} time series.}
 \usage{
 diff_xts(x_ts, lag = 1, ...)
 }
 \arguments{
-\item{x_ts}{an \code{xts} time series.}
+\item{x_ts}{an \emph{xts} time series.}
 
-\item{lag}{integer equal to the number of time periods of lag.}
+\item{lag}{integer equal to the number of time periods of lag. (default is 1)}
 
 \item{...}{additional arguments to function \code{xts::diff.xts()}.}
 }
 \value{
-An \code{xts} time series with the same dimensions and the same time
+An \emph{xts} time series with the same dimensions and the same time
   index as the input series.
 }
 \description{
-Calculate the time differences of an \code{xts} time series.
+Calculate the time differences of an \emph{xts} time series.
 }
 \details{
-Calculates the time differences of an \code{xts} time series and
-  pads with \code{zeros} instead of \code{NAs}.  Positive \code{lag} means
+Calculates the time differences of an \emph{xts} time series and
+  pads with \emph{zeros} instead of \emph{NAs}.  Positive \code{lag} means
   differences are calculated with values from \code{lag} periods in the past
   (vice versa negative \code{lag}).  The function \code{diff()} is just a
   wrapper for \code{diff.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
-  pads with \code{zeros} instead of \code{NAs}.
+  pads with \emph{zeros} instead of \emph{NAs}.
 }
 \examples{
 # calculate time differences over lag by 10 periods

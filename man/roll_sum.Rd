@@ -2,25 +2,24 @@
 % Please edit documentation in R/rutils.R
 \name{roll_sum}
 \alias{roll_sum}
-\title{Calculate the rolling sum of an \code{xts} time series over a sliding window
+\title{Calculate the rolling sum of an \emph{xts} time series over a sliding window
 (lookback period).}
 \usage{
 roll_sum(x_ts, win_dow)
 }
 \arguments{
-\item{x_ts}{an \code{xts} time series containing one or more columns of data.}
+\item{x_ts}{an \emph{xts} time series containing one or more columns of data.}
 
 \item{win_dow}{the size of the lookback window, equal to the number of data
 points for calculating the rolling sum.}
 }
 \value{
-An \code{xts} time series with the same dimensions as the input
+An \emph{xts} time series with the same dimensions as the input
   series.
 }
 \description{
-Performs the same operation as function \code{runSum()} from package
-\href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR},
-but using vectorized functions, so it's a little faster.
+Calculate the rolling sum of an \emph{xts} time series over a sliding window
+(lookback period).
 }
 \details{
 For example, if win_dow=3, then the rolling sum at any point is
@@ -28,6 +27,11 @@ For example, if win_dow=3, then the rolling sum at any point is
   points.
   The initial values of roll_sum() are equal to cumsum() values, so that
   roll_sum() doesn't return any NA values.
+
+  The function \code{roll_sum()} performs the same operation as function
+  \code{runSum()} from package
+  \href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR}, but
+  using vectorized functions, so it's a little faster.
 }
 \examples{
 # create xts time series

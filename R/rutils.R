@@ -1,13 +1,13 @@
-#' Extract the name of an \code{OHLC} time series from its first column name.
+#' Extract the name of an \emph{OHLC} time series from its first column name.
 #'
 #' @export
-#' @param x_ts \code{OHLC} time series.
+#' @param x_ts \emph{OHLC} time series.
 #' @param field the integer index of the field to be extracted.
-#' @return A \code{string} with the name of time series.
+#' @return A \emph{string} with the name of time series.
 #' @details Extracts the symbol name (ticker) from the name of the first column
-#'   of an \code{OHLC} time series.  The column name is assumed to be in the
-#'   format "symbol.Open". It can also extract the field name after the "."
-#'   separator, for example "Open" from "SPY.Open".
+#'   of an \emph{OHLC} time series.  The column name is assumed to be in the
+#'   format "\emph{symbol}.Open". It can also extract the field name after the
+#'   "." separator, for example "Open" from "SPY.Open".
 #' @examples
 #' # get name for VTI
 #' na_me(env_etf$VTI)
@@ -25,7 +25,7 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 #' @param inter_val the number of data points per interval.
 #' @param off_set the number of data points in the first interval (stub
 #'   interval).
-#' @return An \code{integer} vector of equally spaced end points.
+#' @return An \emph{integer} vector of equally spaced end points.
 #' @details The end points divide the time series into equally spaced intervals.
 #'   The off_set argument shifts the end points forward and creates an initial
 #'   stub interval.
@@ -54,19 +54,113 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
 
 
 
-#' Aggregate an \code{OHLC} time series to a lower periodicity.
-#'
-#' Given an \code{OHLC} time series at high periodicity (say seconds),
-#' calculates the \code{OHLC} prices at lower periodicity (say minutes).
+#' Replace \emph{NA} values with the most recent \emph{non-NA} values prior to
+#' them.
 #'
 #' @export
-#' @param oh_lc an \code{OHLC} time series of prices in \code{xts} format.
+#' @param in_put \emph{numeric} or \emph{Boolean} vector or matrix, or \emph{xts}
+#'   time series.
+#' @param from_last \emph{Boolean} argument: should \emph{non-NA} values be
+#'   carried backward rather than forward? (default is \code{FALSE})
+#' @param na_rm \emph{Boolean} argument: should an remaining (leading or
+#'   trailing) \emph{NA} values be removed? (default is \code{FALSE})
+#' @param max_gap \emph{integer} the maximum number of neighboring \emph{NA}
+#'   values that can be replaced.
+#' @return A vector, matrix, or \emph{xts} time series with the same dimensions
+#'   and data type as the argument \code{in_put}.
+#'
+#' @details The function \code{na_locf()} replaces \emph{NA} values with the
+#'   most recent \emph{non-NA} values prior to them.
+#'
+#'   If the \code{from_last} argument is \code{FALSE} (the default), then the
+#'   previous or past \emph{non-NA} values are carried forward to replace the
+#'   \emph{NA} values.
+#'   If the \code{from_last} argument is \code{TRUE}, then the following or
+#'   future \emph{non-NA} values are carried backward to replace the \emph{NA}
+#'   values.
+#'
+#'   The function \code{na_locf()} performs the same operation as function
+#'   \code{na.locf()} from package
+#'   \href{https://cran.r-project.org/web/packages/zoo/index.html}{zoo}, but
+#'   it also accepts vectors as input.
+#'
+#'   The function \code{na_locf()} calls the compiled function \code{na_locf()}
+#'   from package
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, which
+#'   allows it to perform its calculations about three times faster than
+#'   \code{na.locf()}.
+#'
+#' @examples
+#' # create vector containing NA values
+#' in_put <- sample(22)
+#' in_put[sample(NROW(in_put), 4)] <- NA
+#' # replace NA values with the most recent non-NA values
+#' rutils::na_locf(in_put)
+#' # create matrix containing NA values
+#' in_put <- sample(44)
+#' in_put[sample(NROW(in_put), 8)] <- NA
+#' in_put <- matrix(in_put, nc=2)
+#' # replace NA values with the most recent non-NA values
+#' rutils::na_locf(in_put)
+#' # create xts series containing NA values
+#' in_put <- xts::xts(in_put, order.by=seq.Date(from=Sys.Date(),
+#'   by=1, length.out=NROW(in_put)))
+#' # replace NA values with the most recent non-NA values
+#' rutils::na_locf(in_put)
+
+na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) {
+  if (!(is.numeric(in_put) | is.logical(in_put) | xts::is.xts(in_put))) {  # in_put is not numeric
+    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, Boolean, or xts."))
+    return(NULL)  # return NULL
+  }  # end if
+  if (NCOL(in_put) > 1) {
+    for (n in 1:NCOL(in_put))
+      in_put[, n] <- .Call("na_locf", in_put[, n], from_last, max_gap, Inf, PACKAGE="xts")
+  }
+  else {
+    in_put <- .Call("na_locf", in_put, from_last, max_gap, Inf, PACKAGE="xts")
+  }
+  if (na_rm) {
+    return(structure(na.omit(in_put), na.action=NULL))
+  }
+  else
+    in_put
+  ### old version below
+  # if (NCOL(in_put) > 1)
+  #   return(apply(in_put, MARGIN=2, rutils::na_locf))
+  # if (from_last && is.na(in_put[1]))
+  #   in_put[1] <- 0
+  # if (!from_last && is.na(in_put[NROW(in_put)]))
+  #   in_put[NROW(in_put)] <- 0
+  # in_dex <- is.na(in_put)
+  # in_dices <- rutils::diff_it(in_dex)
+  # in_dices <- which(in_dices==1)
+  # in_dices <- in_dices - 1
+  # diff_indices <- rutils::diff_it(in_dices)
+  # diff_indices[1] <- in_dices[1]
+  # new_indices <- numeric(NROW(in_put))
+  # new_indices[in_dices] <- diff_indices
+  # new_indices <- cumsum(new_indices)
+  # in_put[in_dex] <- in_put[new_indices[in_dex]]
+  # in_put
+}  # end na_locf
+
+
+
+
+#' Aggregate an \emph{OHLC} time series to a lower periodicity.
+#'
+#' Given an \emph{OHLC} time series at high periodicity (say seconds),
+#' calculates the \emph{OHLC} prices at lower periodicity (say minutes).
+#'
+#' @export
+#' @param oh_lc an \emph{OHLC} time series of prices in \emph{xts} format.
 #' @param period aggregation interval ("seconds", "minutes", "hours", "days",
 #'   "weeks", "months", "quarters", and "years").
 #' @param k number of periods to aggregate over (for example if period="minutes"
 #'   and k=2, then aggregate over two minute intervals.)
 #' @param end_points an integer vector of end points.
-#' @return A \code{OHLC} time series of prices in \code{xts} format, with a
+#' @return A \emph{OHLC} time series of prices in \emph{xts} format, with a
 #'   lower periodicity defined by the end_points.
 #' @details The function \code{to_period()} performs a similar aggregation as
 #'   function \code{to.period()} from package
@@ -97,23 +191,23 @@ to_period <- function(oh_lc,
 
 
 
-#' Extract columns of prices from an \code{OHLC} time series.
+#' Extract columns of prices from an \emph{OHLC} time series.
 #'
 #' @export
-#' @param oh_lc an \code{OHLC} time series.
+#' @param oh_lc an \emph{OHLC} time series.
 #' @param col_name string with the field name of the column to be be extracted.
-#'   (default is "Close")
-#' @return A single column \code{OHLC} time series in \code{xts} format.
-#' @details Extracts columns of prices from an \code{OHLC} time series by
-#'   \code{grepping} column names for the \code{col_name} string. The
-#'   \code{OHLC} column names are assumed to be in the format
+#'   (default is \emph{Close})
+#' @return A single column \emph{OHLC} time series in \emph{xts} format.
+#' @details Extracts columns of prices from an \emph{OHLC} time series by
+#'   \emph{grepping} column names for the \code{col_name} string. The
+#'   \emph{OHLC} column names are assumed to be in the format
 #'   \code{"symbol.field_name"}, for example \code{"VTI.Close"}. Performs a
 #'   similar operation to the extractor functions \code{Op()}, \code{Hi()},
 #'   \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
 #'   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
-#'    But \code{ex_tract()} is able to handle symbols like \code{"LOW"}, which
+#'    But \code{ex_tract()} is able to handle symbols like \emph{LOW}, which
 #'   the function \code{Lo()} can't handle. The col_name argument is partially
-#'   matched, for example "vol" is matched to "Volume".
+#'   matched, for example "vol" is matched to \emph{Volume}.
 #' @examples
 #' # get close prices for VTI
 #' ex_tract(env_etf$VTI)
@@ -132,15 +226,15 @@ ex_tract <- function(oh_lc, col_name="Close") {
 
 
 
-#' Adjust the first four columns of \code{OHLC} data using the "adjusted" price
+#' Adjust the first four columns of \emph{OHLC} data using the "adjusted" price
 #' column.
 #'
 #' @export
-#' @param oh_lc an \code{OHLC} time series of prices in \code{xts} format.
-#' @return An \code{OHLC} time series with the same dimensions as the input
+#' @param oh_lc an \emph{OHLC} time series of prices in \emph{xts} format.
+#' @return An \emph{OHLC} time series with the same dimensions as the input
 #'   series.
-#' @details Adjusts the first four \code{OHLC} price columns by multiplying them
-#'   by the ratio of the "adjusted" (sixth) price column, divided by the "close"
+#' @details Adjusts the first four \emph{OHLC} price columns by multiplying them
+#'   by the ratio of the "adjusted" (sixth) price column, divided by the \emph{Close}
 #'   (fourth) price column.
 #' @examples
 #' # adjust VTI prices
@@ -155,15 +249,15 @@ adjust_ohlc <- function(oh_lc) {
 
 
 
-#' Apply a lag to a \code{numeric} vector or matrix.
+#' Apply a lag to a \emph{numeric} vector or matrix.
 #'
 #' @export
-#' @param in_put a \code{numeric} vector or matrix.
-#' @param lag integer equal to the number of periods of lag.
+#' @param in_put a \emph{numeric} vector or matrix.
+#' @param lag integer equal to the number of time periods of lag. (default is 1)
 #' @return A vector or matrix with the same dimensions as the input object.
 #' @details Applies a lag to a vector or matrix, by shifting its values by a
 #'   certain number of rows, equal to the integer \code{lag}, and pads the
-#'   leading or trailing stub periods with \code{zeros}. Positive \code{lag}
+#'   leading or trailing stub periods with \emph{zeros}. Positive \code{lag}
 #'   means that values in the current row are replaced with values from the row
 #'   that are \code{lag} rows above. (vice versa negative \code{lag}).  This
 #'   also applies to vectors, since they can be viewed as single-column
@@ -175,8 +269,8 @@ adjust_ohlc <- function(oh_lc) {
 #' lag_it(matrix(1:10, ncol=2), lag=-2)
 
 lag_it <- function(in_put, lag=1) {
-  if (!is.numeric(in_put)) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric."))
+  if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
+    warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
     return(NULL)  # return NULL
   }  # end if
   if (is.vector(in_put)) {  # in_put is a vector
@@ -204,14 +298,14 @@ lag_it <- function(in_put, lag=1) {
 
 
 
-#' Calculate the row differences of a \code{numeric} vector or matrix.
+#' Calculate the row differences of a \emph{numeric} vector or matrix.
 #'
 #' @export
-#' @param in_put a \code{numeric} vector or matrix.
-#' @param lag integer equal to the number of periods of lag.
+#' @param in_put a \emph{numeric} vector or matrix.
+#' @param lag integer equal to the number of time periods of lag. (default is 1)
 #' @return A vector or matrix with the same dimensions as the input object.
 #' @details Calculates the row differences between rows that are \code{lag} rows
-#'   apart. The leading or trailing stub periods are padded with \code{zeros}.
+#'   apart. The leading or trailing stub periods are padded with \emph{zeros}.
 #'   Positive \code{lag} means that the difference is calculated as the current
 #'   row minus the row that is \code{lag} rows above. (vice versa negative
 #'   \code{lag}).  This also applies to vectors, since they can be viewed as
@@ -223,8 +317,8 @@ lag_it <- function(in_put, lag=1) {
 #' diff_it(matrix(1:10, ncol=2), lag=-2)
 
 diff_it <- function(in_put, lag=1) {
-  if (!is.numeric(in_put)) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric."))
+  if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
+    warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
     return(NULL)  # return NULL
   }  # end if
   if (is.vector(in_put)) {  # in_put is a vector
@@ -253,55 +347,57 @@ diff_it <- function(in_put, lag=1) {
 
 
 
-#' Apply a time lag to an \code{xts} time series.
+#' Apply a time lag to an \emph{xts} time series.
 #'
 #' @export
-#' @param x_ts an \code{xts} time series.
-#' @param k integer equal to the number of time periods of lag. (default is 1)
+#' @param x_ts an \emph{xts} time series.
+#' @param lag integer equal to the number of time periods of lag. (default is 1)
 #' @param ... additional arguments to function \code{xts::lag_xts()}.
-#' @return An \code{xts} time series with the same dimensions and the same time
+#' @return An \emph{xts} time series with the same dimensions and the same time
 #'   index as the input \code{x_ts} time series.
-#' @details Applies a time lag to an \code{xts} time series and pads with the
-#'   first and last values instead of \code{NAs}.  Positive lag \code{k} means
-#'   values from \code{k} periods in the past are moved to the present. Negative
-#'   lag \code{k} moves values from the future to the present.  The function
-#'   \code{lag()} is just a wrapper for function \code{lag_xts()} from package
+#' @details Applies a time lag to an \emph{xts} time series and pads with the
+#'   first and last values instead of \emph{NAs}.
+#'
+#'   A positive lag argument \code{lag} means values from \code{lag} periods in
+#'   the past are moved to the present. A negative lag argument \code{lag} moves
+#'   values from the future to the present.  The function \code{lag()} is just a
+#'   wrapper for function \code{lag_xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
-#'   pads with the first and last values instead of \code{NAs}.
+#'   pads with the first and last values instead of \emph{NAs}.
 #' @examples
 #' # lag by 10 periods
-#' rutils::lag_xts(env_etf$VTI, k=10)
+#' rutils::lag_xts(env_etf$VTI, lag=10)
 
-lag_xts <- function(x_ts, k=1, ...) {
+lag_xts <- function(x_ts, lag=1, ...) {
   n_rows <- NROW(x_ts)
   fir_st <- x_ts[1, ]
   la_st <- x_ts[n_rows, ]
-  x_ts <- xts::lag.xts(x_ts, k=k, ...)
-  if (k>0)
-    x_ts[1:k, ] <- fir_st
+  x_ts <- xts::lag.xts(x_ts, k=lag, ...)
+  if (lag>0)
+    x_ts[1:lag, ] <- fir_st
   else
-    x_ts[(n_rows+k+1):n_rows, ] <- la_st
+    x_ts[(n_rows+lag+1):n_rows, ] <- la_st
   x_ts
 }  # end lag_xts
 
 
 
 
-#' Calculate the time differences of an \code{xts} time series.
+#' Calculate the time differences of an \emph{xts} time series.
 #'
 #' @export
-#' @param x_ts an \code{xts} time series.
-#' @param lag integer equal to the number of time periods of lag.
+#' @param x_ts an \emph{xts} time series.
+#' @param lag integer equal to the number of time periods of lag. (default is 1)
 #' @param ... additional arguments to function \code{xts::diff.xts()}.
-#' @return An \code{xts} time series with the same dimensions and the same time
+#' @return An \emph{xts} time series with the same dimensions and the same time
 #'   index as the input series.
-#' @details Calculates the time differences of an \code{xts} time series and
-#'   pads with \code{zeros} instead of \code{NAs}.  Positive \code{lag} means
+#' @details Calculates the time differences of an \emph{xts} time series and
+#'   pads with \emph{zeros} instead of \emph{NAs}.  Positive \code{lag} means
 #'   differences are calculated with values from \code{lag} periods in the past
 #'   (vice versa negative \code{lag}).  The function \code{diff()} is just a
 #'   wrapper for \code{diff.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
-#'   pads with \code{zeros} instead of \code{NAs}.
+#'   pads with \emph{zeros} instead of \emph{NAs}.
 #' @examples
 #' # calculate time differences over lag by 10 periods
 #' rutils::diff_xts(env_etf$VTI, lag=10)
@@ -315,22 +411,22 @@ diff_xts <- function(x_ts, lag=1, ...) {
 
 
 
-#' Calculate the reduced form of an \code{OHLC} time series, or calculate the
-#' standard form from the reduced form of an \code{OHLC} time series.
+#' Calculate the reduced form of an \emph{OHLC} time series, or calculate the
+#' standard form from the reduced form of an \emph{OHLC} time series.
 #'
 #' @export
-#' @param oh_lc an \code{OHLC} time series of prices in \code{xts} format.
-#' @param re_duce \code{Boolean} should the reduced form be calculated or the
-#'   standard form? (default is \code{TRUE})
+#' @param oh_lc an \emph{OHLC} time series of prices in \emph{xts} format.
+#' @param re_duce \emph{Boolean} argument: should the reduced form be calculated
+#'   or the standard form? (default is \code{TRUE})
 #' @param ... additional arguments to function \code{xts::diff.xts()}.
-#' @return An \code{OHLC} time series with five columns for the \code{Open},
-#'   \code{High}, \code{Low}, \code{Close} prices, and the \code{Volume}, and
+#' @return An \emph{OHLC} time series with five columns for the \emph{Open},
+#'   \emph{High}, \emph{Low}, \emph{Close} prices, and the \emph{Volume}, and
 #'   with the same time index as the input series.
-#' @details The reduced form of an \code{OHLC} time series is obtained by
-#'   calculating the time differences of its \code{Close} prices, and by
-#'   calculating the differences between its \code{Open}, \code{High}, and
-#'   \code{Low} prices minus the \code{Close} prices. The standard form is the
-#'   original \code{OHLC} time series, and can be calculated from its reduced
+#' @details The reduced form of an \emph{OHLC} time series is obtained by
+#'   calculating the time differences of its \emph{Close} prices, and by
+#'   calculating the differences between its \emph{Open}, \emph{High}, and
+#'   \emph{Low} prices minus the \emph{Close} prices. The standard form is the
+#'   original \emph{OHLC} time series, and can be calculated from its reduced
 #'   form by reversing those operations.
 #' @examples
 #' # calculate reduced form of an OHLC time series
@@ -341,8 +437,15 @@ diff_xts <- function(x_ts, lag=1, ...) {
 
 diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
   if (re_duce) {
+    # calculate differencces of Close prices
     cl_ose <- xts::diff.xts(oh_lc[, 4], lag=1, ...)
-    cl_ose[1] <- oh_lc[, 4][1]
+    # find index of overnight price jumps
+    in_dex <- c(60, diff(.index(oh_lc))) > 60
+    # set overnight price jumps to zero
+    cl_ose[in_dex] <- 0
+    # remember first Close price
+    cl_ose[1] <- oh_lc[1, 4]
+    # calculate differences of OHLC prices with respect to Close prices
     op_en <- oh_lc[, 1] - oh_lc[, 4]
     hi_gh <- oh_lc[, 2] - oh_lc[, 4]
     lo_w <- oh_lc[, 3] - oh_lc[, 4]
@@ -354,30 +457,32 @@ diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
     hi_gh <- oh_lc[, 2] + cl_ose
     lo_w <- oh_lc[, 3] + cl_ose
     cbind(op_en, hi_gh, lo_w, cl_ose, oh_lc[, 5])
-  }
+  }  # end if
 }  # end diff_ohlc
 
 
 
 
-#' Calculate the rolling sum of an \code{xts} time series over a sliding window
+#' Calculate the rolling sum of an \emph{xts} time series over a sliding window
 #' (lookback period).
 #'
-#' Performs the same operation as function \code{runSum()} from package
-#' \href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR},
-#' but using vectorized functions, so it's a little faster.
-#'
 #' @export
-#' @param x_ts an \code{xts} time series containing one or more columns of data.
+#' @param x_ts an \emph{xts} time series containing one or more columns of data.
 #' @param win_dow the size of the lookback window, equal to the number of data
 #'   points for calculating the rolling sum.
-#' @return An \code{xts} time series with the same dimensions as the input
+#' @return An \emph{xts} time series with the same dimensions as the input
 #'   series.
 #' @details For example, if win_dow=3, then the rolling sum at any point is
 #'   equal to the sum of \code{x_ts} values for that point plus two preceding
 #'   points.
 #'   The initial values of roll_sum() are equal to cumsum() values, so that
 #'   roll_sum() doesn't return any NA values.
+#'
+#'   The function \code{roll_sum()} performs the same operation as function
+#'   \code{runSum()} from package
+#'   \href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR}, but
+#'   using vectorized functions, so it's a little faster.
+#'
 #' @examples
 #' # create xts time series
 #' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
@@ -393,24 +498,27 @@ roll_sum <- function(x_ts, win_dow) {
 
 
 
-#' Calculate the rolling maximum of an \code{xts} time series over a sliding
+#' Calculate the rolling maximum of an \emph{xts} time series over a sliding
 #' window (lookback period).
 #'
-#' Performs the same operation as function \code{runMax()} from package
-#' \href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR},
-#' but using vectorized functions, so it's a little faster.
-#'
 #' @export
-#' @param x_ts an \code{xts} time series containing one or more columns of data.
+#' @param x_ts an \emph{xts} time series containing one or more columns of data.
 #' @param win_dow the size of the lookback window, equal to the number of data
 #'   points for calculating the rolling sum.
-#' @return An \code{xts} time series with the same dimensions as the input
+#' @return An \emph{xts} time series with the same dimensions as the input
 #'   series.
 #' @details For example, if win_dow=3, then the rolling sum at any point is
 #'   equal to the sum of \code{x_ts} values for that point plus two preceding
 #'   points.
+#'
 #'   The initial values of roll_max() are equal to cumsum() values, so that
 #'   roll_max() doesn't return any NA values.
+#'
+#'   The function \code{roll_max()} performs the same operation as function
+#'   \code{runMax()} from package
+#'   \href{https://cran.r-project.org/web/packages/TTR/index.html}{TTR}, but
+#'   using vectorized functions, so it's a little faster.
+#'
 #' @examples
 #' # create xts time series
 #' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
@@ -426,13 +534,8 @@ roll_max <- function(x_ts, win_dow) {
 
 
 
-#' Recursively \sQuote{\code{rbind}} a list of objects, such as \code{xts} time
+#' Recursively \sQuote{\code{rbind}} a list of objects, such as \emph{xts} time
 #' series.
-#'
-#' Performs the same operation as \code{do.call(rbind, li_st)}, but using
-#' recursion, which is much faster and uses less memory. This is the same
-#' function as \sQuote{\code{\link[qmao]{do.call.rbind}}} from package
-#' \sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
 #'
 #' @export
 #' @param li_st list of objects, such as \code{vectors}, \code{matrices},
@@ -441,10 +544,17 @@ roll_max <- function(x_ts, win_dow) {
 #'   \code{time series}.
 #' @details Performs lapply loop, each time binding neighboring elements and
 #'   dividing the length of \code{li_st} by half. The result of performing
-#'   \code{do_call_rbind(list_xts)} on a list of \code{xts} time series is
+#'   \code{do_call_rbind(list_xts)} on a list of \emph{xts} time series is
 #'   identical to performing \code{do.call(rbind, list_xts)}. But
 #'   \code{do.call(rbind, list_xts)} is very slow, and often causes an
 #'   \sQuote{out of memory} error.
+#'
+#'   The function \code{do_call_rbind()} performs the same operation as
+#'   \code{do.call(rbind, li_st)}, but using recursion, which is much faster and
+#'   uses less memory. This is the same function as
+#'   \sQuote{\code{\link[qmao]{do.call.rbind}}} from package
+#'   \sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
+#'
 #' @examples
 #' # create xts time series
 #' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
@@ -457,12 +567,10 @@ do_call_rbind <- function(li_st) {
   while (length(li_st) > 1) {
 # index of odd list elements
     odd_index <- seq(from=1, to=length(li_st), by=2)
-# bind neighboring elements and divide li_st by half
+# bind odd and even elements, and divide li_st by half
     li_st <- lapply(odd_index, function(in_dex) {
-      if (in_dex==length(li_st)) {
-        return(li_st[[in_dex]])
-      }
-      return(rbind(li_st[[in_dex]], li_st[[in_dex+1]]))
+      if (in_dex==length(li_st)) return(li_st[[in_dex]])
+      rbind(li_st[[in_dex]], li_st[[in_dex+1]])
     })  # end lapply
   }  # end while
 # li_st has only one element - return it
@@ -472,7 +580,7 @@ do_call_rbind <- function(li_st) {
 
 
 
-#' Recursively apply a function to a list of objects, such as \code{xts} time
+#' Recursively apply a function to a list of objects, such as \emph{xts} time
 #' series.
 #'
 #' Performs a similar operation as \code{do.call()}, but using recursion, which
@@ -489,7 +597,7 @@ do_call_rbind <- function(li_st) {
 #'   \code{time series}.
 #' @details Performs lapply loop, each time binding neighboring elements and
 #'   dividing the length of \code{li_st} by half. The result of performing
-#'   \code{do_call(rbind, list_xts)} on a list of \code{xts} time series is
+#'   \code{do_call(rbind, list_xts)} on a list of \emph{xts} time series is
 #'   identical to performing \code{do.call(rbind, list_xts)}. But
 #'   \code{do.call(rbind, list_xts)} is very slow, and often causes an
 #'   \sQuote{out of memory} error.
@@ -527,13 +635,13 @@ do_call <- function(func_tion, li_st, ...) {
 #'
 #' @export
 #' @param func_tion name of function that returns a single object
-#'   (\code{vector}, \code{xts} time series, etc.)
+#'   (\code{vector}, \emph{xts} time series, etc.)
 #' @param sym_bols vector of strings with names of input objects.
 #' @param out_put string with name of output object.
 #' @param env_in environment containing the input \code{sym_bols}.
 #' @param env_out environment for creating the \code{out_put}.
 #' @param ... additional arguments to function \code{func_tion()}.
-#' @return A single object (\code{matrix}, \code{xts} time series, etc.)
+#' @return A single object (\code{matrix}, \emph{xts} time series, etc.)
 #' @details Performs an lapply loop over \code{sym_bols}, applies the function
 #'   \code{func_tion()}, merges the outputs into a single object, and creates
 #'   the object in the environment \code{env_out}.  The output object is created
@@ -561,21 +669,21 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 
 
 
-#' Plot an \code{xts} time series with custom y-axis range and with vertical
+#' Plot an \emph{xts} time series with custom y-axis range and with vertical
 #' background shading.
 #'
 #' A wrapper for function \code{chart_Series()} from package
 #' \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 #'
 #' @export
-#' @param x_ts \code{xts} time series.
-#' @param ylim \code{numeric} vector with two elements containing the y-axis
+#' @param x_ts \emph{xts} time series.
+#' @param ylim \emph{numeric} vector with two elements containing the y-axis
 #'   range.
-#' @param in_dex  \code{Boolean} vector or \code{xts} time series for specifying
+#' @param in_dex  \emph{Boolean} vector or \emph{xts} time series for specifying
 #'   the shading areas, with TRUE indicating "lightgreen" shading, and FALSE
 #'   indicating "lightgrey" shading.
 #' @param ... additional arguments to function \code{chart_Series()}.
-#' @return A chart object \code{chob} returned invisibly.
+#' @return A chart object \emph{chob} returned invisibly.
 #' @details Extracts the chart object and modifies its ylim parameter using
 #'   accessor and setter functions.
 #'   Also adds background shading using function \code{add_TA()}. The
@@ -612,8 +720,8 @@ chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
 
 
 
-#' Download time series data from an external source (by default \code{OHLC}
-#' prices from \code{YAHOO}), and save it into an environment.
+#' Download time series data from an external source (by default \emph{OHLC}
+#' prices from \emph{YAHOO}), and save it into an environment.
 #'
 #' @export
 #' @param sym_bols vector of strings representing instrument symbols (tickers).
@@ -621,16 +729,16 @@ chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
 #' @param start_date start date of time series data.  (default is "2007-01-01")
 #' @param end_date end date of time series data.  (default is \code{Sys.Date()})
 #' @return A vector of \code{sym_bols} returned invisibly.
-#' @details The function \code{get_symbols} downloads \code{OHLC} prices from
-#'   \code{YAHOO} into an environment, adjusts the prices, and saves them back
+#' @details The function \code{get_symbols()} downloads \emph{OHLC} prices from
+#'   \emph{YAHOO} into an environment, adjusts the prices, and saves them back
 #'   to that environment. The function \code{get_symbols()} calls the function
-#'   \code{getSymbols.yahoo()} to download the \code{OHLC} prices, and performs
+#'   \code{getSymbols.yahoo()} to download the \emph{OHLC} prices, and performs
 #'   a similar operation to the function \code{getSymbols()} from package
 #'   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 #'   But \code{get_symbols()} is faster (because it's more specialized), and is
-#'   able to handle symbols like \code{"LOW"}, which \code{getSymbols()} can't
+#'   able to handle symbols like \emph{LOW}, which \code{getSymbols()} can't
 #'   handle because the function \code{Lo()} can't handle them. The
-#'   \code{start_date} and \code{end_date} must be either of class \code{Date},
+#'   \code{start_date} and \code{end_date} must be either of class \emph{Date},
 #'   or a string in the format "YYYY-mm-dd".
 #'   \code{get_symbols()} returns invisibly the vector of \code{sym_bols}.
 #' @examples

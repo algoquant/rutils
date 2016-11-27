@@ -19,6 +19,12 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 - [ ] convert roll_*() functions to RcppRoll  
 
+- [ ] create function acf_plus()  
+
+- [ ] create function logist_ic() that accepts a uniform random number and returns a vector of uniform random numbers, by applying the logistic map  
+
+- [ ] create function gauss_ian() that maps uniform random numbers into Gaussian (normal) numbers
+
 - [ ] add qmao functions: 
 gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
@@ -26,6 +32,10 @@ To, get data for some tickers, subset the data, and then assign into an environm
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment?rq=1
 
 - [ ] create locally a package description in HTML format and upload it to gh-pages branch  
+
+- [x] create function na_locf()
+
+- [x] add is.logical() clause in functions lag_it() and diff_it() 
 
 - [x] move functions adjust_ohlc(), to_period() and get_symbols() from HighFreq to rutils  
 

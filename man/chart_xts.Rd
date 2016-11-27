@@ -2,25 +2,25 @@
 % Please edit documentation in R/rutils.R
 \name{chart_xts}
 \alias{chart_xts}
-\title{Plot an \code{xts} time series with custom y-axis range and with vertical
+\title{Plot an \emph{xts} time series with custom y-axis range and with vertical
 background shading.}
 \usage{
 chart_xts(x_ts, ylim = NULL, in_dex = NULL, ...)
 }
 \arguments{
-\item{x_ts}{\code{xts} time series.}
+\item{x_ts}{\emph{xts} time series.}
 
-\item{ylim}{\code{numeric} vector with two elements containing the y-axis
+\item{ylim}{\emph{numeric} vector with two elements containing the y-axis
 range.}
 
-\item{in_dex}{\code{Boolean} vector or \code{xts} time series for specifying
+\item{in_dex}{\emph{Boolean} vector or \emph{xts} time series for specifying
 the shading areas, with TRUE indicating "lightgreen" shading, and FALSE
 indicating "lightgrey" shading.}
 
 \item{...}{additional arguments to function \code{chart_Series()}.}
 }
 \value{
-A chart object \code{chob} returned invisibly.
+A chart object \emph{chob} returned invisibly.
 }
 \description{
 A wrapper for function \code{chart_Series()} from package

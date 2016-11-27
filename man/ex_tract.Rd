@@ -2,33 +2,33 @@
 % Please edit documentation in R/rutils.R
 \name{ex_tract}
 \alias{ex_tract}
-\title{Extract columns of prices from an \code{OHLC} time series.}
+\title{Extract columns of prices from an \emph{OHLC} time series.}
 \usage{
 ex_tract(oh_lc, col_name = "Close")
 }
 \arguments{
-\item{oh_lc}{an \code{OHLC} time series.}
+\item{oh_lc}{an \emph{OHLC} time series.}
 
 \item{col_name}{string with the field name of the column to be be extracted.
-(default is "Close")}
+(default is \emph{Close})}
 }
 \value{
-A single column \code{OHLC} time series in \code{xts} format.
+A single column \emph{OHLC} time series in \emph{xts} format.
 }
 \description{
-Extract columns of prices from an \code{OHLC} time series.
+Extract columns of prices from an \emph{OHLC} time series.
 }
 \details{
-Extracts columns of prices from an \code{OHLC} time series by
-  \code{grepping} column names for the \code{col_name} string. The
-  \code{OHLC} column names are assumed to be in the format
+Extracts columns of prices from an \emph{OHLC} time series by
+  \emph{grepping} column names for the \code{col_name} string. The
+  \emph{OHLC} column names are assumed to be in the format
   \code{"symbol.field_name"}, for example \code{"VTI.Close"}. Performs a
   similar operation to the extractor functions \code{Op()}, \code{Hi()},
   \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
-   But \code{ex_tract()} is able to handle symbols like \code{"LOW"}, which
+   But \code{ex_tract()} is able to handle symbols like \emph{LOW}, which
   the function \code{Lo()} can't handle. The col_name argument is partially
-  matched, for example "vol" is matched to "Volume".
+  matched, for example "vol" is matched to \emph{Volume}.
 }
 \examples{
 # get close prices for VTI

@@ -2,7 +2,7 @@
 % Please edit documentation in R/rutils.R
 \name{do_call_rbind}
 \alias{do_call_rbind}
-\title{Recursively \sQuote{\code{rbind}} a list of objects, such as \code{xts} time
+\title{Recursively \sQuote{\code{rbind}} a list of objects, such as \emph{xts} time
 series.}
 \usage{
 do_call_rbind(li_st)
@@ -16,18 +16,22 @@ A single \code{vector}, \code{matrix}, \code{data frame}, or
   \code{time series}.
 }
 \description{
-Performs the same operation as \code{do.call(rbind, li_st)}, but using
-recursion, which is much faster and uses less memory. This is the same
-function as \sQuote{\code{\link[qmao]{do.call.rbind}}} from package
-\sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
+Recursively \sQuote{\code{rbind}} a list of objects, such as \emph{xts} time
+series.
 }
 \details{
 Performs lapply loop, each time binding neighboring elements and
   dividing the length of \code{li_st} by half. The result of performing
-  \code{do_call_rbind(list_xts)} on a list of \code{xts} time series is
+  \code{do_call_rbind(list_xts)} on a list of \emph{xts} time series is
   identical to performing \code{do.call(rbind, list_xts)}. But
   \code{do.call(rbind, list_xts)} is very slow, and often causes an
   \sQuote{out of memory} error.
+
+  The function \code{do_call_rbind()} performs the same operation as
+  \code{do.call(rbind, li_st)}, but using recursion, which is much faster and
+  uses less memory. This is the same function as
+  \sQuote{\code{\link[qmao]{do.call.rbind}}} from package
+  \sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
 }
 \examples{
 # create xts time series

@@ -2,25 +2,25 @@
 % Please edit documentation in R/rutils.R
 \name{lag_it}
 \alias{lag_it}
-\title{Apply a lag to a \code{numeric} vector or matrix.}
+\title{Apply a lag to a \emph{numeric} vector or matrix.}
 \usage{
 lag_it(in_put, lag = 1)
 }
 \arguments{
-\item{in_put}{a \code{numeric} vector or matrix.}
+\item{in_put}{a \emph{numeric} vector or matrix.}
 
-\item{lag}{integer equal to the number of periods of lag.}
+\item{lag}{integer equal to the number of time periods of lag. (default is 1)}
 }
 \value{
 A vector or matrix with the same dimensions as the input object.
 }
 \description{
-Apply a lag to a \code{numeric} vector or matrix.
+Apply a lag to a \emph{numeric} vector or matrix.
 }
 \details{
 Applies a lag to a vector or matrix, by shifting its values by a
   certain number of rows, equal to the integer \code{lag}, and pads the
-  leading or trailing stub periods with \code{zeros}. Positive \code{lag}
+  leading or trailing stub periods with \emph{zeros}. Positive \code{lag}
   means that values in the current row are replaced with values from the row
   that are \code{lag} rows above. (vice versa negative \code{lag}).  This
   also applies to vectors, since they can be viewed as single-column

@@ -2,7 +2,7 @@
 % Please edit documentation in R/rutils.R
 \name{do_call}
 \alias{do_call}
-\title{Recursively apply a function to a list of objects, such as \code{xts} time
+\title{Recursively apply a function to a list of objects, such as \emph{xts} time
 series.}
 \usage{
 do_call(func_tion, li_st, ...)
@@ -28,7 +28,7 @@ generalization of function \code{do_call_rbind()}.
 \details{
 Performs lapply loop, each time binding neighboring elements and
   dividing the length of \code{li_st} by half. The result of performing
-  \code{do_call(rbind, list_xts)} on a list of \code{xts} time series is
+  \code{do_call(rbind, list_xts)} on a list of \emph{xts} time series is
   identical to performing \code{do.call(rbind, list_xts)}. But
   \code{do.call(rbind, list_xts)} is very slow, and often causes an
   \sQuote{out of memory} error.

@@ -2,34 +2,34 @@
 % Please edit documentation in R/rutils.R
 \name{diff_ohlc}
 \alias{diff_ohlc}
-\title{Calculate the reduced form of an \code{OHLC} time series, or calculate the
-standard form from the reduced form of an \code{OHLC} time series.}
+\title{Calculate the reduced form of an \emph{OHLC} time series, or calculate the
+standard form from the reduced form of an \emph{OHLC} time series.}
 \usage{
 diff_ohlc(oh_lc, re_duce = TRUE, ...)
 }
 \arguments{
-\item{oh_lc}{an \code{OHLC} time series of prices in \code{xts} format.}
+\item{oh_lc}{an \emph{OHLC} time series of prices in \emph{xts} format.}
 
-\item{re_duce}{\code{Boolean} should the reduced form be calculated or the
-standard form? (default is \code{TRUE})}
+\item{re_duce}{\emph{Boolean} argument: should the reduced form be calculated
+or the standard form? (default is \code{TRUE})}
 
 \item{...}{additional arguments to function \code{xts::diff.xts()}.}
 }
 \value{
-An \code{OHLC} time series with five columns for the \code{Open},
-  \code{High}, \code{Low}, \code{Close} prices, and the \code{Volume}, and
+An \emph{OHLC} time series with five columns for the \emph{Open},
+  \emph{High}, \emph{Low}, \emph{Close} prices, and the \emph{Volume}, and
   with the same time index as the input series.
 }
 \description{
-Calculate the reduced form of an \code{OHLC} time series, or calculate the
-standard form from the reduced form of an \code{OHLC} time series.
+Calculate the reduced form of an \emph{OHLC} time series, or calculate the
+standard form from the reduced form of an \emph{OHLC} time series.
 }
 \details{
-The reduced form of an \code{OHLC} time series is obtained by
-  calculating the time differences of its \code{Close} prices, and by
-  calculating the differences between its \code{Open}, \code{High}, and
-  \code{Low} prices minus the \code{Close} prices. The standard form is the
-  original \code{OHLC} time series, and can be calculated from its reduced
+The reduced form of an \emph{OHLC} time series is obtained by
+  calculating the time differences of its \emph{Close} prices, and by
+  calculating the differences between its \emph{Open}, \emph{High}, and
+  \emph{Low} prices minus the \emph{Close} prices. The standard form is the
+  original \emph{OHLC} time series, and can be calculated from its reduced
   form by reversing those operations.
 }
 \examples{

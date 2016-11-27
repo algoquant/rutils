@@ -16,7 +16,7 @@ end_points(x_ts, inter_val = 10, off_set = 0)
 interval).}
 }
 \value{
-An \code{integer} vector of equally spaced end points.
+An \emph{integer} vector of equally spaced end points.
 }
 \description{
 Calculate an index (integer vector) of equally spaced end points for a time

@@ -10,7 +10,7 @@ do_call_assign(func_tion, sym_bols = NULL, out_put, env_in = .GlobalEnv,
 }
 \arguments{
 \item{func_tion}{name of function that returns a single object
-(\code{vector}, \code{xts} time series, etc.)}
+(\code{vector}, \emph{xts} time series, etc.)}
 
 \item{sym_bols}{vector of strings with names of input objects.}
 
@@ -23,7 +23,7 @@ do_call_assign(func_tion, sym_bols = NULL, out_put, env_in = .GlobalEnv,
 \item{...}{additional arguments to function \code{func_tion()}.}
 }
 \value{
-A single object (\code{matrix}, \code{xts} time series, etc.)
+A single object (\code{matrix}, \emph{xts} time series, etc.)
 }
 \description{
 Apply a function to a list of objects, merge the outputs into a single

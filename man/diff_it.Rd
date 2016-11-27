@@ -2,24 +2,24 @@
 % Please edit documentation in R/rutils.R
 \name{diff_it}
 \alias{diff_it}
-\title{Calculate the row differences of a \code{numeric} vector or matrix.}
+\title{Calculate the row differences of a \emph{numeric} vector or matrix.}
 \usage{
 diff_it(in_put, lag = 1)
 }
 \arguments{
-\item{in_put}{a \code{numeric} vector or matrix.}
+\item{in_put}{a \emph{numeric} vector or matrix.}
 
-\item{lag}{integer equal to the number of periods of lag.}
+\item{lag}{integer equal to the number of time periods of lag. (default is 1)}
 }
 \value{
 A vector or matrix with the same dimensions as the input object.
 }
 \description{
-Calculate the row differences of a \code{numeric} vector or matrix.
+Calculate the row differences of a \emph{numeric} vector or matrix.
 }
 \details{
 Calculates the row differences between rows that are \code{lag} rows
-  apart. The leading or trailing stub periods are padded with \code{zeros}.
+  apart. The leading or trailing stub periods are padded with \emph{zeros}.
   Positive \code{lag} means that the difference is calculated as the current
   row minus the row that is \code{lag} rows above. (vice versa negative
   \code{lag}).  This also applies to vectors, since they can be viewed as
