@@ -1,5 +1,5 @@
 ############
-# ToDo list for package rutils
+### ToDo list for package rutils
 
 ### scripts for package building
 # Install package from source on local drive
@@ -15,87 +15,91 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
-- [ ] create new roll functions using RcppRoll::rollit()  
++ [ ] replace xts::.subset_xts() with brackets operator []
 
-- [ ] convert roll_*() functions to RcppRoll  
++ [ ] create function chart_strategy() for plotting PnL of trading strategy  
 
-- [ ] create function acf_plus()  
++ [ ] create new roll functions using RcppRoll::rollit()  
 
-- [ ] create function logist_ic() that accepts a uniform random number and returns a vector of uniform random numbers, by applying the logistic map  
++ [ ] convert roll_*() functions to RcppRoll  
 
-- [ ] create function gauss_ian() that maps uniform random numbers into Gaussian (normal) numbers
++ [ ] create function acf_plus()  
 
-- [ ] add qmao functions: 
++ [ ] create function logist_ic() that accepts a uniform random number and returns a vector of uniform random numbers, by applying the logistic map  
+
++ [ ] create function gauss_ian() that maps uniform random numbers into Gaussian (normal) numbers
+
++ [ ] add qmao functions: 
 gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment?rq=1
 
-- [ ] create locally a package description in HTML format and upload it to gh-pages branch  
++ [ ] create locally a package description in HTML format and upload it to gh-pages branch  
 
-- [x] create function na_locf()
++ [x] create function na_locf()
 
-- [x] add is.logical() clause in functions lag_it() and diff_it() 
++ [x] add is.logical() clause in functions lag_it() and diff_it() 
 
-- [x] move functions adjust_ohlc(), to_period() and get_symbols() from HighFreq to rutils  
++ [x] move functions adjust_ohlc(), to_period() and get_symbols() from HighFreq to rutils  
 
-- [x] rename function clo_se() to ex_tract()  
++ [x] rename function clo_se() to ex_tract()  
 
-- [x] replace quantmod extractor functions Op(), Hi(), Lo(), Cl(), Vo() with direct subsetting: oh_lc[, 3] instead of Lo(oh_lc)  
++ [x] replace quantmod extractor functions Op(), Hi(), Lo(), Cl(), Vo() with direct subsetting: oh_lc[, 3] instead of Lo(oh_lc)  
 
-- [x] create function diff_OHLC()
++ [x] create function diff_OHLC()
 returns reduced form of OHLC data using differences  
 returns standard form of OHLC data using cumsum  
 
-- [x] create function roll_max() using RcppRoll::roll_max()  
++ [x] create function roll_max() using RcppRoll::roll_max()  
 it's not any faster than TTR::runMax()  
 
-- [x] introduce unit testing using testthat and devtools: create /tests directory
++ [x] introduce unit testing using testthat and devtools: create /tests directory
 
-- [x] move function roll_sum() from HighFreq to rutils
++ [x] move function roll_sum() from HighFreq to rutils
 
 + [x] create functionals do_call_assign() and do_call_rbind()  
 
-- [x] remotely create package description on gh-pages branch without YAML
++ [x] remotely create package description on gh-pages branch without YAML
 
-- [x] add vignettes directory and automatically build vignette  
++ [x] add vignettes directory and automatically build vignette  
 
-- [x] add more detailed description about etf_data.RData in README.Rmd
++ [x] add more detailed description about etf_data.RData in README.Rmd
 
-- [x] add travis Build Status tag to README.Rmd, add .travis.yml file
++ [x] add travis Build Status tag to README.Rmd, add .travis.yml file
 
-- [x] Delete etf_data.Rdata in the GitHub remote repository because it has wrong extension, and replace it with etf_data.RData.  
++ [x] Delete etf_data.Rdata in the GitHub remote repository because it has wrong extension, and replace it with etf_data.RData.  
 GitHub Desktop is case-insensitive to extension, so it didn't replace etf_data.Rdata in the remote repository, even after I replaced it locally with etf_data.RData. 
 
-- [x] rename functions *.xts to *_xts
++ [x] rename functions *.xts to *_xts
 
-- [x] create project website for rutils on GitHub Pages using R Markdown  
++ [x] create project website for rutils on GitHub Pages using R Markdown  
 
-- [x] rename README.md to .Rmd and add more detailed description similar this to README.md
++ [x] rename README.md to .Rmd and add more detailed description similar this to README.md
 
-- [x] create function chart_xts() which accepts argument ylim and in_dex - adapt chart_xts() from chartLib.new.R  
++ [x] create function chart_xts() which accepts argument ylim and in_dex - adapt chart_xts() from chartLib.new.R  
 
-- [x] create functions lag_it() and diff_it() that apply a lags and difference vectors and matrices  
++ [x] create functions lag_it() and diff_it() that apply a lags and difference vectors and matrices  
 
-- [x] create functions lag.xts() and diff.xts() that pad xts series with 0 instead of NA  
++ [x] create functions lag.xts() and diff.xts() that pad xts series with 0 instead of NA  
 
-- [x] create function end_points()  
++ [x] create function end_points()  
 
-- [x] rename function get_close() to clo_se()  
++ [x] rename function get_close() to clo_se()  
 
-- [x] rename function col_name() to na_me()  
++ [x] rename function col_name() to na_me()  
 
-- [x] add @export to roxygen code  
++ [x] add @export to roxygen code  
 
-- [x] convert all code from nrow() and ncol() to NROW() and NCOL()  
++ [x] convert all code from nrow() and ncol() to NROW() and NCOL()  
 
-- [x] create issue for file extension error when using .Rdata instead of .RData
++ [x] create issue for file extension error when using .Rdata instead of .RData
 https://github.com/klutometis/roxygen
 http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-package
 
 
 ### tasks deprecated
 
-- [ ] rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
++ [ ] rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
 
 
