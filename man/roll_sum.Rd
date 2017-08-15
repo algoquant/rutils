@@ -2,31 +2,31 @@
 % Please edit documentation in R/rutils.R
 \name{roll_sum}
 \alias{roll_sum}
-\title{Calculate the rolling sum of an \emph{xts} time series over a sliding window
-(lookback period).}
+\title{Calculate the rolling sum of a \emph{numeric} vector, matrix, or \emph{xts}
+time series over a sliding window (lookback period).}
 \usage{
 roll_sum(x_ts, win_dow)
 }
 \arguments{
-\item{x_ts}{an \emph{xts} time series containing one or more columns of data.}
+\item{x_ts}{a vector, matrix, or \emph{xts} time series containing one or
+more columns of data.}
 
 \item{win_dow}{the size of the lookback window, equal to the number of data
 points for calculating the rolling sum.}
 }
 \value{
-An \emph{xts} time series with the same dimensions as the input
-  series.
+A vector, matrix, or \emph{xts} time series with the same dimensions
+  as the input series.
 }
 \description{
-Calculate the rolling sum of an \emph{xts} time series over a sliding window
-(lookback period).
+Calculate the rolling sum of a \emph{numeric} vector, matrix, or \emph{xts}
+time series over a sliding window (lookback period).
 }
 \details{
 For example, if win_dow=3, then the rolling sum at any point is
   equal to the sum of \code{x_ts} values for that point plus two preceding
-  points.
-  The initial values of roll_sum() are equal to cumsum() values, so that
-  roll_sum() doesn't return any NA values.
+  points. The initial values of roll_sum() are equal to cumsum() values, so
+  that roll_sum() doesn't return any NA values.
 
   The function \code{roll_sum()} performs the same operation as function
   \code{runSum()} from package
@@ -34,7 +34,13 @@ For example, if win_dow=3, then the rolling sum at any point is
   using vectorized functions, so it's a little faster.
 }
 \examples{
-# create xts time series
+# rolling sum of vector
+vec_tor <- rnorm(1000)
+roll_sum(vec_tor, win_dow=3)
+# rolling sum of matrix
+mat_rix <- matrix(rnorm(1000), nc=5)
+roll_sum(mat_rix, win_dow=3)
+# rolling sum of xts time series
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 roll_sum(x_ts, win_dow=3)
 }

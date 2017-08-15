@@ -15,6 +15,10 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] remove single quotes around names in documentation  
+
++ [ ] create function do_call_cbind()  
+
 + [ ] replace xts::.subset_xts() with brackets operator []
 
 + [ ] create function chart_strategy() for plotting PnL of trading strategy  
@@ -37,6 +41,10 @@ http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-envir
 
 + [ ] create locally a package description in HTML format and upload it to gh-pages branch  
 
++ [x] modify roll_sum() so that it can also accept a vector or matrix
+
++ [x] create function do_call()  
+
 + [x] create function na_locf()
 
 + [x] add is.logical() clause in functions lag_it() and diff_it() 
@@ -58,7 +66,7 @@ it's not any faster than TTR::runMax()
 
 + [x] move function roll_sum() from HighFreq to rutils
 
-+ [x] create functionals do_call_assign() and do_call_rbind()  
++ [x] create functional do_call_assign() and function do_call_rbind()  
 
 + [x] remotely create package description on gh-pages branch without YAML
 

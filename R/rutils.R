@@ -283,10 +283,10 @@ lag_it <- function(in_put, lag=1) {
     }
   } else if (is.matrix(in_put)) {  # in_put is a matrix
       if(lag>0) {
-        in_put <- rbind(matrix(numeric(lag*NCOL(in_put)), NCOL(in_put)), in_put)
+        in_put <- rbind(matrix(numeric(lag*NCOL(in_put)), nc=NCOL(in_put)), in_put)
         in_put[-((NROW(in_put)-lag+1):NROW(in_put)), ]
       } else {
-        in_put <- rbind(in_put, matrix(numeric(-lag*NCOL(in_put)), NCOL(in_put)))
+        in_put <- rbind(in_put, matrix(numeric(-lag*NCOL(in_put)), nc=NCOL(in_put)))
         in_put[-(1:(-lag)), ]
       }
     } else {  # in_put is not a vector or matrix
@@ -463,20 +463,20 @@ diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
 
 
 
-#' Calculate the rolling sum of an \emph{xts} time series over a sliding window
-#' (lookback period).
+#' Calculate the rolling sum of a \emph{numeric} vector, matrix, or \emph{xts}
+#' time series over a sliding window (lookback period).
 #'
 #' @export
-#' @param x_ts an \emph{xts} time series containing one or more columns of data.
+#' @param x_ts a vector, matrix, or \emph{xts} time series containing one or
+#'   more columns of data.
 #' @param win_dow the size of the lookback window, equal to the number of data
 #'   points for calculating the rolling sum.
-#' @return An \emph{xts} time series with the same dimensions as the input
-#'   series.
+#' @return A vector, matrix, or \emph{xts} time series with the same dimensions
+#'   as the input series.
 #' @details For example, if win_dow=3, then the rolling sum at any point is
 #'   equal to the sum of \code{x_ts} values for that point plus two preceding
-#'   points.
-#'   The initial values of roll_sum() are equal to cumsum() values, so that
-#'   roll_sum() doesn't return any NA values.
+#'   points. The initial values of roll_sum() are equal to cumsum() values, so
+#'   that roll_sum() doesn't return any NA values.
 #'
 #'   The function \code{roll_sum()} performs the same operation as function
 #'   \code{runSum()} from package
@@ -484,14 +484,34 @@ diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
 #'   using vectorized functions, so it's a little faster.
 #'
 #' @examples
-#' # create xts time series
+#' # rolling sum of vector
+#' vec_tor <- rnorm(1000)
+#' roll_sum(vec_tor, win_dow=3)
+#' # rolling sum of matrix
+#' mat_rix <- matrix(rnorm(1000), nc=5)
+#' roll_sum(mat_rix, win_dow=3)
+#' # rolling sum of xts time series
 #' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 #' roll_sum(x_ts, win_dow=3)
 
 roll_sum <- function(x_ts, win_dow) {
-  cum_sum <- cumsum(x_ts)
-  roll_sum <- cum_sum - lag(x=cum_sum, k=win_dow)
-  roll_sum[1:win_dow, ] <- cum_sum[1:win_dow, ]
+  if (is.xts(x_ts)) {
+    cum_sum <- cumsum(x_ts)
+    roll_sum <- cum_sum - rutils::lag_xts(cum_sum, lag=win_dow)
+    roll_sum[1:win_dow] <- cum_sum[1:win_dow]
+  }
+  else {
+    if (is.null(dim(x_ts))) {
+      cum_sum <- cumsum(x_ts)
+      roll_sum <- cum_sum - rutils::lag_it(cum_sum, lag=win_dow)
+      roll_sum[1:win_dow] <- cum_sum[1:win_dow]
+    }
+    else {
+      cum_sum <- apply(x_ts, MARGIN=2, function(col_umn) cumsum(col_umn))
+      roll_sum <- cum_sum - rutils::lag_it(cum_sum, lag=win_dow)
+      roll_sum[1:win_dow, ] <- cum_sum[1:win_dow, ]
+    }
+  }
   roll_sum
 }  # end roll_sum
 
