@@ -36,12 +36,12 @@ For example, if win_dow=3, then the rolling sum at any point is
 \examples{
 # rolling sum of vector
 vec_tor <- rnorm(1000)
-roll_sum(vec_tor, win_dow=3)
+rutils::roll_sum(vec_tor, win_dow=3)
 # rolling sum of matrix
 mat_rix <- matrix(rnorm(1000), nc=5)
-roll_sum(mat_rix, win_dow=3)
+rutils::roll_sum(mat_rix, win_dow=3)
 # rolling sum of xts time series
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-roll_sum(x_ts, win_dow=3)
+rutils::roll_sum(x_ts, win_dow=3)
 }
 

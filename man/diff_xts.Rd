@@ -21,16 +21,16 @@ An \emph{xts} time series with the same dimensions and the same time
 Calculate the time differences of an \emph{xts} time series.
 }
 \details{
-Calculates the time differences of an \emph{xts} time series and
-  pads with \emph{zeros} instead of \emph{NAs}.  Positive \code{lag} means
-  differences are calculated with values from \code{lag} periods in the past
-  (vice versa negative \code{lag}).  The function \code{diff()} is just a
-  wrapper for \code{diff.xts()} from package
+The function \code{diff_xts()} calculates the time differences of an
+  \emph{xts} time series and pads with \emph{zeros} instead of \emph{NAs}.
+  Positive \code{lag} means differences are calculated with values from
+  \code{lag} periods in the past (vice versa negative \code{lag}).  The
+  function \code{diff()} is just a wrapper for \code{diff.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
   pads with \emph{zeros} instead of \emph{NAs}.
 }
 \examples{
 # calculate time differences over lag by 10 periods
-rutils::diff_xts(env_etf$VTI, lag=10)
+rutils::diff_xts(rutils::env_etf$VTI, lag=10)
 }
 

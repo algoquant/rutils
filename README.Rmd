@@ -97,7 +97,7 @@ Calculate a vector of equally spaced end points for a time
 series:  
 ```{r eval=FALSE}
 # calculate end points with initial stub interval
-end_points(env_etf$VTI, inter_val=7, off_set=4)
+calc_endpoints(env_etf$VTI, inter_val=7, off_set=4)
 ```
 <br>
 
@@ -105,9 +105,9 @@ end_points(env_etf$VTI, inter_val=7, off_set=4)
 Extract columns of prices from an *OHLC* time series:  
 ```{r eval=FALSE}
 # get close prices for VTI
-ex_tract(env_etf$VTI)
+get_col(env_etf$VTI)
 # get volumes for VTI
-ex_tract(env_etf$VTI, col_name="vol")
+get_col(env_etf$VTI, col_name="vol")
 ```
 <br>
 

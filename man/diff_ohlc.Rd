@@ -34,9 +34,9 @@ The reduced form of an \emph{OHLC} time series is obtained by
 }
 \examples{
 # calculate reduced form of an OHLC time series
-diff_VTI <- rutils::diff_ohlc(env_etf$VTI)
+diff_VTI <- rutils::diff_ohlc(rutils::env_etf$VTI)
 # calculate standard form of an OHLC time series
 VTI <- rutils::diff_ohlc(diff_VTI, re_duce=FALSE)
-identical(VTI, env_etf$VTI[, 1:5])
+identical(VTI, rutils::env_etf$VTI[, 1:5])
 }
 

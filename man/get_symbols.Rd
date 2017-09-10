@@ -31,7 +31,7 @@ The function \code{get_symbols()} downloads \emph{OHLC} prices from
   \code{getSymbols.yahoo()} to download the \emph{OHLC} prices, and performs
   a similar operation to the function \code{getSymbols()} from package
   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
-  But \code{get_symbols()} is faster (because it's more specialized), and is
+  But \code{get_symbols()} is faster (because it's more specialized), and it's
   able to handle symbols like \emph{LOW}, which \code{getSymbols()} can't
   handle because the function \code{Lo()} can't handle them. The
   \code{start_date} and \code{end_date} must be either of class \emph{Date},
@@ -41,7 +41,7 @@ The function \code{get_symbols()} downloads \emph{OHLC} prices from
 \examples{
 \dontrun{
 new_env <- new.env()
-get_symbols(sym_bols=c("MSFT", "XOM"),
+rutils::get_symbols(sym_bols=c("MSFT", "XOM"),
             env_out=new_env,
             start_date="2012-12-01",
             end_date="2015-12-01")

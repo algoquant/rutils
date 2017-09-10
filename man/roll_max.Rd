@@ -37,6 +37,6 @@ For example, if win_dow=3, then the rolling sum at any point is
 \examples{
 # create xts time series
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-roll_max(x_ts, win_dow=3)
+rutils::roll_max(x_ts, win_dow=3)
 }
 

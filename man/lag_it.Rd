@@ -28,8 +28,8 @@ Applies a lag to a vector or matrix, by shifting its values by a
 }
 \examples{
 # lag vector by 2 periods
-lag_it(1:10, lag=2)
+rutils::lag_it(1:10, lag=2)
 # lag matrix by negative 2 periods
-lag_it(matrix(1:10, ncol=2), lag=-2)
+rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
 }
 

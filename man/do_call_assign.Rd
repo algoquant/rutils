@@ -12,13 +12,14 @@ do_call_assign(func_tion, sym_bols = NULL, out_put, env_in = .GlobalEnv,
 \item{func_tion}{name of function that returns a single object
 (\code{vector}, \emph{xts} time series, etc.)}
 
-\item{sym_bols}{vector of strings with names of input objects.}
+\item{sym_bols}{a vector of \emph{character} strings with the names of input
+objects.}
 
-\item{out_put}{string with name of output object.}
+\item{out_put}{the string with name of output object.}
 
-\item{env_in}{environment containing the input \code{sym_bols}.}
+\item{env_in}{the environment containing the input \code{sym_bols}.}
 
-\item{env_out}{environment for creating the \code{out_put}.}
+\item{env_out}{the environment for creating the \code{out_put}.}
 
 \item{...}{additional arguments to function \code{func_tion()}.}
 }
@@ -37,9 +38,9 @@ Performs an lapply loop over \code{sym_bols}, applies the function
 }
 \examples{
 new_env <- new.env()
-do_call_assign(
-   func_tion=ex_tract,
-   sym_bols=env_etf$sym_bols,
+rutils::do_call_assign(
+   func_tion=get_col,
+   sym_bols=rutils::env_etf$sym_bols,
    out_put="price_s",
    env_in=env_etf, env_out=new_env)
 }

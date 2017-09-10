@@ -39,6 +39,6 @@ x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # split time series into daily list
 list_xts <- split(x_ts, "days")
 # rbind the list back into a time series and compare with the original
-identical(x_ts, do_call(rbind, list_xts))
+identical(x_ts, rutils::do_call(rbind, list_xts))
 }
 

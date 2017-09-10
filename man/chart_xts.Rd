@@ -2,13 +2,15 @@
 % Please edit documentation in R/rutils.R
 \name{chart_xts}
 \alias{chart_xts}
-\title{Plot an \emph{xts} time series with custom y-axis range and with vertical
-background shading.}
+\title{Plot an \emph{xts} time series with custom line colors, y-axis range, and
+with vertical background shading.}
 \usage{
-chart_xts(x_ts, ylim = NULL, in_dex = NULL, ...)
+chart_xts(x_ts, col_ors = NULL, ylim = NULL, in_dex = NULL, ...)
 }
 \arguments{
 \item{x_ts}{\emph{xts} time series.}
+
+\item{col_ors}{vector of \emph{strings} with the custom line colors.}
 
 \item{ylim}{\emph{numeric} vector with two elements containing the y-axis
 range.}
@@ -27,17 +29,20 @@ A wrapper for function \code{chart_Series()} from package
 \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 }
 \details{
-Extracts the chart object and modifies its ylim parameter using
-  accessor and setter functions.
-  Also adds background shading using function \code{add_TA()}. The
-  \code{in_dex} argument should have the same length as the \code{x_ts} time
-  series.
-  Finally the function \code{chart_xts()} plots the chart object and returns
-  it invisibly.
+Extracts the chart object and modifies its \emph{ylim} parameter
+  using accessor and setter functions. It also adds background shading
+  specified by the \code{in_dex} argument, using function \code{add_TA()}.
+  The \code{in_dex} argument should have the same length as the \code{x_ts}
+  time series. Finally the function \code{chart_xts()} plots the chart object
+  and returns it invisibly.
 }
 \examples{
-quantmod::chart_xts(env_etf$VTI["2015-11"],
+# plot candlestick chart with shading
+rutils::chart_xts(rutils::env_etf$VTI["2015-11"],
   name="VTI in Nov 2015", ylim=c(102, 108),
-  in_dex=zoo::index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+  in_dex=zoo::index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+# plot two time series with custom line colors
+rutils::chart_xts(na.omit(cbind(rutils::env_etf$XLU[, 4],
+  rutils::env_etf$XLP[, 4])), col_ors=c("blue", "green"))
 }
 

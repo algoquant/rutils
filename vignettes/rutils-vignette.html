@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jerzy Pawlowski (algoquant)" />
 
-<meta name="date" content="2016-09-14" />
+<meta name="date" content="2017-09-09" />
 
 <title>rutils Package for Simplifying Financial Data Management and Modeling</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">rutils Package for Simplifying Financial Data Management and Modeling</h1>
 <h4 class="author"><em>Jerzy Pawlowski (algoquant)</em></h4>
-<h4 class="date"><em>2016-09-14</em></h4>
+<h4 class="date"><em>2017-09-09</em></h4>
 
 
 
@@ -169,12 +169,12 @@ env_etf$re_turns[<span class="dv">1</span>:<span class="dv">6</span>, <span clas
 ## 2007-01-10  0.002220134  NA -0.0016918383  0.012880531</code></pre>
 <p>Calculate a vector of equally spaced end points for a time series:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate end points with initial stub interval</span>
-<span class="kw">end_points</span>(env_etf$VTI, <span class="dt">inter_val=</span><span class="dv">7</span>, <span class="dt">off_set=</span><span class="dv">4</span>)</code></pre></div>
+<span class="kw">calc_endpoints</span>(env_etf$VTI, <span class="dt">inter_val=</span><span class="dv">7</span>, <span class="dt">off_set=</span><span class="dv">4</span>)</code></pre></div>
 <p>Extract columns of prices from an <em>OHLC</em> time series:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get close prices for VTI</span>
-<span class="kw">ex_tract</span>(env_etf$VTI)
+<span class="kw">get_col</span>(env_etf$VTI)
 <span class="co"># get volumes for VTI</span>
-<span class="kw">ex_tract</span>(env_etf$VTI, <span class="dt">col_name=</span><span class="st">&quot;vol&quot;</span>)</code></pre></div>
+<span class="kw">get_col</span>(env_etf$VTI, <span class="dt">col_name=</span><span class="st">&quot;vol&quot;</span>)</code></pre></div>
 <p>Apply a lag to a vector or matrix:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lag vector by 2 periods</span>
 <span class="kw">lag_it</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">lag=</span><span class="dv">2</span>)
@@ -204,7 +204,7 @@ list_xts &lt;-<span class="st"> </span><span class="kw">split</span>(x_ts, <span
 <span class="kw">identical</span>(x_ts, <span class="kw">do_call</span>(rbind, list_xts))</code></pre></div>
 <p>Apply a function to a list of objects, merge the outputs into a single object, and assign the object to the output environment:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">do_call_assign</span>(
-   <span class="dt">func_tion=</span>ex_tract,
+   <span class="dt">func_tion=</span>get_col,
    <span class="dt">sym_bols=</span>env_etf$sym_bols,
    <span class="dt">out_put=</span><span class="st">&quot;price_s&quot;</span>,
    <span class="dt">env_in=</span>env_etf, <span class="dt">env_out=</span>new_env)</code></pre></div>
@@ -222,7 +222,7 @@ list_xts &lt;-<span class="st"> </span><span class="kw">split</span>(x_ts, <span
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

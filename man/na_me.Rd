@@ -9,7 +9,8 @@ na_me(x_ts, field = 1)
 \arguments{
 \item{x_ts}{\emph{OHLC} time series.}
 
-\item{field}{the integer index of the field to be extracted.}
+\item{field}{the position of the name in the string, i.e. the integer index
+of the field to be extracted. (default is \code{1})}
 }
 \value{
 A \emph{string} with the name of time series.
@@ -25,6 +26,6 @@ Extracts the symbol name (ticker) from the name of the first column
 }
 \examples{
 # get name for VTI
-na_me(env_etf$VTI)
+rutils::na_me(rutils::env_etf$VTI)
 }
 

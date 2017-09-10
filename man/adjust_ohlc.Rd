@@ -25,6 +25,6 @@ Adjusts the first four \emph{OHLC} price columns by multiplying them
 }
 \examples{
 # adjust VTI prices
-VTI <- adjust_ohlc(env_etf$VTI)
+VTI <- rutils::adjust_ohlc(rutils::env_etf$VTI)
 }
 

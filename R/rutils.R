@@ -2,7 +2,8 @@
 #'
 #' @export
 #' @param x_ts \emph{OHLC} time series.
-#' @param field the integer index of the field to be extracted.
+#' @param field the position of the name in the string, i.e. the integer index
+#'   of the field to be extracted. (default is \code{1})
 #' @return A \emph{string} with the name of time series.
 #' @details Extracts the symbol name (ticker) from the name of the first column
 #'   of an \emph{OHLC} time series.  The column name is assumed to be in the
@@ -10,9 +11,45 @@
 #'   "." separator, for example "Open" from "SPY.Open".
 #' @examples
 #' # get name for VTI
-#' na_me(env_etf$VTI)
+#' rutils::na_me(rutils::env_etf$VTI)
 
-na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][field]
+na_me <- function(x_ts, field=1)
+  strsplit(colnames(x_ts), split="[.]")[[1]][field]
+
+
+
+
+#' Extract a symbol name (ticker) from a \emph{character} string.
+#'
+#' @export
+#' @param str_ing a vector of \emph{character} strings containing symbol names.
+#' @param separator the name separator, i.e. the single \emph{character} that
+#'   separates the symbol name from the rest of the string. (default is "_")
+#' @param field the position of the name in the string, i.e. the integer index
+#'   of the field to be extracted.  (default is \code{1}, i.e. the name is at
+#'   the beginning of the string,)
+#' @return A vector of \emph{strings} with the names of objects.
+#' @details Extracts the symbol name from a \emph{character} string. For
+#'   example, it extracts the name "XLU" from the string "XLU_2017_09_05.csv".
+#'   The input string is assumed to be in the format "\emph{name}_date.csv",
+#'   with the name at the beginning of the string, but \code{get_name()} can
+#'   also parse the name from other string formats as well.  If the input is a
+#'   vector of strings, then \code{get_name()} returns a vector of names.
+#' @examples
+#' # extract the ticker symbol from file names
+#' rutils::get_name("XLU_2017_09_05.csv")
+#' rutils::get_name("XLU 2017 09 05.csv", sep=" ")
+#' rutils::get_name("XLU.csv", sep="[.]")
+
+get_name <- function(str_ing, separator="_", field=1) {
+  if (NROW(str_ing)==1) {
+    strsplit(str_ing, split=separator)[[1]][field]
+  } else {
+    sapply(str_ing, function(x)
+      strsplit(x, split=separator)[[1]][field]
+    )  # end sapply
+  }  # end if
+}  # end get_name
 
 
 
@@ -27,13 +64,13 @@ na_me <- function(x_ts, field=1) strsplit(colnames(x_ts), split="[.]")[[1]][fiel
 #'   interval).
 #' @return An \emph{integer} vector of equally spaced end points.
 #' @details The end points divide the time series into equally spaced intervals.
-#'   The off_set argument shifts the end points forward and creates an initial
-#'   stub interval.
+#'   The \code{off_set} argument shifts the end points forward and creates an
+#'   initial stub interval.
 #' @examples
 #' # calculate end points with initial stub interval
-#' end_points(env_etf$VTI, inter_val=7, off_set=4)
+#' rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=7, off_set=4)
 
-end_points <- function(x_ts, inter_val=10, off_set=0) {
+calc_endpoints <- function(x_ts, inter_val=10, off_set=0) {
   if (off_set >= inter_val)
     stop("off_set must be less than inter_val")
 # calculate number of inter_vals that fit over x_ts
@@ -43,13 +80,13 @@ end_points <- function(x_ts, inter_val=10, off_set=0) {
   if (off_set > 0)
     end_points <- c(0, end_points)
   if (xts::last(end_points) > n_row)
-    end_points <- end_points[-length(end_points)]
+    end_points <- end_points[-NROW(end_points)]
   if (xts::last(end_points) > n_row)
-    end_points <- end_points[-length(end_points)]
+    end_points <- end_points[-NROW(end_points)]
   if (xts::last(end_points) < n_row)
     end_points <- c(end_points, n_row)
   as.integer(end_points)
-}  # end end_points
+}  # end calc_endpoints
 
 
 
@@ -173,11 +210,11 @@ na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) 
 #'   explicitly, then the \code{period} argument is ignored.
 #' @examples
 #' # define end points at 10-minute intervals (SPY is minutely bars)
-#' end_points <- rutils::end_points(SPY["2009"], inter_val=10)
+#' end_points <- rutils::calc_endpoints(SPY["2009"], inter_val=10)
 #' # aggregate over 10-minute end_points:
-#' to_period(oh_lc=SPY["2009"], end_points=end_points)
+#' rutils::to_period(oh_lc=SPY["2009"], end_points=end_points)
 #' # aggregate over days:
-#' to_period(oh_lc=SPY["2009"], period="days")
+#' rutils::to_period(oh_lc=SPY["2009"], period="days")
 #' # equivalent to:
 #' to.period(x=SPY["2009"], period="days", name=rutils::na_me(SPY))
 
@@ -191,37 +228,47 @@ to_period <- function(oh_lc,
 
 
 
-#' Extract columns of prices from an \emph{OHLC} time series.
+#' Extract columns of data from an \emph{OHLC} time series using column field
+#' names.
 #'
 #' @export
 #' @param oh_lc an \emph{OHLC} time series.
-#' @param col_name string with the field name of the column to be be extracted.
+#' @param field_name string with the field name of the column to be be extracted.
 #'   (default is \emph{Close})
-#' @return A single column \emph{OHLC} time series in \emph{xts} format.
-#' @details Extracts columns of prices from an \emph{OHLC} time series by
-#'   \emph{grepping} column names for the \code{col_name} string. The
-#'   \emph{OHLC} column names are assumed to be in the format
-#'   \code{"symbol.field_name"}, for example \code{"VTI.Close"}. Performs a
-#'   similar operation to the extractor functions \code{Op()}, \code{Hi()},
-#'   \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
+#' @return The specified columns of the \emph{OHLC} time series in a single
+#'   \emph{xts} series, with the same number of rows as the input time series.
+#' @details Extracts columns from an \emph{OHLC} time series by partially
+#'   matching field names with column names. The \emph{OHLC} column names are
+#'   assumed to be in the format \code{"symbol.field_name"}, for example
+#'   \code{"VTI.Close"}. Performs a similar operation to the extractor functions
+#'   \code{Op()}, \code{Hi()}, \code{Lo()}, \code{Cl()}, and \code{Vo()}, from
+#'   package
 #'   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
-#'    But \code{ex_tract()} is able to handle symbols like \emph{LOW}, which
-#'   the function \code{Lo()} can't handle. The col_name argument is partially
-#'   matched, for example "vol" is matched to \emph{Volume}.
+#'    But \code{get_col()} is able to handle symbols like \emph{LOW}, which the
+#'   function \code{Lo()} can't handle. The field_name argument is partially
+#'   matched, for example "Vol" is matched to \code{Volume} (but it's case
+#'   sensitive).
 #' @examples
 #' # get close prices for VTI
-#' ex_tract(env_etf$VTI)
+#' rutils::get_col(rutils::env_etf$VTI)
 #' # get volumes for VTI
-#' ex_tract(env_etf$VTI, col_name="vol")
+#' rutils::get_col(rutils::env_etf$VTI, "Vol")
+#' # get close prices and volumes for VTI
+#' rutils::get_col(rutils::env_etf$VTI, c("Cl", "Vol"))
 
-ex_tract <- function(oh_lc, col_name="Close") {
-  in_dex <- grep(paste0(".", col_name), colnames(oh_lc), ignore.case=TRUE)
-  if (length(in_dex)>0)
-#    out_put <- xts::.subset_xts(oh_lc, 1:NROW(oh_lc), in_dex:in_dex)
-    oh_lc[, in_dex]
-  else
-    stop(paste0("No column name containing \"", col_name, "\""))
-}  # end ex_tract
+get_col <- function(oh_lc, field_name="Close") {
+  name_s <- sapply(colnames(oh_lc),
+    function(field_name) strsplit(field_name, split="[.]")[[1]][2])
+  in_dex <- pmatch(field_name, name_s)
+  oh_lc[, in_dex]
+  # below is old version using grep()
+  #   in_dex <- grep(paste0(".", field_name), colnames(oh_lc), ignore.case=TRUE)
+  #   if (NROW(in_dex)>0)
+  # #    out_put <- xts::.subset_xts(oh_lc, 1:NROW(oh_lc), in_dex:in_dex)
+  #     oh_lc[, in_dex]
+  #   else
+  #     stop(paste0("No column name containing \"", field_name, "\""))
+}  # end get_col
 
 
 
@@ -238,13 +285,87 @@ ex_tract <- function(oh_lc, col_name="Close") {
 #'   (fourth) price column.
 #' @examples
 #' # adjust VTI prices
-#' VTI <- adjust_ohlc(env_etf$VTI)
+#' VTI <- rutils::adjust_ohlc(rutils::env_etf$VTI)
 
 adjust_ohlc <- function(oh_lc) {
   # adjust OHLC prices
   oh_lc[, 1:4] <- as.vector(oh_lc[, 6] / oh_lc[, 4]) * coredata(oh_lc[, 1:4])
   oh_lc
 }  # end adjust_ohlc
+
+
+
+
+#' Subset an \emph{xts} time series (extract an \emph{xts} sub-series
+#' corresponding to the input dates).
+#'
+#' @export
+#' @param x_ts an \emph{xts} time series.
+#' @param start_date the start date of the extracted time series data.
+#' @param end_date either the end date of the extracted time series data, or the
+#'   number of data rows to be extracted.
+#' @param cal_days \emph{Boolean} argument: if \code{TRUE} then extract the
+#'   given number of calendar days, else extract the given number of rows of
+#'   data. (default is \code{TRUE})
+#' @return An \emph{xts} time series with the same number of columns as the
+#'   input time series.
+#' @details The function \code{sub_set()} extracts an \emph{xts} sub-series
+#'   corresponding to the input dates.  If \code{end_date} is a date object or
+#'   a character string representing a date, then \code{sub_set()} performs
+#'   standard bracket subsetting using the package
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}. If
+#'   \code{end_date} is a positive number then \code{sub_set()} returns the
+#'   specified number of data rows from the future, and if it's negative then
+#'   it returns data rows from the past.
+#'
+#'   The rows of data don't necessarily correspond to consecutive calendar days
+#'   because of weekends and holidays.  For example, 10 consecutive rows of data
+#'   may correspond to 12 calendar days. So we must choose to extract either a
+#'   given number of calendar days (\code{cal_days=TRUE}) or a given number of
+#'   rows of data (\code{cal_days=FALSE}).
+#' @examples
+#' # subset an xts time series using two dates
+#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date="2015-01-10")
+#' # subset past data from an xts time series using a date and a negative number
+#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6)
+#' # extract 6 consecutive rows of data from the past
+#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6, cal_days=FALSE)
+
+sub_set <- function(x_ts, start_date, end_date, cal_days=TRUE) {
+  if (inherits(end_date, c("Date", "POSIXt", "character"))) {
+    x_ts[paste(start_date, end_date, sep = "/")]
+  } else if (is.numeric(end_date)) {
+    # coerce start_date from string into Date or POSIXt, depending on time index class of x_ts
+    if (inherits(start_date, "character")) {
+      in_dex <- index(x_ts[1, ])
+      if (inherits(in_dex, "Date")) {
+        start_date <- as.Date(start_date)
+      } else if (inherits(in_dex, "POSIXt")) {
+        start_date <- as.POSIXct(start_date)
+      }
+    }  # end if
+    # extract either a number of calendar days or a number of rows of data
+    if (cal_days) {
+      # add numeric end_date to start_date to get the end_date as a date
+      if (end_date>0) {
+        x_ts[paste(start_date, start_date+end_date, sep = "/")]
+      } else {
+        x_ts[paste(start_date+end_date, start_date, sep = "/")]
+      }  # end if
+    } else {
+      # find the row number closest to start_date
+      start_point <- findInterval(start_date, index(x_ts))
+      if (start_date > index(x_ts[start_point])) {
+        start_point <- start_point + 1
+      }  # end if
+      x_ts[start_point:(start_point + end_date - sign(end_date))]
+    }  # end if
+  } else {  # end_date is neither a date nor a string
+    warning(paste0("argument \"", deparse(substitute(end_date)), "\" must be either a date object or a string representing a date."))
+    return(NULL)  # return NULL
+  }  # end if
+
+}  # end sub_set
 
 
 
@@ -264,9 +385,9 @@ adjust_ohlc <- function(oh_lc) {
 #'   matrices.
 #' @examples
 #' # lag vector by 2 periods
-#' lag_it(1:10, lag=2)
+#' rutils::lag_it(1:10, lag=2)
 #' # lag matrix by negative 2 periods
-#' lag_it(matrix(1:10, ncol=2), lag=-2)
+#' rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
 
 lag_it <- function(in_put, lag=1) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
@@ -274,15 +395,15 @@ lag_it <- function(in_put, lag=1) {
     return(NULL)  # return NULL
   }  # end if
   if (is.vector(in_put)) {  # in_put is a vector
-    if(lag>0) {
+    if (lag>0) {
       in_put <- c(numeric(lag), in_put)
-      in_put[-((length(in_put)-lag+1):length(in_put))]
+      in_put[-((NROW(in_put)-lag+1):NROW(in_put))]
     } else {
       in_put <- c(in_put, numeric(-lag))
       in_put[-(1:(-lag))]
     }
   } else if (is.matrix(in_put)) {  # in_put is a matrix
-      if(lag>0) {
+      if (lag>0) {
         in_put <- rbind(matrix(numeric(lag*NCOL(in_put)), nc=NCOL(in_put)), in_put)
         in_put[-((NROW(in_put)-lag+1):NROW(in_put)), ]
       } else {
@@ -304,17 +425,17 @@ lag_it <- function(in_put, lag=1) {
 #' @param in_put a \emph{numeric} vector or matrix.
 #' @param lag integer equal to the number of time periods of lag. (default is 1)
 #' @return A vector or matrix with the same dimensions as the input object.
-#' @details Calculates the row differences between rows that are \code{lag} rows
-#'   apart. The leading or trailing stub periods are padded with \emph{zeros}.
-#'   Positive \code{lag} means that the difference is calculated as the current
-#'   row minus the row that is \code{lag} rows above. (vice versa negative
-#'   \code{lag}).  This also applies to vectors, since they can be viewed as
-#'   single-column matrices.
+#' @details The function \code{diff_it()} calculates the row differences between
+#'   rows that are \code{lag} rows apart. The leading or trailing stub periods
+#'   are padded with \emph{zeros}. Positive \code{lag} means that the difference
+#'   is calculated as the current row minus the row that is \code{lag} rows
+#'   above. (vice versa negative \code{lag}).  This also applies to vectors,
+#'   since they can be viewed as single-column matrices.
 #' @examples
 #' # diff vector by 2 periods
-#' diff_it(1:10, lag=2)
+#' rutils::diff_it(1:10, lag=2)
 #' # diff matrix by negative 2 periods
-#' diff_it(matrix(1:10, ncol=2), lag=-2)
+#' rutils::diff_it(matrix(1:10, ncol=2), lag=-2)
 
 diff_it <- function(in_put, lag=1) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
@@ -322,15 +443,15 @@ diff_it <- function(in_put, lag=1) {
     return(NULL)  # return NULL
   }  # end if
   if (is.vector(in_put)) {  # in_put is a vector
-    if(lag>0) {
+    if (lag>0) {
       lagg_ed <- c(in_put[1:lag], in_put)
-      lagg_ed <- lagg_ed[-((length(lagg_ed)-lag+1):length(lagg_ed))]
+      lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lag+1):NROW(lagg_ed))]
     } else {
-      lagg_ed <- c(in_put, in_put[(length(in_put)+lag+1):length(in_put)])
+      lagg_ed <- c(in_put, in_put[(NROW(in_put)+lag+1):NROW(in_put)])
       lagg_ed <- lagg_ed[-(1:(-lag))]
     }
   } else if (is.matrix(in_put)) {  # in_put is a matrix
-    if(lag>0) {
+    if (lag>0) {
       lagg_ed <- rbind(in_put[1:lag, ], in_put)
       lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lag+1):NROW(lagg_ed)), ]
     } else {
@@ -366,7 +487,7 @@ diff_it <- function(in_put, lag=1) {
 #'   pads with the first and last values instead of \emph{NAs}.
 #' @examples
 #' # lag by 10 periods
-#' rutils::lag_xts(env_etf$VTI, lag=10)
+#' rutils::lag_xts(rutils::env_etf$VTI, lag=10)
 
 lag_xts <- function(x_ts, lag=1, ...) {
   n_rows <- NROW(x_ts)
@@ -391,16 +512,16 @@ lag_xts <- function(x_ts, lag=1, ...) {
 #' @param ... additional arguments to function \code{xts::diff.xts()}.
 #' @return An \emph{xts} time series with the same dimensions and the same time
 #'   index as the input series.
-#' @details Calculates the time differences of an \emph{xts} time series and
-#'   pads with \emph{zeros} instead of \emph{NAs}.  Positive \code{lag} means
-#'   differences are calculated with values from \code{lag} periods in the past
-#'   (vice versa negative \code{lag}).  The function \code{diff()} is just a
-#'   wrapper for \code{diff.xts()} from package
+#' @details The function \code{diff_xts()} calculates the time differences of an
+#'   \emph{xts} time series and pads with \emph{zeros} instead of \emph{NAs}.
+#'   Positive \code{lag} means differences are calculated with values from
+#'   \code{lag} periods in the past (vice versa negative \code{lag}).  The
+#'   function \code{diff()} is just a wrapper for \code{diff.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
 #'   pads with \emph{zeros} instead of \emph{NAs}.
 #' @examples
 #' # calculate time differences over lag by 10 periods
-#' rutils::diff_xts(env_etf$VTI, lag=10)
+#' rutils::diff_xts(rutils::env_etf$VTI, lag=10)
 
 diff_xts <- function(x_ts, lag=1, ...) {
   x_ts <- xts::diff.xts(x_ts, lag=lag, ...)
@@ -430,10 +551,10 @@ diff_xts <- function(x_ts, lag=1, ...) {
 #'   form by reversing those operations.
 #' @examples
 #' # calculate reduced form of an OHLC time series
-#' diff_VTI <- rutils::diff_ohlc(env_etf$VTI)
+#' diff_VTI <- rutils::diff_ohlc(rutils::env_etf$VTI)
 #' # calculate standard form of an OHLC time series
 #' VTI <- rutils::diff_ohlc(diff_VTI, re_duce=FALSE)
-#' identical(VTI, env_etf$VTI[, 1:5])
+#' identical(VTI, rutils::env_etf$VTI[, 1:5])
 
 diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
   if (re_duce) {
@@ -486,13 +607,13 @@ diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
 #' @examples
 #' # rolling sum of vector
 #' vec_tor <- rnorm(1000)
-#' roll_sum(vec_tor, win_dow=3)
+#' rutils::roll_sum(vec_tor, win_dow=3)
 #' # rolling sum of matrix
 #' mat_rix <- matrix(rnorm(1000), nc=5)
-#' roll_sum(mat_rix, win_dow=3)
+#' rutils::roll_sum(mat_rix, win_dow=3)
 #' # rolling sum of xts time series
 #' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-#' roll_sum(x_ts, win_dow=3)
+#' rutils::roll_sum(x_ts, win_dow=3)
 
 roll_sum <- function(x_ts, win_dow) {
   if (is.xts(x_ts)) {
@@ -542,7 +663,7 @@ roll_sum <- function(x_ts, win_dow) {
 #' @examples
 #' # create xts time series
 #' x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-#' roll_max(x_ts, win_dow=3)
+#' rutils::roll_max(x_ts, win_dow=3)
 
 roll_max <- function(x_ts, win_dow) {
   roll_max <- RcppRoll::roll_max(c(rep(0,win_dow-1), coredata(x_ts)), n=win_dow, align="right")
@@ -581,15 +702,15 @@ roll_max <- function(x_ts, win_dow) {
 #' # split time series into daily list
 #' list_xts <- split(x_ts, "days")
 #' # rbind the list back into a time series and compare with the original
-#' identical(x_ts, do_call_rbind(list_xts))
+#' identical(x_ts, rutils::do_call_rbind(list_xts))
 
 do_call_rbind <- function(li_st) {
-  while (length(li_st) > 1) {
+  while (NROW(li_st) > 1) {
 # index of odd list elements
-    odd_index <- seq(from=1, to=length(li_st), by=2)
+    odd_index <- seq(from=1, to=NROW(li_st), by=2)
 # bind odd and even elements, and divide li_st by half
     li_st <- lapply(odd_index, function(in_dex) {
-      if (in_dex==length(li_st)) return(li_st[[in_dex]])
+      if (in_dex==NROW(li_st)) return(li_st[[in_dex]])
       rbind(li_st[[in_dex]], li_st[[in_dex+1]])
     })  # end lapply
   }  # end while
@@ -627,17 +748,17 @@ do_call_rbind <- function(li_st) {
 #' # split time series into daily list
 #' list_xts <- split(x_ts, "days")
 #' # rbind the list back into a time series and compare with the original
-#' identical(x_ts, do_call(rbind, list_xts))
+#' identical(x_ts, rutils::do_call(rbind, list_xts))
 
 do_call <- function(func_tion, li_st, ...) {
 # produce function name from argument
   func_tion <- match.fun(func_tion)
-  while (length(li_st) > 1) {
+  while (NROW(li_st) > 1) {
 # index of odd list elements
-    odd_index <- seq(from=1, to=length(li_st), by=2)
+    odd_index <- seq(from=1, to=NROW(li_st), by=2)
 # bind neighboring elements and divide li_st by half
     li_st <- lapply(odd_index, function(in_dex) {
-      if (in_dex==length(li_st)) {
+      if (in_dex==NROW(li_st)) {
         return(li_st[[in_dex]])
       }
       return(func_tion(li_st[[in_dex]], li_st[[in_dex+1]], ...))
@@ -656,10 +777,11 @@ do_call <- function(func_tion, li_st, ...) {
 #' @export
 #' @param func_tion name of function that returns a single object
 #'   (\code{vector}, \emph{xts} time series, etc.)
-#' @param sym_bols vector of strings with names of input objects.
-#' @param out_put string with name of output object.
-#' @param env_in environment containing the input \code{sym_bols}.
-#' @param env_out environment for creating the \code{out_put}.
+#' @param sym_bols a vector of \emph{character} strings with the names of input
+#'   objects.
+#' @param out_put the string with name of output object.
+#' @param env_in the environment containing the input \code{sym_bols}.
+#' @param env_out the environment for creating the \code{out_put}.
 #' @param ... additional arguments to function \code{func_tion()}.
 #' @return A single object (\code{matrix}, \emph{xts} time series, etc.)
 #' @details Performs an lapply loop over \code{sym_bols}, applies the function
@@ -668,9 +790,9 @@ do_call <- function(func_tion, li_st, ...) {
 #'   as a side effect, while its name is returned invisibly.
 #' @examples
 #' new_env <- new.env()
-#' do_call_assign(
-#'    func_tion=ex_tract,
-#'    sym_bols=env_etf$sym_bols,
+#' rutils::do_call_assign(
+#'    func_tion=get_col,
+#'    sym_bols=rutils::env_etf$sym_bols,
 #'    out_put="price_s",
 #'    env_in=env_etf, env_out=new_env)
 
@@ -678,7 +800,7 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
                            env_in=.GlobalEnv, env_out=.GlobalEnv, ...) {
 # produce function name from argument
   func_tion <- match.fun(func_tion)
-  if(is.null(sym_bols)) sym_bols <- ls(env_in)
+  if (is.null(sym_bols)) sym_bols <- ls(env_in)
   assign(out_put,
          do.call(merge,
                  lapply(mget(env_in$sym_bols, envir=env_in), func_tion, ...)),
@@ -689,14 +811,15 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 
 
 
-#' Plot an \emph{xts} time series with custom y-axis range and with vertical
-#' background shading.
+#' Plot an \emph{xts} time series with custom line colors, y-axis range, and
+#' with vertical background shading.
 #'
 #' A wrapper for function \code{chart_Series()} from package
 #' \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 #'
 #' @export
 #' @param x_ts \emph{xts} time series.
+#' @param col_ors vector of \emph{strings} with the custom line colors.
 #' @param ylim \emph{numeric} vector with two elements containing the y-axis
 #'   range.
 #' @param in_dex  \emph{Boolean} vector or \emph{xts} time series for specifying
@@ -704,22 +827,33 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #'   indicating "lightgrey" shading.
 #' @param ... additional arguments to function \code{chart_Series()}.
 #' @return A chart object \emph{chob} returned invisibly.
-#' @details Extracts the chart object and modifies its ylim parameter using
-#'   accessor and setter functions.
-#'   Also adds background shading using function \code{add_TA()}. The
-#'   \code{in_dex} argument should have the same length as the \code{x_ts} time
-#'   series.
-#'   Finally the function \code{chart_xts()} plots the chart object and returns
-#'   it invisibly.
+#' @details Extracts the chart object and modifies its \emph{ylim} parameter
+#'   using accessor and setter functions. It also adds background shading
+#'   specified by the \code{in_dex} argument, using function \code{add_TA()}.
+#'   The \code{in_dex} argument should have the same length as the \code{x_ts}
+#'   time series. Finally the function \code{chart_xts()} plots the chart object
+#'   and returns it invisibly.
 #' @examples
-#' quantmod::chart_xts(env_etf$VTI["2015-11"],
+#' # plot candlestick chart with shading
+#' rutils::chart_xts(rutils::env_etf$VTI["2015-11"],
 #'   name="VTI in Nov 2015", ylim=c(102, 108),
-#'   in_dex=zoo::index(env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+#'   in_dex=zoo::index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+#' # plot two time series with custom line colors
+#' rutils::chart_xts(na.omit(cbind(rutils::env_etf$XLU[, 4],
+#'   rutils::env_etf$XLP[, 4])), col_ors=c("blue", "green"))
 
-chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
+chart_xts <- function(x_ts, col_ors=NULL, ylim=NULL, in_dex=NULL, ...) {
   stopifnot(inherits(x_ts, "xts"))
-# extract chob and modify ylim using accessor and setter functions
-  ch_ob <- chart_Series(x=x_ts, plot=FALSE, ...)
+  # pass color parameters into chart_Series() using chart_theme()
+  plot_theme <- quantmod::chart_theme()
+  if (!is.null(col_ors)) {
+    plot_theme$col$line.col <- col_ors
+  }  # end if
+  # extract chob chart object
+  ch_ob <- quantmod::chart_Series(x=x_ts,
+                                  theme=plot_theme,
+                                  plot=FALSE, ...)
+  # modify ylim using accessor and setter functions
   if (!is.null(ylim)) {
     y_lim <- ch_ob$get_ylim()
     y_lim[[2]] <- structure(ylim, fixed=TRUE)
@@ -755,7 +889,7 @@ chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
 #'   \code{getSymbols.yahoo()} to download the \emph{OHLC} prices, and performs
 #'   a similar operation to the function \code{getSymbols()} from package
 #'   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
-#'   But \code{get_symbols()} is faster (because it's more specialized), and is
+#'   But \code{get_symbols()} is faster (because it's more specialized), and it's
 #'   able to handle symbols like \emph{LOW}, which \code{getSymbols()} can't
 #'   handle because the function \code{Lo()} can't handle them. The
 #'   \code{start_date} and \code{end_date} must be either of class \emph{Date},
@@ -764,7 +898,7 @@ chart_xts <- function(x_ts, ylim=NULL, in_dex=NULL, ...) {
 #' @examples
 #' \dontrun{
 #' new_env <- new.env()
-#' get_symbols(sym_bols=c("MSFT", "XOM"),
+#' rutils::get_symbols(sym_bols=c("MSFT", "XOM"),
 #'             env_out=new_env,
 #'             start_date="2012-12-01",
 #'             end_date="2015-12-01")
@@ -775,19 +909,20 @@ get_symbols <- function(sym_bols,
                         start_date="2007-01-01",
                         end_date=Sys.Date()) {
   # download prices from YAHOO
-  quantmod::getSymbols.yahoo(sym_bols,
+  out_put <- quantmod::getSymbols.yahoo(sym_bols,
                              env=env_out,
                              from=start_date,
-                             to=end_date)
+                             to=end_date,
+                             adjust=TRUE)
   # adjust the OHLC prices and save back to env_out
-  out_put <- lapply(sym_bols,
-                    function(sym_bol) {
-                      assign(sym_bol,
-                             value=adjust_ohlc(get(sym_bol, envir=env_out)),
-                             envir=env_out)
-                      sym_bol
-                    }
-  )  # end lapply
+  # out_put <- lapply(sym_bols,
+  #                   function(sym_bol) {
+  #                     assign(sym_bol,
+  #                            value=adjust_ohlc(get(sym_bol, envir=env_out)),
+  #                            envir=env_out)
+  #                     sym_bol
+  #                   }
+  # )  # end lapply
   invisible(out_put)
 }  # end get_symbols
 
