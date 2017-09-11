@@ -304,34 +304,43 @@ adjust_ohlc <- function(oh_lc) {
 #' @param start_date the start date of the extracted time series data.
 #' @param end_date either the end date of the extracted time series data, or the
 #'   number of data rows to be extracted.
-#' @param cal_days \emph{Boolean} argument: if \code{TRUE} then extract the
-#'   given number of calendar days, else extract the given number of rows of
-#'   data. (default is \code{TRUE})
+#' @param get_rows \emph{Boolean} argument: if \code{TRUE} then extract the
+#'   given number of rows of data, else extract the given number of calendar
+#'   days. (default is \code{TRUE})
 #' @return An \emph{xts} time series with the same number of columns as the
 #'   input time series.
 #' @details The function \code{sub_set()} extracts an \emph{xts} sub-series
 #'   corresponding to the input dates.  If \code{end_date} is a date object or
 #'   a character string representing a date, then \code{sub_set()} performs
 #'   standard bracket subsetting using the package
-#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}. If
-#'   \code{end_date} is a positive number then \code{sub_set()} returns the
-#'   specified number of data rows from the future, and if it's negative then
-#'   it returns data rows from the past.
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
 #'
 #'   The rows of data don't necessarily correspond to consecutive calendar days
 #'   because of weekends and holidays.  For example, 10 consecutive rows of data
-#'   may correspond to 12 calendar days. So we must choose to extract either a
-#'   given number of calendar days (\code{cal_days=TRUE}) or a given number of
-#'   rows of data (\code{cal_days=FALSE}).
+#'   may correspond to 12 calendar days. So if \code{end_date} is a number, then
+#'   we must choose to extract either the given number of rows of data
+#'   (\code{get_rows=TRUE}) or the given number of calendar days
+#'   (\code{get_rows=FALSE}).
+#'
+#'   If \code{end_date} is a positive number then \code{sub_set()} returns the
+#'   specified number of data rows from the future, and if it's negative then it
+#'   returns the data rows from the past.
+#'
+#'   If \code{end_date} is a number, and either \code{start_date} or
+#'   \code{end_date} are outside the date range of \code{x_ts}, then
+#'   \code{sub_set()} extracts the maximum available range of \code{x_ts}.
+#'
 #' @examples
 #' # subset an xts time series using two dates
 #' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date="2015-01-10")
-#' # subset past data from an xts time series using a date and a negative number
+#' # extract 6 consecutive rows of data from the past, using a date and a negative number
 #' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6)
-#' # extract 6 consecutive rows of data from the past
-#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6, cal_days=FALSE)
+#' # extract 6 calendar days of data
+#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=6, get_rows=FALSE)
+#' # extract up to 100 consecutive rows of data
+#' rutils::sub_set(rutils::env_etf$VTI, start_date="2016-08-01", end_date=100)
 
-sub_set <- function(x_ts, start_date, end_date, cal_days=TRUE) {
+sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
   if (inherits(end_date, c("Date", "POSIXt", "character"))) {
     x_ts[paste(start_date, end_date, sep = "/")]
   } else if (is.numeric(end_date)) {
@@ -345,20 +354,24 @@ sub_set <- function(x_ts, start_date, end_date, cal_days=TRUE) {
       }
     }  # end if
     # extract either a number of calendar days or a number of rows of data
-    if (cal_days) {
-      # add numeric end_date to start_date to get the end_date as a date
-      if (end_date>0) {
-        x_ts[paste(start_date, start_date+end_date, sep = "/")]
-      } else {
-        x_ts[paste(start_date+end_date, start_date, sep = "/")]
-      }  # end if
-    } else {
+    if (get_rows) {
       # find the row number closest to start_date
       start_point <- findInterval(start_date, index(x_ts))
       if (start_date > index(x_ts[start_point])) {
         start_point <- start_point + 1
       }  # end if
-      x_ts[start_point:(start_point + end_date - sign(end_date))]
+      end_point <- (start_point + end_date - sign(end_date))
+      end_point <- max(1, min(end_point, NROW(x_ts)))
+      x_ts[start_point:end_point]
+    } else {
+      end_date <- start_date + end_date
+      end_date <- max(start(x_ts), min(end_date, end(x_ts)))
+      # add numeric end_date to start_date to get the end_date as a date
+      if (end_date > start_date) {
+        x_ts[paste(start_date, end_date, sep = "/")]
+      } else {
+        x_ts[paste(end_date, start_date, sep = "/")]
+      }  # end if
     }  # end if
   } else {  # end_date is neither a date nor a string
     warning(paste0("argument \"", deparse(substitute(end_date)), "\" must be either a date object or a string representing a date."))

@@ -5,7 +5,7 @@
 \title{Subset an \emph{xts} time series (extract an \emph{xts} sub-series
 corresponding to the input dates).}
 \usage{
-sub_set(x_ts, start_date, end_date, cal_days = TRUE)
+sub_set(x_ts, start_date, end_date, get_rows = TRUE)
 }
 \arguments{
 \item{x_ts}{an \emph{xts} time series.}
@@ -15,9 +15,9 @@ sub_set(x_ts, start_date, end_date, cal_days = TRUE)
 \item{end_date}{either the end date of the extracted time series data, or the
 number of data rows to be extracted.}
 
-\item{cal_days}{\emph{Boolean} argument: if \code{TRUE} then extract the
-given number of calendar days, else extract the given number of rows of
-data. (default is \code{TRUE})}
+\item{get_rows}{\emph{Boolean} argument: if \code{TRUE} then extract the
+given number of rows of data, else extract the given number of calendar
+days. (default is \code{TRUE})}
 }
 \value{
 An \emph{xts} time series with the same number of columns as the
@@ -32,23 +32,31 @@ The function \code{sub_set()} extracts an \emph{xts} sub-series
   corresponding to the input dates.  If \code{end_date} is a date object or
   a character string representing a date, then \code{sub_set()} performs
   standard bracket subsetting using the package
-  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}. If
-  \code{end_date} is a positive number then \code{sub_set()} returns the
-  specified number of data rows from the future, and if it's negative then
-  it returns data rows from the past.
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
 
   The rows of data don't necessarily correspond to consecutive calendar days
   because of weekends and holidays.  For example, 10 consecutive rows of data
-  may correspond to 12 calendar days. So we must choose to extract either a
-  given number of calendar days (\code{cal_days=TRUE}) or a given number of
-  rows of data (\code{cal_days=FALSE}).
+  may correspond to 12 calendar days. So if \code{end_date} is a number, then
+  we must choose to extract either the given number of rows of data
+  (\code{get_rows=TRUE}) or the given number of calendar days
+  (\code{get_rows=FALSE}).
+
+  If \code{end_date} is a positive number then \code{sub_set()} returns the
+  specified number of data rows from the future, and if it's negative then it
+  returns the data rows from the past.
+
+  If \code{end_date} is a number, and either \code{start_date} or
+  \code{end_date} are outside the date range of \code{x_ts}, then
+  \code{sub_set()} extracts the maximum available range of \code{x_ts}.
 }
 \examples{
 # subset an xts time series using two dates
 rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date="2015-01-10")
-# subset past data from an xts time series using a date and a negative number
+# extract 6 consecutive rows of data from the past, using a date and a negative number
 rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6)
-# extract 6 consecutive rows of data from the past
-rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6, cal_days=FALSE)
+# extract 6 calendar days of data
+rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=6, get_rows=FALSE)
+# extract up to 100 consecutive rows of data
+rutils::sub_set(rutils::env_etf$VTI, start_date="2016-08-01", end_date=100)
 }
 
