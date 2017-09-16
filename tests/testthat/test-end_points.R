@@ -1,12 +1,12 @@
 library(rutils)
 
-# define context for tests of function end_points()
-context("test end_points")
+# define context for tests of function calc_endpoints()
+context("test calc_endpoints")
 
-# test the type returned by end_points()
-test_that("end_points must be integer", {
-  expect_match(typeof(end_points(env_etf$VTI)), "integer")
+# test the type returned by calc_endpoints()
+test_that("calc_endpoints must be integer", {
+  expect_match(typeof(calc_endpoints(env_etf$VTI)), "integer")
 })
 
-# test the value returned by end_points()
-test_that("end_points value", expect_false(last(end_points(env_etf$VTI)) > NROW(env_etf$VTI)))
+# test the value returned by calc_endpoints()
+test_that("calc_endpoints value", expect_false(last(calc_endpoints(env_etf$VTI)) > NROW(env_etf$VTI)))
