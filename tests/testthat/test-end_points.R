@@ -4,8 +4,8 @@ library(rutils)
 context("test calc_endpoints")
 
 # test the type returned by calc_endpoints()
-test_that("calc_endpoints must be integer", {
-  expect_match(typeof(calc_endpoints(env_etf$VTI)), "integer")
+test_that("calc_endpoints must be numeric", {
+  expect_match(typeof(calc_endpoints(env_etf$VTI)), "numeric")
 })
 
 # test the value returned by calc_endpoints()
