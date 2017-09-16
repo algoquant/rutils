@@ -38,13 +38,15 @@ The function \code{to_period()} performs a similar aggregation as
   explicitly, then the \code{period} argument is ignored.
 }
 \examples{
-# define end points at 10-minute intervals (SPY is minutely bars)
-end_points <- rutils::calc_endpoints(SPY["2009"], inter_val=10)
+\dontrun{
+# define end points at 10-minute intervals (HighFreq::SPY is minutely bars)
+end_points <- rutils::calc_endpoints(HighFreq::SPY["2009"], inter_val=10)
 # aggregate over 10-minute end_points:
-rutils::to_period(oh_lc=SPY["2009"], end_points=end_points)
+rutils::to_period(oh_lc=HighFreq::SPY["2009"], end_points=end_points)
 # aggregate over days:
-rutils::to_period(oh_lc=SPY["2009"], period="days")
+rutils::to_period(oh_lc=HighFreq::SPY["2009"], period="days")
 # equivalent to:
-to.period(x=SPY["2009"], period="days", name=rutils::na_me(SPY))
+to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::na_me(SPY))
+}
 }
 

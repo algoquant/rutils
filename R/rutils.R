@@ -54,38 +54,41 @@ get_name <- function(str_ing, separator="_", field=1) {
 
 
 
-#' Calculate an index (integer vector) of equally spaced end points for a time
-#' series.
+#' Calculate a vector of equally spaced end points along the elements of a
+#' vector, matrix, or time series.
 #'
 #' @export
-#' @param x_ts vector or time series.
-#' @param inter_val the number of data points per interval.
-#' @param off_set the number of data points in the first interval (stub
-#'   interval).
-#' @return An \emph{integer} vector of equally spaced end points.
-#' @details The end points divide the time series into equally spaced intervals.
-#'   The \code{off_set} argument shifts the end points forward and creates an
-#'   initial stub interval.
+#' @param x_ts vector, matrix, or time series.
+#' @param inter_val the number of elements between neighboring end points.
+#' @param stub_front \emph{Boolean} argument: if \code{TRUE} then add a stub
+#'   interval at the beginning, else add a stub interval at the end.
+#' @return An \emph{integer} vector of equally spaced end points (vector of
+#'   integers).
+#' @details The end points are a vector of integers which divide the elements
+#'   (rows) of \code{x_ts} into equally spaced intervals.  If a whole number of
+#'   inter_vals doesn't fit over the rows of \code{x_ts}, then add a stub
+#'   interval either at the beginning or at the end.
 #' @examples
 #' # calculate end points with initial stub interval
-#' rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=7, off_set=4)
+#' rutils::calc_endpoints(1:100, inter_val=11)
+#' # calculate end points with a stub interval at the end
+#' rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=365, stub_front=FALSE)
 
-calc_endpoints <- function(x_ts, inter_val=10, off_set=0) {
-  if (off_set >= inter_val)
-    stop("off_set must be less than inter_val")
+calc_endpoints <- function(x_ts, inter_val=10, stub_front=TRUE) {
 # calculate number of inter_vals that fit over x_ts
   n_row <- NROW(x_ts)
   num_agg <- n_row %/% inter_val
-  end_points <- off_set + inter_val*(0:(num_agg+1))
-  if (off_set > 0)
-    end_points <- c(0, end_points)
-  if (xts::last(end_points) > n_row)
-    end_points <- end_points[-NROW(end_points)]
-  if (xts::last(end_points) > n_row)
-    end_points <- end_points[-NROW(end_points)]
-  if (xts::last(end_points) < n_row)
-    end_points <- c(end_points, n_row)
-  as.integer(end_points)
+  end_points <- (0:num_agg)*inter_val
+  if (n_row > inter_val*num_agg) {
+    # need to add stub interval
+    if (stub_front)
+      # stub interval at beginning
+      end_points <- c(0, n_row - num_agg*inter_val + end_points)
+    else
+      # stub interval at end
+      end_points <- c(end_points, n_row)
+  }  # end if
+  end_points
 }  # end calc_endpoints
 
 
@@ -209,14 +212,16 @@ na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) 
 #'   perform the actual aggregations.  If \code{end_points} are passed in
 #'   explicitly, then the \code{period} argument is ignored.
 #' @examples
-#' # define end points at 10-minute intervals (SPY is minutely bars)
-#' end_points <- rutils::calc_endpoints(SPY["2009"], inter_val=10)
+#' \dontrun{
+#' # define end points at 10-minute intervals (HighFreq::SPY is minutely bars)
+#' end_points <- rutils::calc_endpoints(HighFreq::SPY["2009"], inter_val=10)
 #' # aggregate over 10-minute end_points:
-#' rutils::to_period(oh_lc=SPY["2009"], end_points=end_points)
+#' rutils::to_period(oh_lc=HighFreq::SPY["2009"], end_points=end_points)
 #' # aggregate over days:
-#' rutils::to_period(oh_lc=SPY["2009"], period="days")
+#' rutils::to_period(oh_lc=HighFreq::SPY["2009"], period="days")
 #' # equivalent to:
-#' to.period(x=SPY["2009"], period="days", name=rutils::na_me(SPY))
+#' to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::na_me(SPY))
+#' }
 
 to_period <- function(oh_lc,
                       period="minutes", k=1,

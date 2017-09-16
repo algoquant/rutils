@@ -55,7 +55,7 @@ env_etf$sym_bols
 # get first six rows of VTI prices
 head(env_etf$VTI)
 # plot
-chart_Series(x=env_etf$VTI["2009-11"])
+quantmod::chart_Series(x=env_etf$VTI["2009-11"])
 ```
 
 
@@ -72,7 +72,7 @@ env_etf <- new.env()
 get_symbols("XOM", env_out=env_etf, start_date="1990-01-01")
 # plot
 x11()
-chart_Series(x=env_etf$XOM["2016/"], TA="add_Vo()", name="XOM stock")
+quantmod::chart_Series(x=env_etf$XOM["2016/"], TA="add_Vo()", name="XOM stock")
 ```
 
 

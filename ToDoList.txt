@@ -32,10 +32,6 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 + [ ] create locally a package description in HTML format and upload it to gh-pages branch  
 
-+ [ ] change endpoints calculation in function end_points() to without the extra 0 at beginning ?
-
-+ [ ] create function do_call_cbind() ? 
-
 + [ ] add qmao functions: ?
 gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
@@ -124,6 +120,10 @@ http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-pack
 
 
 ### tasks deprecated
+
++ [ ] create function do_call_cbind() - do_call(cbind, foo) is good enough
+
++ [ ] change endpoints calculation in function calc_endpoints() to without the extra 0 at beginning - no need to do that
 
 + [ ] rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
 

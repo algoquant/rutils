@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jerzy Pawlowski (algoquant)" />
 
-<meta name="date" content="2017-09-09" />
+<meta name="date" content="2017-09-12" />
 
 <title>rutils Package for Simplifying Financial Data Management and Modeling</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">rutils Package for Simplifying Financial Data Management and Modeling</h1>
 <h4 class="author"><em>Jerzy Pawlowski (algoquant)</em></h4>
-<h4 class="date"><em>2017-09-09</em></h4>
+<h4 class="date"><em>2017-09-12</em></h4>
 
 
 
@@ -107,6 +107,25 @@ The <em>rutils</em> package contains functions for:</p>
 <div id="data" class="section level3">
 <h3>Data</h3>
 <p>The <em>rutils</em> package contains a dataset of daily <em>OHLC</em> time series in <em>xts</em> format, for a portfolio of stock (ETF) symbols. The time series are contained in an environment called <em>env_etf</em>. The data is set up for lazy loading, so it doesn’t require calling <code>data(etf_data)</code> to load it before being able to call it.</p>
+<pre><code>## Loading required package: xts</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: 'zoo'</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre><code>## Loading required package: quantmod</code></pre>
+<pre><code>## Loading required package: TTR</code></pre>
+<pre><code>## Version 0.4-0 included new data defaults. See ?getSymbols.</code></pre>
+<pre><code>## Loading required package: RcppRoll</code></pre>
+<pre><code>## 
+## Attaching package: 'rutils'</code></pre>
+<pre><code>## The following objects are masked from 'package:RcppRoll':
+## 
+##     roll_max, roll_sum</code></pre>
+<pre><code>## The following object is masked from 'package:xts':
+## 
+##     to_period</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># show list of ETF time series in env_etf</span>
 env_etf$sym_bols</code></pre></div>
 <pre><code>##  [1] &quot;VTI&quot; &quot;VEU&quot; &quot;IEF&quot; &quot;VNQ&quot; &quot;DBC&quot; &quot;VXX&quot; &quot;XLY&quot; &quot;XLP&quot; &quot;XLE&quot; &quot;XLF&quot; &quot;XLV&quot;
@@ -121,7 +140,7 @@ env_etf$sym_bols</code></pre></div>
 ## 2007-01-09 57.89698 57.89698 57.46244  57.78524     267000     57.78524
 ## 2007-01-10 57.59901 57.97975 57.51210  57.91353     359200     57.91353</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot</span>
-<span class="kw">chart_Series</span>(<span class="dt">x=</span>env_etf$VTI[<span class="st">&quot;2009-11&quot;</span>])</code></pre></div>
+quantmod::<span class="kw">chart_Series</span>(<span class="dt">x=</span>env_etf$VTI[<span class="st">&quot;2009-11&quot;</span>])</code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>========</p>
 </div>
@@ -135,7 +154,7 @@ env_etf &lt;-<span class="st"> </span><span class="kw">new.env</span>()
 <span class="kw">get_symbols</span>(<span class="st">&quot;XOM&quot;</span>, <span class="dt">env_out=</span>env_etf, <span class="dt">start_date=</span><span class="st">&quot;1990-01-01&quot;</span>)
 <span class="co"># plot</span>
 <span class="kw">x11</span>()
-<span class="kw">chart_Series</span>(<span class="dt">x=</span>env_etf$XOM[<span class="st">&quot;2016/&quot;</span>], <span class="dt">TA=</span><span class="st">&quot;add_Vo()&quot;</span>, <span class="dt">name=</span><span class="st">&quot;XOM stock&quot;</span>)</code></pre></div>
+quantmod::<span class="kw">chart_Series</span>(<span class="dt">x=</span>env_etf$XOM[<span class="st">&quot;2016/&quot;</span>], <span class="dt">TA=</span><span class="st">&quot;add_Vo()&quot;</span>, <span class="dt">name=</span><span class="st">&quot;XOM stock&quot;</span>)</code></pre></div>
 <p>Extract the name of an <em>OHLC</em> time series from its first column name:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get name for VTI</span>
 <span class="kw">na_me</span>(env_etf$VTI)</code></pre></div>

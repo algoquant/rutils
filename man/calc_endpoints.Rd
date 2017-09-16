@@ -2,33 +2,37 @@
 % Please edit documentation in R/rutils.R
 \name{calc_endpoints}
 \alias{calc_endpoints}
-\title{Calculate an index (integer vector) of equally spaced end points for a time
-series.}
+\title{Calculate a vector of equally spaced end points along the elements of a
+vector, matrix, or time series.}
 \usage{
-calc_endpoints(x_ts, inter_val = 10, off_set = 0)
+calc_endpoints(x_ts, inter_val = 10, stub_front = TRUE)
 }
 \arguments{
-\item{x_ts}{vector or time series.}
+\item{x_ts}{vector, matrix, or time series.}
 
-\item{inter_val}{the number of data points per interval.}
+\item{inter_val}{the number of elements between neighboring end points.}
 
-\item{off_set}{the number of data points in the first interval (stub
-interval).}
+\item{stub_front}{\emph{Boolean} argument: if \code{TRUE} then add a stub
+interval at the beginning, else add a stub interval at the end.}
 }
 \value{
-An \emph{integer} vector of equally spaced end points.
+An \emph{integer} vector of equally spaced end points (vector of
+  integers).
 }
 \description{
-Calculate an index (integer vector) of equally spaced end points for a time
-series.
+Calculate a vector of equally spaced end points along the elements of a
+vector, matrix, or time series.
 }
 \details{
-The end points divide the time series into equally spaced intervals.
-  The \code{off_set} argument shifts the end points forward and creates an
-  initial stub interval.
+The end points are a vector of integers which divide the elements
+  (rows) of \code{x_ts} into equally spaced intervals.  If a whole number of
+  inter_vals doesn't fit over the rows of \code{x_ts}, then add a stub
+  interval either at the beginning or at the end.
 }
 \examples{
 # calculate end points with initial stub interval
-rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=7, off_set=4)
+rutils::calc_endpoints(1:100, inter_val=11)
+# calculate end points with a stub interval at the end
+rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=365, stub_front=FALSE)
 }
 
