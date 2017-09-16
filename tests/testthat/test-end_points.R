@@ -5,8 +5,8 @@ context("test calc_endpoints")
 
 # test the type returned by calc_endpoints()
 test_that("calc_endpoints must be numeric", {
-  expect_match(typeof(calc_endpoints(env_etf$VTI)), "numeric")
+  expect_match(class(calc_endpoints(1:100, 11)), "numeric")
 })
 
 # test the value returned by calc_endpoints()
-test_that("calc_endpoints value", expect_false(last(calc_endpoints(env_etf$VTI)) > NROW(env_etf$VTI)))
+test_that("calc_endpoints value", expect_false(last(calc_endpoints(1:100, 11)) > NROW(1:100)))
