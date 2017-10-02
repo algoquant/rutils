@@ -26,12 +26,12 @@ is much faster and uses less memory. The function \code{do_call()} is a
 generalization of function \code{do_call_rbind()}.
 }
 \details{
-Performs lapply loop, each time binding neighboring elements and
-  dividing the length of \code{li_st} by half. The result of performing
-  \code{do_call(rbind, list_xts)} on a list of \emph{xts} time series is
-  identical to performing \code{do.call(rbind, list_xts)}. But
-  \code{do.call(rbind, list_xts)} is very slow, and often causes an
-  \sQuote{out of memory} error.
+The function \code{do_call()} performs an lapply loop, each time
+  binding neighboring elements and dividing the length of \code{li_st} by
+  half. The result of performing \code{do_call(rbind, list_xts)} on a list of
+  \emph{xts} time series is identical to performing \code{do.call(rbind,
+  list_xts)}. But \code{do.call(rbind, list_xts)} is very slow, and often
+  causes an \sQuote{out of memory} error.
 }
 \examples{
 # create xts time series

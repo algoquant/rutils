@@ -9,7 +9,7 @@ lag_xts(x_ts, lag = 1, ...)
 \arguments{
 \item{x_ts}{an \emph{xts} time series.}
 
-\item{lag}{integer equal to the number of time periods of lag. (default is 1)}
+\item{lag}{integer equal to the number of time periods of lag (default is 1).}
 
 \item{...}{additional arguments to function \code{xts::lag_xts()}.}
 }

@@ -2,45 +2,57 @@
 % Please edit documentation in R/rutils.R
 \name{chart_xts}
 \alias{chart_xts}
-\title{Plot an \emph{xts} time series with custom line colors, y-axis range, and
-with vertical background shading.}
+\title{Plot either a line plot or a candlestick plot of an \emph{xts} time series,
+with custom line colors, y-axis range, and with vertical background shading.}
 \usage{
-chart_xts(x_ts, col_ors = NULL, ylim = NULL, in_dex = NULL, ...)
+chart_xts(x_ts, col_ors = NULL, ylim = NULL, in_dic = NULL, x_11 = TRUE,
+  ...)
 }
 \arguments{
-\item{x_ts}{\emph{xts} time series.}
+\item{x_ts}{An \emph{xts} time series or an \emph{OHLC} time series.}
 
-\item{col_ors}{vector of \emph{strings} with the custom line colors.}
+\item{col_ors}{A vector of \emph{strings} with the custom line colors.}
 
-\item{ylim}{\emph{numeric} vector with two elements containing the y-axis
+\item{ylim}{A \emph{numeric} vector with two elements containing the y-axis
 range.}
 
-\item{in_dex}{\emph{Boolean} vector or \emph{xts} time series for specifying
-the shading areas, with TRUE indicating "lightgreen" shading, and FALSE
-indicating "lightgrey" shading.}
+\item{in_dic}{A \emph{Boolean} vector or \emph{xts} time series for
+specifying the shading areas, with TRUE indicating "lightgreen" shading,
+and FALSE indicating "antiquewhite" shading.}
+
+\item{x_11}{\emph{Boolean} argument: if \code{TRUE} then open x11 window for
+plotting, else plot in standard window (default is \code{TRUE}).}
 
 \item{...}{additional arguments to function \code{chart_Series()}.}
 }
 \value{
-A chart object \emph{chob} returned invisibly.
+A \code{chart_Series()} object returned invisibly.
 }
 \description{
 A wrapper for function \code{chart_Series()} from package
 \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 }
 \details{
-Extracts the chart object and modifies its \emph{ylim} parameter
-  using accessor and setter functions. It also adds background shading
-  specified by the \code{in_dex} argument, using function \code{add_TA()}.
-  The \code{in_dex} argument should have the same length as the \code{x_ts}
-  time series. Finally the function \code{chart_xts()} plots the chart object
-  and returns it invisibly.
+The function \code{chart_xts()} plots a line plot of a \emph{xts}
+  time series, or a candlestick plot if \emph{x_ts} is a \emph{OHLC} time
+  series. The function \code{chart_xts()} plots with custom line colors and
+  vertical background shading, using the function \code{chart_Series()} from
+  package
+  \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
+  By default \code{chart_xts()} opens and plots in an x11 window.
+
+  The function \code{chart_xts()} extracts the \code{chart_Series()} chart
+  object and modifies its \emph{ylim} parameter using accessor and setter
+  functions. It also adds background shading specified by the \code{in_dic}
+  argument, using function \code{add_TA()}. The \code{in_dic} argument should
+  have the same length as the \code{x_ts} time series. Finally the function
+  \code{chart_xts()} plots the chart object and returns it invisibly.
 }
 \examples{
 # plot candlestick chart with shading
 rutils::chart_xts(rutils::env_etf$VTI["2015-11"],
   name="VTI in Nov 2015", ylim=c(102, 108),
-  in_dex=zoo::index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+  in_dic=zoo::index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
 # plot two time series with custom line colors
 rutils::chart_xts(na.omit(cbind(rutils::env_etf$XLU[, 4],
   rutils::env_etf$XLP[, 4])), col_ors=c("blue", "green"))

@@ -2,44 +2,64 @@
 % Please edit documentation in R/rutils.R
 \name{get_col}
 \alias{get_col}
-\title{Extract columns of data from an \emph{OHLC} time series using column field
+\title{Extract columns of data from \emph{OHLC} time series using column field
 names.}
 \usage{
-get_col(oh_lc, field_name = "Close")
+get_col(oh_lc, field_name = "Close", data_env = NULL)
 }
 \arguments{
-\item{oh_lc}{an \emph{OHLC} time series.}
+\item{oh_lc}{An \emph{OHLC} time series in \emph{xts} format, or a vector of
+\emph{character} strings with the names of \emph{OHLC} time series.}
 
-\item{field_name}{string with the field name of the column to be be extracted.
-(default is \emph{Close})}
+\item{field_name}{A vector of strings with the field names of the columns to
+be be extracted (default is \emph{"Close"}).}
+
+\item{data_env}{The environment containing \emph{OHLC} time series (default
+is \emph{NULL}).}
 }
 \value{
-The specified columns of the \emph{OHLC} time series in a single
-  \emph{xts} series, with the same number of rows as the input time series.
+The specified columns of the \emph{OHLC} time series bound into a
+  single \emph{xts} time series, with the same number of rows as the input
+  time series.
 }
 \description{
-Extract columns of data from an \emph{OHLC} time series using column field
+Extract columns of data from \emph{OHLC} time series using column field
 names.
 }
 \details{
-Extracts columns from an \emph{OHLC} time series by partially
-  matching field names with column names. The \emph{OHLC} column names are
-  assumed to be in the format \code{"symbol.field_name"}, for example
-  \code{"VTI.Close"}. Performs a similar operation to the extractor functions
-  \code{Op()}, \code{Hi()}, \code{Lo()}, \code{Cl()}, and \code{Vo()}, from
-  package
+The function \code{get_col()} extracts columns from \emph{OHLC} time
+  series and binds them into a single \emph{xts} time series.
+  \code{get_col()} can extract columns from a single \emph{xts} time series,
+  or from multiple time series.
+
+  The function \code{get_col()} extracts columns by partially matching field
+  names with column names. The \emph{OHLC} column names are assumed to be in
+  the format \code{"symbol.field_name"}, for example \code{"VTI.Close"}.
+
+  In the simplest case when \code{oh_lc} is a single \emph{xts} time series
+  and \emph{field_name} is a single string, the function \code{get_col()}
+  performs a similar operation to the extractor functions \code{Op()},
+  \code{Hi()}, \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
-   But \code{get_col()} is able to handle symbols like \emph{LOW}, which the
+  But \code{get_col()} is able to handle symbols like \emph{LOW}, which the
   function \code{Lo()} can't handle. The field_name argument is partially
   matched, for example "Vol" is matched to \code{Volume} (but it's case
   sensitive).
+
+  In the case when \code{oh_lc} is a vector of strings with the names of
+  \emph{OHLC} time series, the function \code{get_col()} reads the
+  \emph{OHLC} time series from the environment \code{data_env}, extracts the
+  specified columns, and binds them into a single \emph{xts} time series.
 }
 \examples{
 # get close prices for VTI
 rutils::get_col(rutils::env_etf$VTI)
 # get volumes for VTI
-rutils::get_col(rutils::env_etf$VTI, "Vol")
+rutils::get_col(rutils::env_etf$VTI, field_name="Vol")
 # get close prices and volumes for VTI
-rutils::get_col(rutils::env_etf$VTI, c("Cl", "Vol"))
+rutils::get_col(rutils::env_etf$VTI, field_name=c("Cl", "Vol"))
+# get close prices and volumes for VTI and IEF
+rutils::get_col(oh_lc=c("VTI", "IEF"), field_name=c("Cl", "Vol"),
+  data_env=rutils::env_etf)
 }
 

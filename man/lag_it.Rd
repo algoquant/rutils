@@ -9,7 +9,7 @@ lag_it(in_put, lag = 1)
 \arguments{
 \item{in_put}{a \emph{numeric} vector or matrix.}
 
-\item{lag}{integer equal to the number of time periods of lag. (default is 1)}
+\item{lag}{integer equal to the number of time periods of lag (default is 1).}
 }
 \value{
 A vector or matrix with the same dimensions as the input object.

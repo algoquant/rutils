@@ -88,7 +88,7 @@ chart_Series(x=env_etf$VTI["2009-11"])
 Extract the name of an *OHLC* time series from its first column name:  
 ```{r eval=FALSE}
 # get name for VTI
-na_me(env_etf$VTI)
+get_name(colnames(rutils::env_etf$VTI)[1])
 ```
 <br>
 

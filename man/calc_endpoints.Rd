@@ -5,15 +5,17 @@
 \title{Calculate a vector of equally spaced end points along the elements of a
 vector, matrix, or time series.}
 \usage{
-calc_endpoints(x_ts, inter_val = 10, stub_front = TRUE)
+calc_endpoints(x_ts, inter_val, stub_front = TRUE)
 }
 \arguments{
-\item{x_ts}{vector, matrix, or time series.}
+\item{x_ts}{A vector, matrix, or time series.}
 
-\item{inter_val}{the number of elements between neighboring end points.}
+\item{inter_val}{The number of elements between neighboring end points. or a
+\emph{string} representing a time period (minutes, hours, days, etc.)}
 
 \item{stub_front}{\emph{Boolean} argument: if \code{TRUE} then add a stub
-interval at the beginning, else add a stub interval at the end.}
+interval at the beginning, else add a stub interval at the end.  (default
+is \code{TRUE})}
 }
 \value{
 An \emph{integer} vector of equally spaced end points (vector of
@@ -25,14 +27,30 @@ vector, matrix, or time series.
 }
 \details{
 The end points are a vector of integers which divide the elements
-  (rows) of \code{x_ts} into equally spaced intervals.  If a whole number of
-  inter_vals doesn't fit over the rows of \code{x_ts}, then add a stub
-  interval either at the beginning or at the end.
+  (rows) of \code{x_ts} into equally spaced intervals.
+  If \code{inter_val} is an \emph{integer} then \code{calc_endpoints()}
+  calculates the number of whole intervals that fit over the elements (rows)
+  of \code{x_ts}.
+  If a whole number of intervals doesn't fit over the elements (rows) of
+  \code{x_ts}, then \code{calc_endpoints()} adds a stub interval either at
+  the beginning (the default) or at the end.
+
+  The function \code{calc_endpoints()} is a generalization of function
+  \code{endpoints()} from package
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, since
+  \code{inter_val} can accept both \emph{integer} and \emph{string} values.
+
+  If \code{inter_val} is a \emph{string} representing a time period (minutes,
+  hours, days, etc.), then \code{calc_endpoints()} simply calls the function
+  \code{endpoints()} from package
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
 }
 \examples{
 # calculate end points with initial stub interval
 rutils::calc_endpoints(1:100, inter_val=11)
 # calculate end points with a stub interval at the end
 rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=365, stub_front=FALSE)
+# calculate end points at the end of every hour
+rutils::calc_endpoints(rutils::env_etf$VTI, inter_val="hours")
 }
 

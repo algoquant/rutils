@@ -2,38 +2,44 @@
 % Please edit documentation in R/rutils.R
 \name{get_name}
 \alias{get_name}
-\title{Extract a symbol name (ticker) from a \emph{character} string.}
+\title{Extract symbol names (tickers) from a vector of \emph{character} strings.}
 \usage{
-get_name(str_ing, separator = "_", field = 1)
+get_name(str_ing, sepa_rator = "[.]", field = 1)
 }
 \arguments{
-\item{str_ing}{a vector of \emph{character} strings containing symbol names.}
+\item{str_ing}{A vector of \emph{character} strings containing symbol names.}
 
-\item{separator}{the name separator, i.e. the single \emph{character} that
-separates the symbol name from the rest of the string. (default is "_")}
+\item{sepa_rator}{The name separator, i.e. the single \emph{character} that
+separates the symbol name from the rest of the string (default is "[.]").}
 
-\item{field}{the position of the name in the string, i.e. the integer index
-of the field to be extracted.  (default is \code{1}, i.e. the name is at
+\item{field}{The position of the name in the string, i.e. the integer index
+of the field to be extracted (default is \code{1}, i.e. the name is at
 the beginning of the string,)}
 }
 \value{
-A vector of \emph{strings} with the names of objects.
+A vector of \emph{character} \emph{strings} containing symbol names.
 }
 \description{
-Extract a symbol name (ticker) from a \emph{character} string.
+Extract symbol names (tickers) from a vector of \emph{character} strings.
 }
 \details{
-Extracts the symbol name from a \emph{character} string. For
-  example, it extracts the name "XLU" from the string "XLU_2017_09_05.csv".
-  The input string is assumed to be in the format "\emph{name}_date.csv",
-  with the name at the beginning of the string, but \code{get_name()} can
-  also parse the name from other string formats as well.  If the input is a
-  vector of strings, then \code{get_name()} returns a vector of names.
+The function \code{get_name()} extracts the symbol names (tickers)
+  from a vector of \emph{character} strings. If the input is a vector of
+  strings, then \code{get_name()} returns a vector of names.
+
+  The input string is assumed to be in the format "\emph{name}.csv", with the
+  name at the beginning of the string, but \code{get_name()} can also parse
+  the name from other string formats as well. For example, it extracts the
+  name "VTI" from the string "VTI.Close", or it extracts the name "XLU" from
+  the string "XLU_2017_09_05.csv" (with \code{sepa_rator="_"}).
 }
 \examples{
-# extract the ticker symbol from file names
-rutils::get_name("XLU_2017_09_05.csv")
+# extract symbols "XLU" and"XLP" from file names
+rutils::get_name(c("XLU.csv", "XLP.csv"))
+# extract symbols from file names
+rutils::get_name("XLU_2017_09_05.csv", sep="_")
 rutils::get_name("XLU 2017 09 05.csv", sep=" ")
-rutils::get_name("XLU.csv", sep="[.]")
+# extract fields "Open", "High", "Low", "Close" from column names
+rutils::get_name(colnames(rutils::env_etf$VTI), field=2)
 }
 

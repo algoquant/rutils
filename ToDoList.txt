@@ -38,6 +38,24 @@ gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
 
++ [x] modify function chart_xts(): by default open x11() window for plotting, similar to chart_xts2y()  
+
++ [x] add to function get_col() feature for extracting columns from multiple time series data in an environment, and cbinding the columns into a single xts  
+
++ [x] rename function get_symbols() to get_data() 
+merge load_env() into get_data()
+Add feature for loading time series data from csv files into an environment.
+
++ [x] merge function na_me() into get_name(), and simplify function get_name()  
+
++ [x] add function chart_xts2y() for plotting two time series with two y-axes
+
++ [x] add function chart_dygraph() for plotting dygraphs with background shading
+
++ [x] add function chart_dygraph2y() for plotting two time series with two "y" axes
+
++ [x] replace "win_dow" with "look_back"
+
 + [x] Create function sub_set() to subset time series.
 sub_set() should accept as inputs a time series, a start date, and either an end date or the number of data points to be returned.  If a positive number is passed to sub_set(), then it should return data points from the future, and if a negative is passed then it should return data points from the past.  If a date is passed to sub_set() then it should return the usual subset from start date to end date.
 
@@ -54,7 +72,7 @@ get_name() <- function(str_ing, separator="_", field=1) strsplit(str_ing split=s
 
 + [x] add to function chart_xts() argument col_ors to pass line color parameters into chart_Series(): 
 
-+ [x] modify roll_sum() so that it can also accept a vector or matrix
++ [x] modify function roll_sum() so that it can also accept a vector or matrix
 
 + [x] create function do_call()  
 

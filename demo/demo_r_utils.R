@@ -41,14 +41,14 @@ output_dir <- "C:/Develop/data/hfreq/scrub/"
 
 ### extractors
 # extract the name of the time series from its column name
-na_me(env_etf$VTI)
+get_name(colnames(rutils::env_etf$VTI)[1])
 
 # extract close prices
-foo <- clo_se(env_etf$VTI)
+price_s <- get_col(env_etf$VTI)
 # extract high prices
-foo <- clo_se(env_etf$VTI, which_col="High")
+price_s <- get_col(env_etf$VTI, field_name="High")
 # produces error
-foo <- clo_se(env_etf$VTI, which_col="blah")
+price_s <- get_col(env_etf$VTI, field_name="blah")
 
 
 ### do_call_rbind()
@@ -84,14 +84,14 @@ assign("price_s", do.call(merge,
 do_call_assign(
   func_tion=function(x_ts) {
     x_ts <- Cl(x_ts)
-    colnames(x_ts) <- na_me(x_ts)
+    colnames(x_ts) <- rutils::get_name(colnames(x_ts))
     x_ts},
   sym_bols=env_etf$sym_bols,
   out_put="price_s2",
   env_in=env_etf, env_out=new_env)
-# perform do_call_assign() using function clo_se()
+# perform do_call_assign() using function get_col()
 do_call_assign(
-  func_tion=clo_se,
+  func_tion=get_col,
   sym_bols=env_etf$sym_bols,
   out_put="price_s2",
   env_in=env_etf, env_out=new_env)

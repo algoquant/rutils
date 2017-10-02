@@ -31,10 +31,11 @@ Apply a function to a list of objects, merge the outputs into a single
 object, and assign the object to the output environment.
 }
 \details{
-Performs an lapply loop over \code{sym_bols}, applies the function
-  \code{func_tion()}, merges the outputs into a single object, and creates
-  the object in the environment \code{env_out}.  The output object is created
-  as a side effect, while its name is returned invisibly.
+The function \code{do_call_assign()} performs an lapply loop over
+  \code{sym_bols}, applies the function \code{func_tion()}, merges the
+  outputs into a single object, and creates the object in the environment
+  \code{env_out}.  The output object is created as a side effect, while its
+  name is returned invisibly.
 }
 \examples{
 new_env <- new.env()

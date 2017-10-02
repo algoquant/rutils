@@ -17,7 +17,7 @@ number of data rows to be extracted.}
 
 \item{get_rows}{\emph{Boolean} argument: if \code{TRUE} then extract the
 given number of rows of data, else extract the given number of calendar
-days. (default is \code{TRUE})}
+days (default is \code{TRUE}).}
 }
 \value{
 An \emph{xts} time series with the same number of columns as the

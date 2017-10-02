@@ -8,17 +8,17 @@ them.}
 na_locf(in_put, from_last = FALSE, na_rm = FALSE, max_gap = NROW(in_put))
 }
 \arguments{
-\item{in_put}{\emph{numeric} or \emph{Boolean} vector or matrix, or \emph{xts}
-time series.}
+\item{in_put}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\emph{xts} time series.}
 
 \item{from_last}{\emph{Boolean} argument: should \emph{non-NA} values be
 carried backward rather than forward? (default is \code{FALSE})}
 
-\item{na_rm}{\emph{Boolean} argument: should an remaining (leading or
+\item{na_rm}{\emph{Boolean} argument: should any remaining (leading or
 trailing) \emph{NA} values be removed? (default is \code{FALSE})}
 
-\item{max_gap}{\emph{integer} the maximum number of neighboring \emph{NA}
-values that can be replaced.}
+\item{max_gap}{The maximum number of neighboring \emph{NA} values that can be
+replaced (default is \code{NROW(in_put)}).}
 }
 \value{
 A vector, matrix, or \emph{xts} time series with the same dimensions
