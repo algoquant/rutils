@@ -12,7 +12,9 @@ Depends:
     xts, 
     quantmod, 
     RcppRoll, 
-Suggests: knitr,
+    dygraphs
+Suggests: 
+    knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr

@@ -207,12 +207,12 @@ na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) 
 #' calculates the \emph{OHLC} prices at lower periodicity (say minutes).
 #'
 #' @export
-#' @param oh_lc an \emph{OHLC} time series of prices in \emph{xts} format.
+#' @param oh_lc An \emph{OHLC} time series of prices in \emph{xts} format.
 #' @param period aggregation interval ("seconds", "minutes", "hours", "days",
 #'   "weeks", "months", "quarters", and "years").
-#' @param k number of periods to aggregate over (for example if period="minutes"
-#'   and k=2, then aggregate over two minute intervals.)
-#' @param end_points an integer vector of end points.
+#' @param k The number of periods to aggregate over (for example if
+#'   period="minutes" and k=2, then aggregate over two minute intervals.)
+#' @param end_points An integer vector of end points.
 #'
 #' @return A \emph{OHLC} time series of prices in \emph{xts} format, with a
 #'   lower periodicity defined by the end_points.
@@ -338,14 +338,14 @@ get_col <- function(oh_lc, field_name="Close", data_env=NULL) {
 #' column.
 #'
 #' @export
-#' @param oh_lc an \emph{OHLC} time series of prices in \emph{xts} format.
+#' @param oh_lc An \emph{OHLC} time series of prices in \emph{xts} format.
 #'
 #' @return An \emph{OHLC} time series with the same dimensions as the input
 #'   series.
 #'
 #' @details Adjusts the first four \emph{OHLC} price columns by multiplying them
-#'   by the ratio of the "adjusted" (sixth) price column, divided by the \emph{Close}
-#'   (fourth) price column.
+#'   by the ratio of the "adjusted" (sixth) price column, divided by the
+#'   \emph{Close} (fourth) price column.
 #'
 #' @examples
 #' # adjust VTI prices
@@ -364,9 +364,9 @@ adjust_ohlc <- function(oh_lc) {
 #' corresponding to the input dates).
 #'
 #' @export
-#' @param x_ts an \emph{xts} time series.
-#' @param start_date the start date of the extracted time series data.
-#' @param end_date either the end date of the extracted time series data, or the
+#' @param x_ts An \emph{xts} time series.
+#' @param start_date The start date of the extracted time series data.
+#' @param end_date The end date of the extracted time series data, or the
 #'   number of data rows to be extracted.
 #' @param get_rows \emph{Boolean} argument: if \code{TRUE} then extract the
 #'   given number of rows of data, else extract the given number of calendar
@@ -452,16 +452,17 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' Apply a lag to a \emph{numeric} vector or matrix.
 #'
 #' @export
-#' @param in_put a \emph{numeric} vector or matrix.
-#' @param lag integer equal to the number of time periods of lag (default is 1).
+#' @param in_put A \emph{numeric} vector or matrix.
+#' @param lagg An integer equal to the number of time periods of lag (default is
+#'   1).
 #'
 #' @return A vector or matrix with the same dimensions as the input object.
 #'
 #' @details Applies a lag to a vector or matrix, by shifting its values by a
-#'   certain number of rows, equal to the integer \code{lag}, and pads the
-#'   leading or trailing stub periods with \emph{zeros}. Positive \code{lag}
+#'   certain number of rows, equal to the integer \code{lagg}, and pads the
+#'   leading or trailing stub periods with \emph{zeros}. Positive \code{lagg}
 #'   means that values in the current row are replaced with values from the row
-#'   that are \code{lag} rows above. (vice versa negative \code{lag}).  This
+#'   that are \code{lagg} rows above. (vice versa negative \code{lagg}).  This
 #'   also applies to vectors, since they can be viewed as single-column
 #'   matrices.
 #'
@@ -471,26 +472,26 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' # lag matrix by negative 2 periods
 #' rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
 
-lag_it <- function(in_put, lag=1) {
+lag_it <- function(in_put, lagg=1) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
     warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
     return(NULL)  # return NULL
   }  # end if
-  if (is.vector(in_put)) {  # in_put is a vector
-    if (lag>0) {
-      in_put <- c(numeric(lag), in_put)
-      in_put[-((NROW(in_put)-lag+1):NROW(in_put))]
+  if (is.null(dim(in_put))) {  # in_put is a vector
+    if (lagg>0) {
+      in_put <- c(numeric(lagg), in_put)
+      in_put[-((NROW(in_put)-lagg+1):NROW(in_put))]
     } else {
-      in_put <- c(in_put, numeric(-lag))
-      in_put[-(1:(-lag))]
+      in_put <- c(in_put, numeric(-lagg))
+      in_put[-(1:(-lagg))]
     }
   } else if (is.matrix(in_put)) {  # in_put is a matrix
-      if (lag>0) {
-        in_put <- rbind(matrix(numeric(lag*NCOL(in_put)), nc=NCOL(in_put)), in_put)
-        in_put[-((NROW(in_put)-lag+1):NROW(in_put)), ]
+      if (lagg>0) {
+        in_put <- rbind(matrix(numeric(lagg*NCOL(in_put)), nc=NCOL(in_put)), in_put)
+        in_put[-((NROW(in_put)-lagg+1):NROW(in_put)), ]
       } else {
-        in_put <- rbind(in_put, matrix(numeric(-lag*NCOL(in_put)), nc=NCOL(in_put)))
-        in_put[-(1:(-lag)), ]
+        in_put <- rbind(in_put, matrix(numeric(-lagg*NCOL(in_put)), nc=NCOL(in_put)))
+        in_put[-(1:(-lagg)), ]
       }
     } else {  # in_put is not a vector or matrix
       warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be a vector or matrix."))
@@ -504,16 +505,17 @@ lag_it <- function(in_put, lag=1) {
 #' Calculate the row differences of a \emph{numeric} vector or matrix.
 #'
 #' @export
-#' @param in_put a \emph{numeric} vector or matrix.
-#' @param lag integer equal to the number of time periods of lag (default is 1).
+#' @param in_put A \emph{numeric} vector or matrix.
+#' @param lagg An integer equal to the number of time periods of lag (default is
+#'   1).
 #'
 #' @return A vector or matrix with the same dimensions as the input object.
 #'
 #' @details The function \code{diff_it()} calculates the row differences between
-#'   rows that are \code{lag} rows apart. The leading or trailing stub periods
-#'   are padded with \emph{zeros}. Positive \code{lag} means that the difference
-#'   is calculated as the current row minus the row that is \code{lag} rows
-#'   above. (vice versa negative \code{lag}).  This also applies to vectors,
+#'   rows that are \code{lagg} rows apart. The leading or trailing stub periods
+#'   are padded with \emph{zeros}. Positive \code{lagg} means that the difference
+#'   is calculated as the current row minus the row that is \code{lagg} rows
+#'   above. (vice versa negative \code{lagg}).  This also applies to vectors,
 #'   since they can be viewed as single-column matrices.
 #'
 #' @examples
@@ -522,26 +524,26 @@ lag_it <- function(in_put, lag=1) {
 #' # diff matrix by negative 2 periods
 #' rutils::diff_it(matrix(1:10, ncol=2), lag=-2)
 
-diff_it <- function(in_put, lag=1) {
+diff_it <- function(in_put, lagg=1) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
     warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
     return(NULL)  # return NULL
   }  # end if
-  if (is.vector(in_put)) {  # in_put is a vector
-    if (lag>0) {
-      lagg_ed <- c(in_put[1:lag], in_put)
-      lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lag+1):NROW(lagg_ed))]
+  if (is.null(dim(in_put))) {  # in_put is a vector
+    if (lagg>0) {
+      lagg_ed <- c(in_put[1:lagg], in_put)
+      lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lagg+1):NROW(lagg_ed))]
     } else {
-      lagg_ed <- c(in_put, in_put[(NROW(in_put)+lag+1):NROW(in_put)])
-      lagg_ed <- lagg_ed[-(1:(-lag))]
+      lagg_ed <- c(in_put, in_put[(NROW(in_put)+lagg+1):NROW(in_put)])
+      lagg_ed <- lagg_ed[-(1:(-lagg))]
     }
   } else if (is.matrix(in_put)) {  # in_put is a matrix
-    if (lag>0) {
-      lagg_ed <- rbind(in_put[1:lag, ], in_put)
-      lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lag+1):NROW(lagg_ed)), ]
+    if (lagg>0) {
+      lagg_ed <- rbind(in_put[1:lagg, ], in_put)
+      lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lagg+1):NROW(lagg_ed)), ]
     } else {
-      lagg_ed <- rbind(in_put, in_put[(NROW(in_put)+lag+1):NROW(in_put), ])
-      lagg_ed <- lagg_ed[-(1:(-lag)), ]
+      lagg_ed <- rbind(in_put, in_put[(NROW(in_put)+lagg+1):NROW(in_put), ])
+      lagg_ed <- lagg_ed[-(1:(-lagg)), ]
     }
   } else {  # in_put is not a vector or matrix
     warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be a vector or matrix."))
@@ -556,8 +558,9 @@ diff_it <- function(in_put, lag=1) {
 #' Apply a time lag to an \emph{xts} time series.
 #'
 #' @export
-#' @param x_ts an \emph{xts} time series.
-#' @param lag integer equal to the number of time periods of lag (default is 1).
+#' @param x_ts An \emph{xts} time series.
+#' @param lagg An integer equal to the number of time periods of lag (default is
+#'   1).
 #' @param ... additional arguments to function \code{xts::lag_xts()}.
 #'
 #' @return An \emph{xts} time series with the same dimensions and the same time
@@ -566,10 +569,10 @@ diff_it <- function(in_put, lag=1) {
 #' @details Applies a time lag to an \emph{xts} time series and pads with the
 #'   first and last values instead of \emph{NAs}.
 #'
-#'   A positive lag argument \code{lag} means values from \code{lag} periods in
-#'   the past are moved to the present. A negative lag argument \code{lag} moves
-#'   values from the future to the present.  The function \code{lag()} is just a
-#'   wrapper for function \code{lag_xts()} from package
+#'   A positive lag argument \code{lagg} means values from \code{lagg} periods
+#'   in the past are moved to the present. A negative lag argument \code{lagg}
+#'   moves values from the future to the present.  The function \code{lag_xts()}
+#'   is just a wrapper for function \code{lag.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
 #'   pads with the first and last values instead of \emph{NAs}.
 #'
@@ -577,15 +580,15 @@ diff_it <- function(in_put, lag=1) {
 #' # lag by 10 periods
 #' rutils::lag_xts(rutils::env_etf$VTI, lag=10)
 
-lag_xts <- function(x_ts, lag=1, ...) {
+lag_xts <- function(x_ts, lagg=1, ...) {
   n_rows <- NROW(x_ts)
   fir_st <- x_ts[1, ]
   la_st <- x_ts[n_rows, ]
-  x_ts <- xts::lag.xts(x_ts, k=lag, ...)
-  if (lag>0)
-    x_ts[1:lag, ] <- fir_st
+  x_ts <- xts::lag.xts(x_ts, k=lagg, ...)
+  if (lagg>0)
+    x_ts[1:lagg, ] <- fir_st
   else
-    x_ts[(n_rows+lag+1):n_rows, ] <- la_st
+    x_ts[(n_rows+lagg+1):n_rows, ] <- la_st
   x_ts
 }  # end lag_xts
 
@@ -595,8 +598,9 @@ lag_xts <- function(x_ts, lag=1, ...) {
 #' Calculate the time differences of an \emph{xts} time series.
 #'
 #' @export
-#' @param x_ts an \emph{xts} time series.
-#' @param lag integer equal to the number of time periods of lag (default is 1).
+#' @param x_ts An \emph{xts} time series.
+#' @param lagg An integer equal to the number of time periods of lag (default is
+#'   1).
 #' @param ... additional arguments to function \code{xts::diff.xts()}.
 #'
 #' @return An \emph{xts} time series with the same dimensions and the same time
@@ -604,8 +608,8 @@ lag_xts <- function(x_ts, lag=1, ...) {
 #'
 #' @details The function \code{diff_xts()} calculates the time differences of an
 #'   \emph{xts} time series and pads with \emph{zeros} instead of \emph{NAs}.
-#'   Positive \code{lag} means differences are calculated with values from
-#'   \code{lag} periods in the past (vice versa negative \code{lag}).  The
+#'   Positive \code{lagg} means differences are calculated with values from
+#'   \code{lagg} periods in the past (vice versa negative \code{lagg}).  The
 #'   function \code{diff()} is just a wrapper for \code{diff.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
 #'   pads with \emph{zeros} instead of \emph{NAs}.
@@ -614,8 +618,8 @@ lag_xts <- function(x_ts, lag=1, ...) {
 #' # calculate time differences over lag by 10 periods
 #' rutils::diff_xts(rutils::env_etf$VTI, lag=10)
 
-diff_xts <- function(x_ts, lag=1, ...) {
-  x_ts <- xts::diff.xts(x_ts, lag=lag, ...)
+diff_xts <- function(x_ts, lagg=1, ...) {
+  x_ts <- xts::diff.xts(x_ts, lag=lagg, ...)
   x_ts[!complete.cases(x_ts), ] <- 0
   x_ts
 }  # end diff_xts
@@ -627,7 +631,7 @@ diff_xts <- function(x_ts, lag=1, ...) {
 #' standard form from the reduced form of an \emph{OHLC} time series.
 #'
 #' @export
-#' @param oh_lc an \emph{OHLC} time series of prices in \emph{xts} format.
+#' @param oh_lc An \emph{OHLC} time series of prices in \emph{xts} format.
 #' @param re_duce \emph{Boolean} argument: should the reduced form be calculated
 #'   or the standard form? (default is \code{TRUE})
 #' @param ... additional arguments to function \code{xts::diff.xts()}.
@@ -682,9 +686,9 @@ diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
 #' time series over a sliding window (lookback period).
 #'
 #' @export
-#' @param x_ts a vector, matrix, or \emph{xts} time series containing one or
+#' @param x_ts A vector, matrix, or \emph{xts} time series containing one or
 #'   more columns of data.
-#' @param look_back the size of the lookback window, equal to the number of data
+#' @param look_back The size of the lookback window, equal to the number of data
 #'   points for calculating the rolling sum.
 #'
 #' @return A vector, matrix, or \emph{xts} time series with the same dimensions
@@ -739,8 +743,8 @@ roll_sum <- function(x_ts, look_back) {
 #' window (lookback period).
 #'
 #' @export
-#' @param x_ts an \emph{xts} time series containing one or more columns of data.
-#' @param look_back the size of the lookback window, equal to the number of data
+#' @param x_ts An \emph{xts} time series containing one or more columns of data.
+#' @param look_back The size of the lookback window, equal to the number of data
 #'   points for calculating the rolling sum.
 #'
 #' @return An \emph{xts} time series with the same dimensions as the input
@@ -777,7 +781,7 @@ roll_max <- function(x_ts, look_back) {
 #' series.
 #'
 #' @export
-#' @param li_st list of objects, such as \code{vectors}, \code{matrices},
+#' @param li_st A list of objects, such as \code{vectors}, \code{matrices},
 #'   \code{data frames}, or \code{time series}.
 #'
 #' @return A single \code{vector}, \code{matrix}, \code{data frame}, or
@@ -829,9 +833,9 @@ do_call_rbind <- function(li_st) {
 #' generalization of function \code{do_call_rbind()}.
 #'
 #' @export
-#' @param func_tion name of function that returns a single object from a list of
-#'   objects.
-#' @param li_st list of objects, such as \code{vectors}, \code{matrices},
+#' @param func_tion The name of function that returns a single object from a
+#'   list of objects.
+#' @param li_st A list of objects, such as \code{vectors}, \code{matrices},
 #'   \code{data frames}, or \code{time series}.
 #' @param ... additional arguments to function \code{func_tion()}.
 #'
@@ -878,13 +882,13 @@ do_call <- function(func_tion, li_st, ...) {
 #' object, and assign the object to the output environment.
 #'
 #' @export
-#' @param func_tion name of function that returns a single object
+#' @param func_tion The name of a function that returns a single object
 #'   (\code{vector}, \emph{xts} time series, etc.)
-#' @param sym_bols a vector of \emph{character} strings with the names of input
+#' @param sym_bols A vector of \emph{character} strings with the names of input
 #'   objects.
-#' @param out_put the string with name of output object.
-#' @param env_in the environment containing the input \code{sym_bols}.
-#' @param env_out the environment for creating the \code{out_put}.
+#' @param out_put The string with name of output object.
+#' @param env_in The environment containing the input \code{sym_bols}.
+#' @param env_out The environment for creating the \code{out_put}.
 #' @param ... additional arguments to function \code{func_tion()}.
 #'
 #' @return A single object (\code{matrix}, \emph{xts} time series, etc.)
@@ -1009,8 +1013,8 @@ chart_xts <- function(x_ts, col_ors=NULL, ylim=NULL, in_dic=NULL, x_11=TRUE, ...
 #'   plotting, else plot in standard window (default is \code{TRUE}).
 #' @param ... additional arguments to function \code{plot.zoo()}.
 #'
-#' @return returns the \emph{x_ts} column names invisibly, and produces a plot
-#'   in an x11 window as a side effect.
+#' @return The \emph{x_ts} column names returned invisibly, and a plot
+#'   in an x11 window produced as a side effect.
 #'
 #' @details The function \code{chart_xts2y()} creates a plot of two \emph{xts}
 #'   time series with two y-axes.
@@ -1066,7 +1070,8 @@ chart_xts2y <- function(x_ts, col_or="red", x_11=TRUE, ...) {
 #'   and FALSE indicating "antiquewhite" shading (default is \code{NULL}).
 #' @param ... additional arguments to function \code{dygraphs::dygraph()}.
 #'
-#' @return A \code{dygraphs} plot object.
+#' @return A \code{dygraphs} plot object, and a \code{dygraphs} plot produced as
+#'   a side effect.
 #'
 #' @details The function \code{chart_dygraph()} creates an interactive dygraphs
 #'   candlestick plot with background shading for an \emph{OHLC} time series.
@@ -1083,10 +1088,6 @@ chart_xts2y <- function(x_ts, col_or="red", x_11=TRUE, ...) {
 
 chart_dygraph <- function(oh_lc, in_dic=NULL, ...) {
   stopifnot(inherits(oh_lc, "xts"))
-  if (!require("dygraphs")) {
-    warning("You must install package dygraphs first")
-    return(NULL)
-  }  # end if
   # create dygraphs object
   dy_graph <- dygraphs::dygraph(oh_lc, ...) %>% dygraphs::dyCandlestick()
   if (!is.null(in_dic)) {
@@ -1136,10 +1137,6 @@ chart_dygraph <- function(oh_lc, in_dic=NULL, ...) {
 
 chart_dygraph2y <- function(x_ts, ...) {
   stopifnot(xts::is.xts(x_ts))
-  if (!require("dygraphs")) {
-    warning("You must install package dygraphs first")
-    return(NULL)
-  }  # end if
   col_names <- colnames(x_ts)
   # create dygraphs object
   dy_graph <- dygraphs::dygraph(x_ts, main=paste(col_names, collapse=" and "), ...) %>%

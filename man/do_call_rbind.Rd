@@ -8,7 +8,7 @@ series.}
 do_call_rbind(li_st)
 }
 \arguments{
-\item{li_st}{list of objects, such as \code{vectors}, \code{matrices},
+\item{li_st}{A list of objects, such as \code{vectors}, \code{matrices},
 \code{data frames}, or \code{time series}.}
 }
 \value{

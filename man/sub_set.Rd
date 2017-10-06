@@ -8,11 +8,11 @@ corresponding to the input dates).}
 sub_set(x_ts, start_date, end_date, get_rows = TRUE)
 }
 \arguments{
-\item{x_ts}{an \emph{xts} time series.}
+\item{x_ts}{An \emph{xts} time series.}
 
-\item{start_date}{the start date of the extracted time series data.}
+\item{start_date}{The start date of the extracted time series data.}
 
-\item{end_date}{either the end date of the extracted time series data, or the
+\item{end_date}{The end date of the extracted time series data, or the
 number of data rows to be extracted.}
 
 \item{get_rows}{\emph{Boolean} argument: if \code{TRUE} then extract the

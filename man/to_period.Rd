@@ -8,15 +8,15 @@ to_period(oh_lc, period = "minutes", k = 1,
   end_points = xts::endpoints(oh_lc, period, k))
 }
 \arguments{
-\item{oh_lc}{an \emph{OHLC} time series of prices in \emph{xts} format.}
+\item{oh_lc}{An \emph{OHLC} time series of prices in \emph{xts} format.}
 
 \item{period}{aggregation interval ("seconds", "minutes", "hours", "days",
 "weeks", "months", "quarters", and "years").}
 
-\item{k}{number of periods to aggregate over (for example if period="minutes"
-and k=2, then aggregate over two minute intervals.)}
+\item{k}{The number of periods to aggregate over (for example if
+period="minutes" and k=2, then aggregate over two minute intervals.)}
 
-\item{end_points}{an integer vector of end points.}
+\item{end_points}{An integer vector of end points.}
 }
 \value{
 A \emph{OHLC} time series of prices in \emph{xts} format, with a

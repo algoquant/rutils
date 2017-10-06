@@ -17,7 +17,8 @@ and FALSE indicating "antiquewhite" shading (default is \code{NULL}).}
 \item{...}{additional arguments to function \code{dygraphs::dygraph()}.}
 }
 \value{
-A \code{dygraphs} plot object.
+A \code{dygraphs} plot object, and a \code{dygraphs} plot produced as
+  a side effect.
 }
 \description{
 Plot an interactive \emph{dygraphs} candlestick plot with background shading

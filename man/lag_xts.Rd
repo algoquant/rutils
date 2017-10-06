@@ -4,12 +4,13 @@
 \alias{lag_xts}
 \title{Apply a time lag to an \emph{xts} time series.}
 \usage{
-lag_xts(x_ts, lag = 1, ...)
+lag_xts(x_ts, lagg = 1, ...)
 }
 \arguments{
-\item{x_ts}{an \emph{xts} time series.}
+\item{x_ts}{An \emph{xts} time series.}
 
-\item{lag}{integer equal to the number of time periods of lag (default is 1).}
+\item{lagg}{An integer equal to the number of time periods of lag (default is
+1).}
 
 \item{...}{additional arguments to function \code{xts::lag_xts()}.}
 }
@@ -24,10 +25,10 @@ Apply a time lag to an \emph{xts} time series.
 Applies a time lag to an \emph{xts} time series and pads with the
   first and last values instead of \emph{NAs}.
 
-  A positive lag argument \code{lag} means values from \code{lag} periods in
-  the past are moved to the present. A negative lag argument \code{lag} moves
-  values from the future to the present.  The function \code{lag()} is just a
-  wrapper for function \code{lag_xts()} from package
+  A positive lag argument \code{lagg} means values from \code{lagg} periods
+  in the past are moved to the present. A negative lag argument \code{lagg}
+  moves values from the future to the present.  The function \code{lag_xts()}
+  is just a wrapper for function \code{lag.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
   pads with the first and last values instead of \emph{NAs}.
 }

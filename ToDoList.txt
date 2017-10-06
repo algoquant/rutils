@@ -11,10 +11,15 @@ devtools::install_github(repo="algoquant/rutils", force=TRUE)
 # build vignette package reference manual from *.Rd files
 cd C:/Develop/R/rutils
 system("R CMD Rd2pdf C:/Develop/R/rutils")
+cd C:\Develop\R\rutils\vignettes
 R CMD Rd2pdf C:\Develop\R\rutils
 
 
 ### tasks to-do
+
++ [ ] modify functions diff_xts() and diff_it() to perform sapply() if argument has multiple columns ?
+
++ [ ] modify chart_dygraph() to plot line plot
 
 + [ ] remove single quotes around names in documentation  
 
@@ -37,6 +42,11 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] modify functions diff_xts() and diff_it() and remove is.vector() type checking  
+Replace calls to is.vector(in_put) with is.null(dim(in_put))
+
++ [x] replace argument "lag" with "lagg" (to avoid confusing it with stats function lag())  
 
 + [x] modify function chart_xts(): by default open x11() window for plotting, similar to chart_xts2y()  
 

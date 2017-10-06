@@ -4,12 +4,13 @@
 \alias{diff_xts}
 \title{Calculate the time differences of an \emph{xts} time series.}
 \usage{
-diff_xts(x_ts, lag = 1, ...)
+diff_xts(x_ts, lagg = 1, ...)
 }
 \arguments{
-\item{x_ts}{an \emph{xts} time series.}
+\item{x_ts}{An \emph{xts} time series.}
 
-\item{lag}{integer equal to the number of time periods of lag (default is 1).}
+\item{lagg}{An integer equal to the number of time periods of lag (default is
+1).}
 
 \item{...}{additional arguments to function \code{xts::diff.xts()}.}
 }
@@ -23,8 +24,8 @@ Calculate the time differences of an \emph{xts} time series.
 \details{
 The function \code{diff_xts()} calculates the time differences of an
   \emph{xts} time series and pads with \emph{zeros} instead of \emph{NAs}.
-  Positive \code{lag} means differences are calculated with values from
-  \code{lag} periods in the past (vice versa negative \code{lag}).  The
+  Positive \code{lagg} means differences are calculated with values from
+  \code{lagg} periods in the past (vice versa negative \code{lagg}).  The
   function \code{diff()} is just a wrapper for \code{diff.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
   pads with \emph{zeros} instead of \emph{NAs}.

@@ -18,8 +18,8 @@ plotting, else plot in standard window (default is \code{TRUE}).}
 \item{An}{x_ts \emph{xts} time series with two columns.}
 }
 \value{
-returns the \emph{x_ts} column names invisibly, and produces a plot
-  in an x11 window as a side effect.
+The \emph{x_ts} column names returned invisibly, and a plot
+  in an x11 window produced as a side effect.
 }
 \description{
 Plot two \emph{xts} time series with two y-axes in an x11 window.

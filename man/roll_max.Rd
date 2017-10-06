@@ -8,9 +8,9 @@ window (lookback period).}
 roll_max(x_ts, look_back)
 }
 \arguments{
-\item{x_ts}{an \emph{xts} time series containing one or more columns of data.}
+\item{x_ts}{An \emph{xts} time series containing one or more columns of data.}
 
-\item{look_back}{the size of the lookback window, equal to the number of data
+\item{look_back}{The size of the lookback window, equal to the number of data
 points for calculating the rolling sum.}
 }
 \value{

@@ -8,10 +8,10 @@ time series over a sliding window (lookback period).}
 roll_sum(x_ts, look_back)
 }
 \arguments{
-\item{x_ts}{a vector, matrix, or \emph{xts} time series containing one or
+\item{x_ts}{A vector, matrix, or \emph{xts} time series containing one or
 more columns of data.}
 
-\item{look_back}{the size of the lookback window, equal to the number of data
+\item{look_back}{The size of the lookback window, equal to the number of data
 points for calculating the rolling sum.}
 }
 \value{

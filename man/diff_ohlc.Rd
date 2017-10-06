@@ -8,7 +8,7 @@ standard form from the reduced form of an \emph{OHLC} time series.}
 diff_ohlc(oh_lc, re_duce = TRUE, ...)
 }
 \arguments{
-\item{oh_lc}{an \emph{OHLC} time series of prices in \emph{xts} format.}
+\item{oh_lc}{An \emph{OHLC} time series of prices in \emph{xts} format.}
 
 \item{re_duce}{\emph{Boolean} argument: should the reduced form be calculated
 or the standard form? (default is \code{TRUE})}

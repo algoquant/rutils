@@ -8,10 +8,10 @@ series.}
 do_call(func_tion, li_st, ...)
 }
 \arguments{
-\item{func_tion}{name of function that returns a single object from a list of
-objects.}
+\item{func_tion}{The name of function that returns a single object from a
+list of objects.}
 
-\item{li_st}{list of objects, such as \code{vectors}, \code{matrices},
+\item{li_st}{A list of objects, such as \code{vectors}, \code{matrices},
 \code{data frames}, or \code{time series}.}
 
 \item{...}{additional arguments to function \code{func_tion()}.}

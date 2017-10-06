@@ -4,12 +4,13 @@
 \alias{diff_it}
 \title{Calculate the row differences of a \emph{numeric} vector or matrix.}
 \usage{
-diff_it(in_put, lag = 1)
+diff_it(in_put, lagg = 1)
 }
 \arguments{
-\item{in_put}{a \emph{numeric} vector or matrix.}
+\item{in_put}{A \emph{numeric} vector or matrix.}
 
-\item{lag}{integer equal to the number of time periods of lag (default is 1).}
+\item{lagg}{An integer equal to the number of time periods of lag (default is
+1).}
 }
 \value{
 A vector or matrix with the same dimensions as the input object.
@@ -19,10 +20,10 @@ Calculate the row differences of a \emph{numeric} vector or matrix.
 }
 \details{
 The function \code{diff_it()} calculates the row differences between
-  rows that are \code{lag} rows apart. The leading or trailing stub periods
-  are padded with \emph{zeros}. Positive \code{lag} means that the difference
-  is calculated as the current row minus the row that is \code{lag} rows
-  above. (vice versa negative \code{lag}).  This also applies to vectors,
+  rows that are \code{lagg} rows apart. The leading or trailing stub periods
+  are padded with \emph{zeros}. Positive \code{lagg} means that the difference
+  is calculated as the current row minus the row that is \code{lagg} rows
+  above. (vice versa negative \code{lagg}).  This also applies to vectors,
   since they can be viewed as single-column matrices.
 }
 \examples{

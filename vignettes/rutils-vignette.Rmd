@@ -191,7 +191,10 @@ suppressMessages(suppressWarnings(library(HighFreq)))
 # select VTI
 oh_lc <- rutils::env_etf$VTI
 # calculate volume-weighted average price
-v_wap <- HighFreq::roll_vwap(oh_lc, look_back=22)
+v_wap <- rutils::roll_sum(x_ts=x_ts*oh_lc[, 5], look_back=22)
+volume_rolling <- rutils::roll_sum(x_ts=oh_lc[, 5], look_back=22)
+v_wap <- v_wap/volume_rolling
+v_wap[is.na(v_wap)] <- 0
 # plot candlesticks with vertical background shading and trading volume.
 rutils::chart_xts(oh_lc["2016"], x_11=FALSE,
                   name="VTI plus VWAP",

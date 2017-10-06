@@ -9,17 +9,17 @@ do_call_assign(func_tion, sym_bols = NULL, out_put, env_in = .GlobalEnv,
   env_out = .GlobalEnv, ...)
 }
 \arguments{
-\item{func_tion}{name of function that returns a single object
+\item{func_tion}{The name of a function that returns a single object
 (\code{vector}, \emph{xts} time series, etc.)}
 
-\item{sym_bols}{a vector of \emph{character} strings with the names of input
+\item{sym_bols}{A vector of \emph{character} strings with the names of input
 objects.}
 
-\item{out_put}{the string with name of output object.}
+\item{out_put}{The string with name of output object.}
 
-\item{env_in}{the environment containing the input \code{sym_bols}.}
+\item{env_in}{The environment containing the input \code{sym_bols}.}
 
-\item{env_out}{the environment for creating the \code{out_put}.}
+\item{env_out}{The environment for creating the \code{out_put}.}
 
 \item{...}{additional arguments to function \code{func_tion()}.}
 }
