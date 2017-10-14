@@ -17,9 +17,11 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] merge functions diff_xts() and diff_it() into a single generic function that can accept both xts, matrices, and vectors ?
+
 + [ ] modify functions diff_xts() and diff_it() to perform sapply() if argument has multiple columns ?
 
-+ [ ] modify chart_dygraph() to plot line plot
++ [ ] modify chart_dygraph() to also plot line plot
 
 + [ ] remove single quotes around names in documentation  
 

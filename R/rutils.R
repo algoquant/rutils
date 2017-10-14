@@ -1108,7 +1108,7 @@ chart_dygraph <- function(oh_lc, in_dic=NULL, ...) {
       else
         dy_graph <- dy_graph %>% dygraphs::dyShading(from=in_dic[i, 1], to=in_dic[i+1, 1], color="antiquewhite")
     }  # end for
-  }  # end if
+  }  # end if add shading
   # render dygraph plot
   dy_graph
 }  # end chart_dygraph
