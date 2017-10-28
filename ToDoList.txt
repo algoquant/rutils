@@ -17,6 +17,8 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] add Rcpp roll and run functions
+
 + [ ] merge functions diff_xts() and diff_it() into a single generic function that can accept both xts, matrices, and vectors ?
 
 + [ ] modify functions diff_xts() and diff_it() to perform sapply() if argument has multiple columns ?
