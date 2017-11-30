@@ -75,7 +75,7 @@ The function \code{get_data()} loads \emph{OHLC} time series data
 new_env <- new.env()
 # load prices from local csv files
 rutils::get_data(sym_bols=c("SPY", "EEM"),
-            data_dir="C:/Develop/data_bbg_records",
+            data_dir="C:/Develop/data/bbg_records",
             data_env=new_env)
 # download prices from YAHOO
 rutils::get_data(sym_bols=c("MSFT", "XOM"),

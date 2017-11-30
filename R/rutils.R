@@ -44,7 +44,7 @@ get_name <- function(str_ing, sepa_rator="[.]", field=1) {
 #'
 #' @export
 #' @param x_ts A vector, matrix, or time series.
-#' @param inter_val The number of elements between neighboring end points. or a
+#' @param inter_val The number of elements between neighboring end points. or a 
 #'   \emph{string} representing a time period (minutes, hours, days, etc.)
 #' @param stub_front \emph{Boolean} argument: if \code{TRUE} then add a stub
 #'   interval at the beginning, else add a stub interval at the end.  (default
@@ -66,6 +66,8 @@ get_name <- function(str_ing, sepa_rator="[.]", field=1) {
 #'   \code{endpoints()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, since
 #'   \code{inter_val} can accept both \emph{integer} and \emph{string} values.
+#'   But unlike \code{xts::endpoints()}, the first integer returned by
+#'   \code{calc_endpoints()} is not equal to zero.
 #'
 #'   If \code{inter_val} is a \emph{string} representing a time period (minutes,
 #'   hours, days, etc.), then \code{calc_endpoints()} simply calls the function
@@ -82,21 +84,22 @@ get_name <- function(str_ing, sepa_rator="[.]", field=1) {
 
 calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
   if (is.character(inter_val)) {
-    xts::endpoints(x_ts, on=inter_val)
+    xts::endpoints(x_ts, on=inter_val)[-1]
   } else if (is.numeric(inter_val)) {
-    # calculate number of inter_vals that fit over x_ts
+    # calculate number of intervals that fit over x_ts
     n_row <- NROW(x_ts)
     num_agg <- n_row %/% inter_val
-    end_points <- (0:num_agg)*inter_val
     if (n_row > inter_val*num_agg) {
       # need to add stub interval
       if (stub_front)
         # stub interval at beginning
-        end_points <- c(0, n_row - num_agg*inter_val + end_points)
+        end_points <- n_row - num_agg*inter_val + (0:num_agg)*inter_val
       else
         # stub interval at end
-        end_points <- c(end_points, n_row)
-    }  # end if
+        end_points <- c((1:num_agg)*inter_val, n_row)
+    } else
+      end_points <- (1:num_agg)*inter_val
+    # end if
     end_points
   } else {  # inter_val is neither numeric nor a string
     warning(paste0("argument \"", deparse(substitute(inter_val)), "\" must be either numeric or a string."))

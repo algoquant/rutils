@@ -36,11 +36,11 @@ Each individual *xts* time series contains the columns: Open prices, High prices
 
 ### Installation and loading
 
-Installing *rutils* package from *GitHub*:  
+How to install *rutils* package from *GitHub*:  
 ```{r eval=FALSE}
 install.packages("devtools")
 library(devtools)
-install_github(repo="algoquant/rutils")
+devtools::install_github(repo="algoquant/rutils")
 library(rutils)
 ```
 
@@ -98,7 +98,7 @@ Calculate a vector of equally spaced end points for a time
 series:  
 ```{r eval=FALSE}
 # calculate end points with initial stub interval
-calc_endpoints(rutils::env_etf$VTI, inter_val=7, off_set=4)
+calc_endpoints(rutils::env_etf$VTI, inter_val=7)
 ```
 
 
@@ -143,7 +143,7 @@ x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # split time series into daily list
 list_xts <- split(x_ts, "days")
 # rbind the list back into a time series and compare with the original
-identical(x_ts, do_call_rbind(list_xts))
+identical(x_ts, rutils::do_call_rbind(list_xts))
 ```
 
 
@@ -154,13 +154,13 @@ x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # split time series into daily list
 list_xts <- split(x_ts, "days")
 # rbind the list back into a time series and compare with the original
-identical(x_ts, do_call(rbind, list_xts))
+identical(x_ts, rutils::do_call(rbind, list_xts))
 ```
 
 
 Apply a function to a list of objects, merge the outputs into a single object, and assign the object to the output environment:  
 ```{r eval=FALSE}
-do_call_assign(
+rutils::do_call_assign(
    func_tion=get_col,
    sym_bols=rutils::env_etf$sym_bols,
    out_put="price_s",
@@ -191,7 +191,7 @@ suppressMessages(suppressWarnings(library(HighFreq)))
 # select VTI
 oh_lc <- rutils::env_etf$VTI
 # calculate volume-weighted average price
-v_wap <- rutils::roll_sum(x_ts=x_ts*oh_lc[, 5], look_back=22)
+v_wap <- rutils::roll_sum(x_ts=oh_lc[, 4]*oh_lc[, 5], look_back=22)
 volume_rolling <- rutils::roll_sum(x_ts=oh_lc[, 5], look_back=22)
 v_wap <- v_wap/volume_rolling
 v_wap[is.na(v_wap)] <- 0

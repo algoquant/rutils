@@ -17,9 +17,13 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
-+ [ ] add Rcpp roll and run functions
++ [ ] add roll and run functions written in Rcpp
 
-+ [ ] merge functions diff_xts() and diff_it() into a single generic function that can accept both xts, matrices, and vectors ?
++ [ ] create new roll functions using RcppRoll::rollit() ?
+
++ [ ] convert roll_*() functions to RcppRoll ?
+
++ [ ] merge functions diff_xts() with diff_it(), and lag_xts() with lag_it(), into a single generic function that can accept both xts, matrices, and vectors ?
 
 + [ ] modify functions diff_xts() and diff_it() to perform sapply() if argument has multiple columns ?
 
@@ -28,10 +32,6 @@ R CMD Rd2pdf C:\Develop\R\rutils
 + [ ] remove single quotes around names in documentation  
 
 + [ ] create function chart_strategy() for plotting PnL of trading strategy  
-
-+ [ ] create new roll functions using RcppRoll::rollit()  
-
-+ [ ] convert roll_*() functions to RcppRoll  
 
 + [ ] create function acf_plus() from lecture notes  
 
@@ -77,6 +77,8 @@ sub_set() should accept as inputs a time series, a start date, and either an end
 get_name() <- function(str_ing, separator="_", field=1) strsplit(str_ing split=split)[[1]][field])
 
 + [x] rename function ex_tract() to get_col()  
+
++ [x] modify function calc_endpoints(): first end point should be equal to either (look_back) or (n_row-num_agg*look_back), not zero
 
 + [x] rename function end_points() to calc_endpoints()  
 
@@ -154,8 +156,6 @@ http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-pack
 ### tasks deprecated
 
 + [ ] create function do_call_cbind() - do_call(cbind, foo) is good enough
-
-+ [ ] change endpoints calculation in function calc_endpoints() to without the extra 0 at beginning - no need to do that
 
 + [ ] rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
 

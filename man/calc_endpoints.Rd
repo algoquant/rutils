@@ -10,7 +10,7 @@ calc_endpoints(x_ts, inter_val, stub_front = TRUE)
 \arguments{
 \item{x_ts}{A vector, matrix, or time series.}
 
-\item{inter_val}{The number of elements between neighboring end points. or a
+\item{inter_val}{The number of elements between neighboring end points. or a 
 \emph{string} representing a time period (minutes, hours, days, etc.)}
 
 \item{stub_front}{\emph{Boolean} argument: if \code{TRUE} then add a stub
@@ -39,6 +39,8 @@ The end points are a vector of integers which divide the elements
   \code{endpoints()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, since
   \code{inter_val} can accept both \emph{integer} and \emph{string} values.
+  But unlike \code{xts::endpoints()}, the first integer returned by
+  \code{calc_endpoints()} is not equal to zero.
 
   If \code{inter_val} is a \emph{string} representing a time period (minutes,
   hours, days, etc.), then \code{calc_endpoints()} simply calls the function

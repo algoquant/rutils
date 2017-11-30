@@ -1,7 +1,7 @@
 ## ----eval=FALSE----------------------------------------------------------
 #  install.packages("devtools")
 #  library(devtools)
-#  install_github(repo="algoquant/rutils")
+#  devtools::install_github(repo="algoquant/rutils")
 #  library(rutils)
 
 ## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
@@ -36,7 +36,7 @@ rutils::env_etf$re_turns[1:6, 1:4]
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # calculate end points with initial stub interval
-#  calc_endpoints(rutils::env_etf$VTI, inter_val=7, off_set=4)
+#  calc_endpoints(rutils::env_etf$VTI, inter_val=7)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # get close prices for VTI
@@ -66,7 +66,7 @@ rutils::env_etf$re_turns[1:6, 1:4]
 #  # split time series into daily list
 #  list_xts <- split(x_ts, "days")
 #  # rbind the list back into a time series and compare with the original
-#  identical(x_ts, do_call_rbind(list_xts))
+#  identical(x_ts, rutils::do_call_rbind(list_xts))
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # create xts time series
@@ -74,10 +74,10 @@ rutils::env_etf$re_turns[1:6, 1:4]
 #  # split time series into daily list
 #  list_xts <- split(x_ts, "days")
 #  # rbind the list back into a time series and compare with the original
-#  identical(x_ts, do_call(rbind, list_xts))
+#  identical(x_ts, rutils::do_call(rbind, list_xts))
 
 ## ----eval=FALSE----------------------------------------------------------
-#  do_call_assign(
+#  rutils::do_call_assign(
 #     func_tion=get_col,
 #     sym_bols=rutils::env_etf$sym_bols,
 #     out_put="price_s",
@@ -85,20 +85,7 @@ rutils::env_etf$re_turns[1:6, 1:4]
 
 ## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
 suppressMessages(suppressWarnings(library(rutils)))
-chart_xts(rutils::env_etf$VTI["2015-11"],
-name="VTI in Nov 2015", ylim=c(102, 108),
-in_dic=index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
-
-## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
-suppressMessages(suppressWarnings(library(rutils)))
-rutils::chart_xts2y(cbind(quantmod::Cl(rutils::env_etf$VTI), 
-                          quantmod::Cl(rutils::env_etf$IEF))["2015"], 
-                    x_11=FALSE)
-
-## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
-suppressMessages(suppressWarnings(library(rutils)))
-oh_lc <- rutils::env_etf$VTI
-v_wap <- TTR::VWAP(price=quantmod::Ad(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
-oh_lc <- cbind(oh_lc[, c(1:3, 6)], v_wap)["2009-02/2009-04"]
-rutils::chart_dygraph(oh_lc, in_dic=(oh_lc[, 4] > v_wap))
+chart_xts(rutils::env_etf$VTI["2015-11"], x_11=FALSE,
+          name="VTI in Nov 2015", ylim=c(102, 108),
+          in_dic=index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
 
