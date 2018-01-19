@@ -31,6 +31,10 @@ Applies a time lag to an \emph{xts} time series and pads with the
   is just a wrapper for function \code{lag.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
   pads with the first and last values instead of \emph{NAs}.
+
+  The function \code{lag_it()} has incorporated the functionality of
+  \code{lag_xts()}, so that \code{lag_xts()} will be retired in future
+  package versions.
 }
 \examples{
 # lag by 10 periods

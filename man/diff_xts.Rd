@@ -29,6 +29,10 @@ The function \code{diff_xts()} calculates the time differences of an
   function \code{diff()} is just a wrapper for \code{diff.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
   pads with \emph{zeros} instead of \emph{NAs}.
+
+  The function \code{diff_it()} has incorporated the functionality of
+  \code{diff_xts()}, so that \code{diff_xts()} will be retired in future
+  package versions.
 }
 \examples{
 # calculate time differences over lag by 10 periods

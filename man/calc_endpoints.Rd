@@ -10,7 +10,7 @@ calc_endpoints(x_ts, inter_val, stub_front = TRUE)
 \arguments{
 \item{x_ts}{A vector, matrix, or time series.}
 
-\item{inter_val}{The number of elements between neighboring end points. or a 
+\item{inter_val}{The number of elements between neighboring end points. or a
 \emph{string} representing a time period (minutes, hours, days, etc.)}
 
 \item{stub_front}{\emph{Boolean} argument: if \code{TRUE} then add a stub

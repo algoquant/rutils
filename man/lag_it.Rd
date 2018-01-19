@@ -2,35 +2,47 @@
 % Please edit documentation in R/rutils.R
 \name{lag_it}
 \alias{lag_it}
-\title{Apply a lag to a \emph{numeric} vector or matrix.}
+\title{Apply a lag to a \emph{numeric} or \emph{Boolean} vector, matrix, or
+\emph{xts} time series.}
 \usage{
-lag_it(in_put, lagg = 1)
+lag_it(in_put, lagg = 1, ...)
 }
 \arguments{
-\item{in_put}{A \emph{numeric} vector or matrix.}
+\item{in_put}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\emph{xts} time series.}
 
 \item{lagg}{An integer equal to the number of time periods of lag (default is
 1).}
 }
 \value{
-A vector or matrix with the same dimensions as the input object.
+A vector, matrix, or \emph{xts} time series. with the same dimensions
+  as the input object.
 }
 \description{
-Apply a lag to a \emph{numeric} vector or matrix.
+Apply a lag to a \emph{numeric} or \emph{Boolean} vector, matrix, or
+\emph{xts} time series.
 }
 \details{
-Applies a lag to a vector or matrix, by shifting its values by a
-  certain number of rows, equal to the integer \code{lagg}, and pads the
-  leading or trailing stub periods with \emph{zeros}. Positive \code{lagg}
-  means that values in the current row are replaced with values from the row
-  that are \code{lagg} rows above. (vice versa negative \code{lagg}).  This
-  also applies to vectors, since they can be viewed as single-column
-  matrices.
+The function \code{lag_it()} applies a lag to the input object by
+  shifting its rows by the number of time periods equal to the integer
+  argument \code{lagg}.
+  For positive \code{lagg} values the current row is replaced with values
+  from the row that is \code{lagg} rows above. (vice versa for negative
+  \code{lagg} values).  This also applies to vectors, since they can be
+  viewed as single-column matrices.
+  To avoid leading or trailing \emph{NA} values, the output object is padded
+  with values from either the first or the last row.
+  When applied to \emph{xts} time series, the function \code{lag_it()} calls
+  the function \code{lag.xts()} from package
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
+  pads the output with the first and last rows instead of with \emph{NAs}.
 }
 \examples{
 # lag vector by 2 periods
 rutils::lag_it(1:10, lag=2)
 # lag matrix by negative 2 periods
 rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
+# lag an xts time series
+rutils::lag_it(rutils::env_etf$VTI, lag=10)
 }
 

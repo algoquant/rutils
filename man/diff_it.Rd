@@ -2,34 +2,45 @@
 % Please edit documentation in R/rutils.R
 \name{diff_it}
 \alias{diff_it}
-\title{Calculate the row differences of a \emph{numeric} vector or matrix.}
+\title{Calculate the row differences of a \emph{numeric} or \emph{Boolean} vector,
+matrix, or \emph{xts} time series.}
 \usage{
-diff_it(in_put, lagg = 1)
+diff_it(in_put, lagg = 1, ...)
 }
 \arguments{
-\item{in_put}{A \emph{numeric} vector or matrix.}
+\item{in_put}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\emph{xts} time series.}
 
 \item{lagg}{An integer equal to the number of time periods of lag (default is
 1).}
 }
 \value{
-A vector or matrix with the same dimensions as the input object.
+A vector, matrix, or \emph{xts} time series. with the same dimensions
+  as the input object.
 }
 \description{
-Calculate the row differences of a \emph{numeric} vector or matrix.
+Calculate the row differences of a \emph{numeric} or \emph{Boolean} vector,
+matrix, or \emph{xts} time series.
 }
 \details{
 The function \code{diff_it()} calculates the row differences between
-  rows that are \code{lagg} rows apart. The leading or trailing stub periods
-  are padded with \emph{zeros}. Positive \code{lagg} means that the difference
-  is calculated as the current row minus the row that is \code{lagg} rows
-  above. (vice versa negative \code{lagg}).  This also applies to vectors,
-  since they can be viewed as single-column matrices.
+  rows that are \code{lagg} rows apart. Positive \code{lagg} means that the
+  difference is calculated as the current row minus the row that is
+  \code{lagg} rows above. (vice versa negative \code{lagg}).  This also
+  applies to vectors, since they can be viewed as single-column matrices. The
+  leading or trailing stub periods are padded with \emph{zeros}.
+
+  When applied to \emph{xts} time series, the function \code{diff_it()} calls
+  the function \code{diff.xts()} from package
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
+  pads the output with zeros instead of with \emph{NAs}.
 }
 \examples{
 # diff vector by 2 periods
-rutils::diff_it(1:10, lag=2)
+rutils::diff_it(1:10, lagg=2)
 # diff matrix by negative 2 periods
-rutils::diff_it(matrix(1:10, ncol=2), lag=-2)
+rutils::diff_it(matrix(1:10, ncol=2), lagg=-2)
+# diff an xts time series
+rutils::diff_it(rutils::env_etf$VTI, lagg=10)
 }
 

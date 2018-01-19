@@ -32,7 +32,7 @@ The function \code{get_name()} extracts the symbol names (tickers)
   the name from other string formats as well. For example, it extracts the
   name "VTI" from the string "VTI.Close", or it extracts the name "XLU" from
   the string "XLU_2017_09_05.csv" (with \code{sepa_rator="_"}).
-  
+
   JK: I really don't like sepa_rator
 }
 \examples{

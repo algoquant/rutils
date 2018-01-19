@@ -19,7 +19,7 @@
 #'   the name from other string formats as well. For example, it extracts the
 #'   name "VTI" from the string "VTI.Close", or it extracts the name "XLU" from
 #'   the string "XLU_2017_09_05.csv" (with \code{sepa_rator="_"}).
-#'   
+#'
 #'   JK: I really don't like sepa_rator
 #'
 #' @examples
@@ -44,7 +44,7 @@ get_name <- function(str_ing, sepa_rator="[.]", field=1) {
 #'
 #' @export
 #' @param x_ts A vector, matrix, or time series.
-#' @param inter_val The number of elements between neighboring end points. or a 
+#' @param inter_val The number of elements between neighboring end points. or a
 #'   \emph{string} representing a time period (minutes, hours, days, etc.)
 #' @param stub_front \emph{Boolean} argument: if \code{TRUE} then add a stub
 #'   interval at the beginning, else add a stub interval at the end.  (default
@@ -454,52 +454,77 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 
 
 
-#' Apply a lag to a \emph{numeric} vector or matrix.
+#' Apply a lag to a \emph{numeric} or \emph{Boolean} vector, matrix, or
+#' \emph{xts} time series.
 #'
 #' @export
-#' @param in_put A \emph{numeric} vector or matrix.
+#' @param in_put A \emph{numeric} or \emph{Boolean} vector or matrix, or
+#'   \emph{xts} time series.
 #' @param lagg An integer equal to the number of time periods of lag (default is
 #'   1).
 #'
-#' @return A vector or matrix with the same dimensions as the input object.
+#' @return A vector, matrix, or \emph{xts} time series. with the same dimensions
+#'   as the input object.
 #'
-#' @details Applies a lag to a vector or matrix, by shifting its values by a
-#'   certain number of rows, equal to the integer \code{lagg}, and pads the
-#'   leading or trailing stub periods with \emph{zeros}. Positive \code{lagg}
-#'   means that values in the current row are replaced with values from the row
-#'   that are \code{lagg} rows above. (vice versa negative \code{lagg}).  This
-#'   also applies to vectors, since they can be viewed as single-column
-#'   matrices.
+#' @details The function \code{lag_it()} applies a lag to the input object by
+#'   shifting its rows by the number of time periods equal to the integer
+#'   argument \code{lagg}.
+#'   For positive \code{lagg} values the current row is replaced with values
+#'   from the row that is \code{lagg} rows above. (vice versa for negative
+#'   \code{lagg} values).  This also applies to vectors, since they can be
+#'   viewed as single-column matrices.
+#'   To avoid leading or trailing \emph{NA} values, the output object is padded
+#'   with values from either the first or the last row.
+#'   When applied to \emph{xts} time series, the function \code{lag_it()} calls
+#'   the function \code{lag.xts()} from package
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
+#'   pads the output with the first and last rows instead of with \emph{NAs}.
 #'
 #' @examples
 #' # lag vector by 2 periods
 #' rutils::lag_it(1:10, lag=2)
 #' # lag matrix by negative 2 periods
 #' rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
+#' # lag an xts time series
+#' rutils::lag_it(rutils::env_etf$VTI, lag=10)
 
-lag_it <- function(in_put, lagg=1) {
+lag_it <- function(in_put, lagg=1, ...) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
     warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
     return(NULL)  # return NULL
   }  # end if
+  n_row <- NROW(in_put)
+  n_col <- NCOL(in_put)
   if (is.null(dim(in_put))) {  # in_put is a vector
     if (lagg>0) {
-      in_put <- c(numeric(lagg), in_put)
-      in_put[-((NROW(in_put)-lagg+1):NROW(in_put))]
+      in_put <- c(rep(in_put[1], lagg), in_put)
+      in_put[1:n_row]
     } else {
-      in_put <- c(in_put, numeric(-lagg))
+      in_put <- c(in_put, rep(in_put[n_row], -lagg))
       in_put[-(1:(-lagg))]
     }
+  } else if (xts::is.xts(in_put)) {  # in_put is an xts
+    fir_st <- in_put[1, ]
+    la_st <- in_put[n_row, ]
+    if (lagg>0) {
+      in_put <- xts::lag.xts(in_put, k=lagg, ...)
+      in_put[1:lagg, ] <- matrix(rep(fir_st, lagg), byrow=TRUE, nr=lagg)
+    }
+    else {
+      in_put <- xts::lag.xts(in_put, k=-lagg, ...)
+      in_put[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
+    }  # end if
+    return(in_put)
   } else if (is.matrix(in_put)) {  # in_put is a matrix
       if (lagg>0) {
-        in_put <- rbind(matrix(numeric(lagg*NCOL(in_put)), nc=NCOL(in_put)), in_put)
-        in_put[-((NROW(in_put)-lagg+1):NROW(in_put)), ]
+        in_put <- rbind(matrix(rep(in_put[1, ], lagg), byrow=TRUE, nr=lagg), in_put)
+        in_put[1:n_row, ]
       } else {
-        in_put <- rbind(in_put, matrix(numeric(-lagg*NCOL(in_put)), nc=NCOL(in_put)))
+        in_put <- rbind(in_put, matrix(rep(in_put[n_row, ], -lagg), byrow=TRUE, nr=-lagg))
         in_put[-(1:(-lagg)), ]
       }
     } else {  # in_put is not a vector or matrix
-      warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be a vector or matrix."))
+      warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts."))
     return(NULL)  # return NULL
   }  # end if
 }  # end lag_it
@@ -507,51 +532,72 @@ lag_it <- function(in_put, lagg=1) {
 
 
 
-#' Calculate the row differences of a \emph{numeric} vector or matrix.
+#' Calculate the row differences of a \emph{numeric} or \emph{Boolean} vector,
+#' matrix, or \emph{xts} time series.
 #'
 #' @export
-#' @param in_put A \emph{numeric} vector or matrix.
+#' @param in_put A \emph{numeric} or \emph{Boolean} vector or matrix, or
+#'   \emph{xts} time series.
 #' @param lagg An integer equal to the number of time periods of lag (default is
 #'   1).
 #'
-#' @return A vector or matrix with the same dimensions as the input object.
+#' @return A vector, matrix, or \emph{xts} time series. with the same dimensions
+#'   as the input object.
 #'
 #' @details The function \code{diff_it()} calculates the row differences between
-#'   rows that are \code{lagg} rows apart. The leading or trailing stub periods
-#'   are padded with \emph{zeros}. Positive \code{lagg} means that the difference
-#'   is calculated as the current row minus the row that is \code{lagg} rows
-#'   above. (vice versa negative \code{lagg}).  This also applies to vectors,
-#'   since they can be viewed as single-column matrices.
+#'   rows that are \code{lagg} rows apart. Positive \code{lagg} means that the
+#'   difference is calculated as the current row minus the row that is
+#'   \code{lagg} rows above. (vice versa negative \code{lagg}).  This also
+#'   applies to vectors, since they can be viewed as single-column matrices. The
+#'   leading or trailing stub periods are padded with \emph{zeros}.
+#'
+#'   When applied to \emph{xts} time series, the function \code{diff_it()} calls
+#'   the function \code{diff.xts()} from package
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
+#'   pads the output with zeros instead of with \emph{NAs}.
 #'
 #' @examples
 #' # diff vector by 2 periods
-#' rutils::diff_it(1:10, lag=2)
+#' rutils::diff_it(1:10, lagg=2)
 #' # diff matrix by negative 2 periods
-#' rutils::diff_it(matrix(1:10, ncol=2), lag=-2)
+#' rutils::diff_it(matrix(1:10, ncol=2), lagg=-2)
+#' # diff an xts time series
+#' rutils::diff_it(rutils::env_etf$VTI, lagg=10)
 
-diff_it <- function(in_put, lagg=1) {
+diff_it <- function(in_put, lagg=1, ...) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
     warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
     return(NULL)  # return NULL
   }  # end if
-  if (is.null(dim(in_put))) {  # in_put is a vector
+  n_row <- NROW(in_put)
+  n_col <- NCOL(in_put)
+  if (xts::is.xts(in_put)) {  # in_put is an xts
+    if (lagg>0) {
+      in_put <- xts::diff.xts(in_put, lag=lagg, ...)
+      in_put[1:lagg, ] <- 0
+    } else {
+      in_put <- xts::diff.xts(in_put, lag=-lagg, ...)
+      in_put[(n_row+lagg+1):n_row, ] <- 0
+    }
+    return(in_put)
+  } else if (is.null(dim(in_put))) {  # in_put is a vector
     if (lagg>0) {
       lagg_ed <- c(in_put[1:lagg], in_put)
-      lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lagg+1):NROW(lagg_ed))]
+      lagg_ed <- lagg_ed[1:n_row]
     } else {
-      lagg_ed <- c(in_put, in_put[(NROW(in_put)+lagg+1):NROW(in_put)])
+      lagg_ed <- c(in_put, in_put[(n_row+lagg+1):n_row])
       lagg_ed <- lagg_ed[-(1:(-lagg))]
     }
   } else if (is.matrix(in_put)) {  # in_put is a matrix
     if (lagg>0) {
       lagg_ed <- rbind(in_put[1:lagg, ], in_put)
-      lagg_ed <- lagg_ed[-((NROW(lagg_ed)-lagg+1):NROW(lagg_ed)), ]
+      lagg_ed <- lagg_ed[1:n_row, ]
     } else {
-      lagg_ed <- rbind(in_put, in_put[(NROW(in_put)+lagg+1):NROW(in_put), ])
+      lagg_ed <- rbind(in_put, in_put[(n_row+lagg+1):n_row, ])
       lagg_ed <- lagg_ed[-(1:(-lagg)), ]
     }
   } else {  # in_put is not a vector or matrix
-    warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be a vector or matrix."))
+    warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts."))
     return(NULL)  # return NULL
   }  # end if
   in_put - lagg_ed
@@ -581,19 +627,23 @@ diff_it <- function(in_put, lagg=1) {
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
 #'   pads with the first and last values instead of \emph{NAs}.
 #'
+#'   The function \code{lag_it()} has incorporated the functionality of
+#'   \code{lag_xts()}, so that \code{lag_xts()} will be retired in future
+#'   package versions.
+#'
 #' @examples
 #' # lag by 10 periods
 #' rutils::lag_xts(rutils::env_etf$VTI, lag=10)
 
 lag_xts <- function(x_ts, lagg=1, ...) {
-  n_rows <- NROW(x_ts)
+  n_row <- NROW(x_ts)
   fir_st <- x_ts[1, ]
-  la_st <- x_ts[n_rows, ]
+  la_st <- x_ts[n_row, ]
   x_ts <- xts::lag.xts(x_ts, k=lagg, ...)
   if (lagg>0)
-    x_ts[1:lagg, ] <- fir_st
+    x_ts[1:lagg, ] <- matrix(rep(fir_st, lagg), byrow=TRUE, nr=lagg)
   else
-    x_ts[(n_rows+lagg+1):n_rows, ] <- la_st
+    x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, lagg), byrow=TRUE, nr=lagg)
   x_ts
 }  # end lag_xts
 
@@ -618,6 +668,10 @@ lag_xts <- function(x_ts, lagg=1, ...) {
 #'   function \code{diff()} is just a wrapper for \code{diff.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
 #'   pads with \emph{zeros} instead of \emph{NAs}.
+#'
+#'   The function \code{diff_it()} has incorporated the functionality of
+#'   \code{diff_xts()}, so that \code{diff_xts()} will be retired in future
+#'   package versions.
 #'
 #' @examples
 #' # calculate time differences over lag by 10 periods

@@ -17,23 +17,35 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
-+ [ ] add roll and run functions written in Rcpp
++ [ ] modify chart_dygraph() to also plot line plot
+
++ [ ] add functions read_clip() and write_clip()
+
++ [ ] add functions roll() and run() in Rcpp
+
++ [ ] add functions for median and MAD in Rcpp
+http://gallery.rcpp.org/articles/robust-estimators/
+
++ [ ] perform find, which, or tapply operations assuming adjacent elements are equal and ordered
+
++ [ ] apply STL algorithm function to perform find/which operation
+http://adv-r.had.co.nz/Rcpp.html#stl
+
++ [ ] add function lm_fast() in RcppArmadillo from RcppArmadillo Eddelbuettel 2014.pdf
+
++ [ ] add very fast RcppArmadillo functions: whi_ch(), cum_sum(), select_sub_mat()
+http://arma.sourceforge.net/docs.html
+https://stackoverflow.com/questions/23849354/equivalent-of-which-function-in-rcpp
 
 + [ ] create new roll functions using RcppRoll::rollit() ?
 
 + [ ] convert roll_*() functions to RcppRoll ?
 
-+ [ ] merge functions diff_xts() with diff_it(), and lag_xts() with lag_it(), into a single generic function that can accept both xts, matrices, and vectors ?
-
-+ [ ] modify functions diff_xts() and diff_it() to perform sapply() if argument has multiple columns ?
-
-+ [ ] modify chart_dygraph() to also plot line plot
++ [ ] create function acf_plus() from lecture notes  
 
 + [ ] remove single quotes around names in documentation  
 
 + [ ] create function chart_strategy() for plotting PnL of trading strategy  
-
-+ [ ] create function acf_plus() from lecture notes  
 
 + [ ] create function logist_ic() that accepts a uniform random number and returns a vector of uniform random numbers, by applying the logistic map  
 
@@ -46,6 +58,8 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] merge function diff_xts() into diff_it(), and lag_xts() into lag_it(), so that diff_it() and lag_it() can accept both vectors, matrices, and xts
 
 + [x] modify functions diff_xts() and diff_it() and remove is.vector() type checking  
 Replace calls to is.vector(in_put) with is.null(dim(in_put))
