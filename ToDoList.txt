@@ -17,6 +17,24 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [x] add ByteCompile: true to the DESCRIPTION
+
++ [x] replace calls to lag_xts() with lag_it()
+
++ [x] replace calls to diff_xts() with diff_it()
+
++ [x] fix bug function lag_xts(): 
+from:
+x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, lagg), byrow=TRUE, nr=lagg)
+to:
+x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
+
++ [x] fix bug function lag_it(): 
+from: in_put <- xts::lag.xts(in_put, k=-lagg, ...)
+to: in_put <- xts::lag.xts(in_put, k=lagg, ...)
+
++ [ ] fix unit testing using testthat and devtools
+
 + [ ] modify chart_dygraph() to also plot line plot
 
 + [ ] add functions read_clip() and write_clip()

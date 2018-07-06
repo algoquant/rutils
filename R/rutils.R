@@ -506,12 +506,11 @@ lag_it <- function(in_put, lagg=1, ...) {
   } else if (xts::is.xts(in_put)) {  # in_put is an xts
     fir_st <- in_put[1, ]
     la_st <- in_put[n_row, ]
+    in_put <- xts::lag.xts(in_put, k=lagg, ...)
     if (lagg>0) {
-      in_put <- xts::lag.xts(in_put, k=lagg, ...)
       in_put[1:lagg, ] <- matrix(rep(fir_st, lagg), byrow=TRUE, nr=lagg)
     }
     else {
-      in_put <- xts::lag.xts(in_put, k=-lagg, ...)
       in_put[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
     }  # end if
     return(in_put)
@@ -643,7 +642,7 @@ lag_xts <- function(x_ts, lagg=1, ...) {
   if (lagg>0)
     x_ts[1:lagg, ] <- matrix(rep(fir_st, lagg), byrow=TRUE, nr=lagg)
   else
-    x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, lagg), byrow=TRUE, nr=lagg)
+    x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
   x_ts
 }  # end lag_xts
 
@@ -777,7 +776,7 @@ diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
 roll_sum <- function(x_ts, look_back) {
   if (xts::is.xts(x_ts)) {
     cum_sum <- cumsum(x_ts)
-    roll_sum <- cum_sum - rutils::lag_xts(cum_sum, lag=look_back)
+    roll_sum <- cum_sum - rutils::lag_it(cum_sum, lag=look_back)
     roll_sum[1:look_back] <- cum_sum[1:look_back]
   }
   else {
@@ -1151,7 +1150,7 @@ chart_dygraph <- function(oh_lc, in_dic=NULL, ...) {
   dy_graph <- dygraphs::dygraph(oh_lc, ...) %>% dygraphs::dyCandlestick()
   if (!is.null(in_dic)) {
     # add shading to dygraph object
-    in_dic <- rutils::diff_xts(in_dic)
+    in_dic <- rutils::diff_it(in_dic)
     in_dic <- rbind(cbind(which(in_dic==1), 1),
                     cbind(which(in_dic==(-1)), -1))
     in_dic <- in_dic[order(in_dic[, 1]), ]
