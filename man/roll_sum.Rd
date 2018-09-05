@@ -44,4 +44,3 @@ rutils::roll_sum(mat_rix, look_back=3)
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 rutils::roll_sum(x_ts, look_back=3)
 }
-

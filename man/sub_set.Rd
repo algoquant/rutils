@@ -51,12 +51,11 @@ The function \code{sub_set()} extracts an \emph{xts} sub-series
 }
 \examples{
 # subset an xts time series using two dates
-rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date="2015-01-10")
+rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date="2015-01-10")
 # extract 6 consecutive rows of data from the past, using a date and a negative number
-rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6)
+rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date=-6)
 # extract 6 calendar days of data
-rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=6, get_rows=FALSE)
+rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date=6, get_rows=FALSE)
 # extract up to 100 consecutive rows of data
-rutils::sub_set(rutils::env_etf$VTI, start_date="2016-08-01", end_date=100)
+rutils::sub_set(rutils::etf_env$VTI, start_date="2016-08-01", end_date=100)
 }
-

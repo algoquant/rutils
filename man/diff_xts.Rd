@@ -36,6 +36,5 @@ The function \code{diff_xts()} calculates the time differences of an
 }
 \examples{
 # calculate time differences over lag by 10 periods
-rutils::diff_xts(rutils::env_etf$VTI, lag=10)
+rutils::diff_xts(rutils::etf_env$VTI, lag=10)
 }
-

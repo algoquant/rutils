@@ -22,4 +22,4 @@ LazyData: true
 ByteCompile: true
 Repository: GitHub
 URL: https://github.com/algoquant/rutils
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

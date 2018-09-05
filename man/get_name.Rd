@@ -42,6 +42,5 @@ rutils::get_name(c("XLU.csv", "XLP.csv"))
 rutils::get_name("XLU_2017_09_05.csv", sep="_")
 rutils::get_name("XLU 2017 09 05.csv", sep=" ")
 # extract fields "Open", "High", "Low", "Close" from column names
-rutils::get_name(colnames(rutils::env_etf$VTI), field=2)
+rutils::get_name(colnames(rutils::etf_env$VTI), field=2)
 }
-

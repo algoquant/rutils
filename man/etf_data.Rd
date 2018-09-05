@@ -2,9 +2,9 @@
 % Please edit documentation in R/etf_data.R
 \docType{data}
 \name{etf_data}
-\alias{env_etf}
 \alias{etf_data}
-\title{The etf_data dataset contains a single environment called env_etf,
+\alias{etf_env}
+\title{The etf_data dataset contains a single environment called etf_env,
   which includes daily \code{OHLC} time series data for a portfolio of
   symbols.}
 \format{Each \code{xts} time series contains the columns:
@@ -20,7 +20,7 @@
 data(etf_data)  # not required - data is lazy load
 }
 \description{
-The env_etf environment includes daily \code{OHLC} time series
+The etf_env environment includes daily \code{OHLC} time series
 data for a portfolio of symbols, and reference data:
 \describe{
   \item{sym_bols}{a \code{vector} of \code{strings} with the portfolio symbols.}
@@ -35,8 +35,7 @@ data for a portfolio of symbols, and reference data:
 \examples{
 # data(etf_data)  # not needed - data is lazy load
 # get first six rows of OHLC prices
-head(env_etf$VTI)
-\donttest{chart_Series(x=env_etf$VTI["2009-11"])}
+head(etf_env$VTI)
+\donttest{chart_Series(x=etf_env$VTI["2009-11"])}
 }
 \keyword{datasets}
-

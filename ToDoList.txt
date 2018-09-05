@@ -17,29 +17,13 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
-+ [x] add ByteCompile: true to the DESCRIPTION
-
-+ [x] replace calls to lag_xts() with lag_it()
-
-+ [x] replace calls to diff_xts() with diff_it()
-
-+ [x] fix bug function lag_xts(): 
-from:
-x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, lagg), byrow=TRUE, nr=lagg)
-to:
-x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
-
-+ [x] fix bug function lag_it(): 
-from: in_put <- xts::lag.xts(in_put, k=-lagg, ...)
-to: in_put <- xts::lag.xts(in_put, k=lagg, ...)
-
 + [ ] fix unit testing using testthat and devtools
 
 + [ ] modify chart_dygraph() to also plot line plot
 
-+ [ ] add functions read_clip() and write_clip()
++ [ ] add function acf_plus()
 
-+ [ ] add functions roll() and run() in Rcpp
++ [ ] add functions read_clip() and write_clip()
 
 + [ ] add functions for median and MAD in Rcpp
 http://gallery.rcpp.org/articles/robust-estimators/
@@ -48,8 +32,6 @@ http://gallery.rcpp.org/articles/robust-estimators/
 
 + [ ] apply STL algorithm function to perform find/which operation
 http://adv-r.had.co.nz/Rcpp.html#stl
-
-+ [ ] add function lm_fast() in RcppArmadillo from RcppArmadillo Eddelbuettel 2014.pdf
 
 + [ ] add very fast RcppArmadillo functions: whi_ch(), cum_sum(), select_sub_mat()
 http://arma.sourceforge.net/docs.html
@@ -76,6 +58,24 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] modify etf_data.RData: rename env_etf to etf_env, add SVXY, and update the data
+
++ [x] add ByteCompile: true to the DESCRIPTION
+
++ [x] replace calls to lag_xts() with lag_it()
+
++ [x] replace calls to diff_xts() with diff_it()
+
++ [x] fix bug function lag_xts(): 
+from:
+x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, lagg), byrow=TRUE, nr=lagg)
+to:
+x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
+
++ [x] fix bug function lag_it(): 
+from: in_put <- xts::lag.xts(in_put, k=-lagg, ...)
+to: in_put <- xts::lag.xts(in_put, k=lagg, ...)
 
 + [x] merge function diff_xts() into diff_it(), and lag_xts() into lag_it(), so that diff_it() and lag_it() can accept both vectors, matrices, and xts
 
@@ -190,5 +190,8 @@ http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-pack
 + [ ] create function do_call_cbind() - do_call(cbind, foo) is good enough
 
 + [ ] rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
+
++ [ ] add function lm_fast() in RcppArmadillo from RcppArmadillo Eddelbuettel 2014.pdf
+Added HighFreq::calc_lm() instead of lm_fast()
 
 

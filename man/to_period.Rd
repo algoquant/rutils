@@ -49,4 +49,3 @@ rutils::to_period(oh_lc=HighFreq::SPY["2009"], period="days")
 to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 }
 }
-

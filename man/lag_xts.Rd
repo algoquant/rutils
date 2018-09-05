@@ -38,6 +38,5 @@ Applies a time lag to an \emph{xts} time series and pads with the
 }
 \examples{
 # lag by 10 periods
-rutils::lag_xts(rutils::env_etf$VTI, lag=10)
+rutils::lag_xts(rutils::etf_env$VTI, lag=10)
 }
-

@@ -50,11 +50,10 @@ The function \code{chart_xts()} plots a line plot of a \emph{xts}
 }
 \examples{
 # plot candlestick chart with shading
-rutils::chart_xts(rutils::env_etf$VTI["2015-11"],
+rutils::chart_xts(rutils::etf_env$VTI["2015-11"],
   name="VTI in Nov 2015", ylim=c(102, 108),
-  in_dic=zoo::index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+  in_dic=zoo::index(rutils::etf_env$VTI["2015-11"]) > as.Date("2015-11-18"))
 # plot two time series with custom line colors
-rutils::chart_xts(na.omit(cbind(rutils::env_etf$XLU[, 4],
-  rutils::env_etf$XLP[, 4])), col_ors=c("blue", "green"))
+rutils::chart_xts(na.omit(cbind(rutils::etf_env$XLU[, 4],
+  rutils::etf_env$XLP[, 4])), col_ors=c("blue", "green"))
 }
-

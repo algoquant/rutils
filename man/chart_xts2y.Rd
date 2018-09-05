@@ -34,7 +34,6 @@ The function \code{chart_xts2y()} creates a plot of two \emph{xts}
 }
 \examples{
 # plot two time series
-rutils::chart_xts2y(cbind(quantmod::Cl(rutils::env_etf$VTI),
-                          quantmod::Cl(rutils::env_etf$IEF))["2015"])
+rutils::chart_xts2y(cbind(quantmod::Cl(rutils::etf_env$VTI),
+                          quantmod::Cl(rutils::etf_env$IEF))["2015"])
 }
-

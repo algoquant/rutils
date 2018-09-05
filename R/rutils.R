@@ -29,7 +29,7 @@
 #' rutils::get_name("XLU_2017_09_05.csv", sep="_")
 #' rutils::get_name("XLU 2017 09 05.csv", sep=" ")
 #' # extract fields "Open", "High", "Low", "Close" from column names
-#' rutils::get_name(colnames(rutils::env_etf$VTI), field=2)
+#' rutils::get_name(colnames(rutils::etf_env$VTI), field=2)
 
 get_name <- function(str_ing, sepa_rator="[.]", field=1) {
   str_ing <- strsplit(str_ing, split=sepa_rator)
@@ -78,9 +78,9 @@ get_name <- function(str_ing, sepa_rator="[.]", field=1) {
 #' # calculate end points with initial stub interval
 #' rutils::calc_endpoints(1:100, inter_val=11)
 #' # calculate end points with a stub interval at the end
-#' rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=365, stub_front=FALSE)
+#' rutils::calc_endpoints(rutils::etf_env$VTI, inter_val=365, stub_front=FALSE)
 #' # calculate end points at the end of every hour
-#' rutils::calc_endpoints(rutils::env_etf$VTI, inter_val="hours")
+#' rutils::calc_endpoints(rutils::etf_env$VTI, inter_val="hours")
 
 calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
   if (is.character(inter_val)) {
@@ -295,14 +295,14 @@ to_period <- function(oh_lc,
 #'
 #' @examples
 #' # get close prices for VTI
-#' rutils::get_col(rutils::env_etf$VTI)
+#' rutils::get_col(rutils::etf_env$VTI)
 #' # get volumes for VTI
-#' rutils::get_col(rutils::env_etf$VTI, field_name="Vol")
+#' rutils::get_col(rutils::etf_env$VTI, field_name="Vol")
 #' # get close prices and volumes for VTI
-#' rutils::get_col(rutils::env_etf$VTI, field_name=c("Cl", "Vol"))
+#' rutils::get_col(rutils::etf_env$VTI, field_name=c("Cl", "Vol"))
 #' # get close prices and volumes for VTI and IEF
 #' rutils::get_col(oh_lc=c("VTI", "IEF"), field_name=c("Cl", "Vol"),
-#'   data_env=rutils::env_etf)
+#'   data_env=rutils::etf_env)
 
 get_col <- function(oh_lc, field_name="Close", data_env=NULL) {
   if (is.xts(oh_lc)) {
@@ -354,7 +354,7 @@ get_col <- function(oh_lc, field_name="Close", data_env=NULL) {
 #'
 #' @examples
 #' # adjust VTI prices
-#' VTI <- rutils::adjust_ohlc(rutils::env_etf$VTI)
+#' VTI <- rutils::adjust_ohlc(rutils::etf_env$VTI)
 
 adjust_ohlc <- function(oh_lc) {
   # adjust OHLC prices
@@ -403,13 +403,13 @@ adjust_ohlc <- function(oh_lc) {
 #'
 #' @examples
 #' # subset an xts time series using two dates
-#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date="2015-01-10")
+#' rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date="2015-01-10")
 #' # extract 6 consecutive rows of data from the past, using a date and a negative number
-#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=-6)
+#' rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date=-6)
 #' # extract 6 calendar days of data
-#' rutils::sub_set(rutils::env_etf$VTI, start_date="2015-01-01", end_date=6, get_rows=FALSE)
+#' rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date=6, get_rows=FALSE)
 #' # extract up to 100 consecutive rows of data
-#' rutils::sub_set(rutils::env_etf$VTI, start_date="2016-08-01", end_date=100)
+#' rutils::sub_set(rutils::etf_env$VTI, start_date="2016-08-01", end_date=100)
 
 sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
   if (inherits(end_date, c("Date", "POSIXt", "character"))) {
@@ -486,7 +486,7 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' # lag matrix by negative 2 periods
 #' rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
 #' # lag an xts time series
-#' rutils::lag_it(rutils::env_etf$VTI, lag=10)
+#' rutils::lag_it(rutils::etf_env$VTI, lag=10)
 
 lag_it <- function(in_put, lagg=1, ...) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
@@ -561,7 +561,7 @@ lag_it <- function(in_put, lagg=1, ...) {
 #' # diff matrix by negative 2 periods
 #' rutils::diff_it(matrix(1:10, ncol=2), lagg=-2)
 #' # diff an xts time series
-#' rutils::diff_it(rutils::env_etf$VTI, lagg=10)
+#' rutils::diff_it(rutils::etf_env$VTI, lagg=10)
 
 diff_it <- function(in_put, lagg=1, ...) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
@@ -632,7 +632,7 @@ diff_it <- function(in_put, lagg=1, ...) {
 #'
 #' @examples
 #' # lag by 10 periods
-#' rutils::lag_xts(rutils::env_etf$VTI, lag=10)
+#' rutils::lag_xts(rutils::etf_env$VTI, lag=10)
 
 lag_xts <- function(x_ts, lagg=1, ...) {
   n_row <- NROW(x_ts)
@@ -674,7 +674,7 @@ lag_xts <- function(x_ts, lagg=1, ...) {
 #'
 #' @examples
 #' # calculate time differences over lag by 10 periods
-#' rutils::diff_xts(rutils::env_etf$VTI, lag=10)
+#' rutils::diff_xts(rutils::etf_env$VTI, lag=10)
 
 diff_xts <- function(x_ts, lagg=1, ...) {
   x_ts <- xts::diff.xts(x_ts, lag=lagg, ...)
@@ -707,10 +707,10 @@ diff_xts <- function(x_ts, lagg=1, ...) {
 #'
 #' @examples
 #' # calculate reduced form of an OHLC time series
-#' diff_VTI <- rutils::diff_ohlc(rutils::env_etf$VTI)
+#' diff_VTI <- rutils::diff_ohlc(rutils::etf_env$VTI)
 #' # calculate standard form of an OHLC time series
 #' VTI <- rutils::diff_ohlc(diff_VTI, re_duce=FALSE)
-#' identical(VTI, rutils::env_etf$VTI[, 1:5])
+#' identical(VTI, rutils::etf_env$VTI[, 1:5])
 
 diff_ohlc <- function(oh_lc, re_duce=TRUE, ...) {
   if (re_duce) {
@@ -961,9 +961,9 @@ do_call <- function(func_tion, li_st, ...) {
 #' new_env <- new.env()
 #' rutils::do_call_assign(
 #'    func_tion=get_col,
-#'    sym_bols=rutils::env_etf$sym_bols,
+#'    sym_bols=rutils::etf_env$sym_bols,
 #'    out_put="price_s",
-#'    env_in=env_etf, env_out=new_env)
+#'    env_in=etf_env, env_out=new_env)
 
 do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
                            env_in=.GlobalEnv, env_out=.GlobalEnv, ...) {
@@ -1017,12 +1017,12 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #'
 #' @examples
 #' # plot candlestick chart with shading
-#' rutils::chart_xts(rutils::env_etf$VTI["2015-11"],
+#' rutils::chart_xts(rutils::etf_env$VTI["2015-11"],
 #'   name="VTI in Nov 2015", ylim=c(102, 108),
-#'   in_dic=zoo::index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+#'   in_dic=zoo::index(rutils::etf_env$VTI["2015-11"]) > as.Date("2015-11-18"))
 #' # plot two time series with custom line colors
-#' rutils::chart_xts(na.omit(cbind(rutils::env_etf$XLU[, 4],
-#'   rutils::env_etf$XLP[, 4])), col_ors=c("blue", "green"))
+#' rutils::chart_xts(na.omit(cbind(rutils::etf_env$XLU[, 4],
+#'   rutils::etf_env$XLP[, 4])), col_ors=c("blue", "green"))
 
 chart_xts <- function(x_ts, col_ors=NULL, ylim=NULL, in_dic=NULL, x_11=TRUE, ...) {
   stopifnot(xts::is.xts(x_ts))
@@ -1083,8 +1083,8 @@ chart_xts <- function(x_ts, col_ors=NULL, ylim=NULL, in_dic=NULL, x_11=TRUE, ...
 #'
 #' @examples
 #' # plot two time series
-#' rutils::chart_xts2y(cbind(quantmod::Cl(rutils::env_etf$VTI),
-#'                           quantmod::Cl(rutils::env_etf$IEF))["2015"])
+#' rutils::chart_xts2y(cbind(quantmod::Cl(rutils::etf_env$VTI),
+#'                           quantmod::Cl(rutils::etf_env$IEF))["2015"])
 
 chart_xts2y <- function(x_ts, col_or="red", x_11=TRUE, ...) {
   stopifnot(xts::is.xts(x_ts))
@@ -1139,7 +1139,7 @@ chart_xts2y <- function(x_ts, col_or="red", x_11=TRUE, ...) {
 #'
 #' @examples
 #' # plot an interactive dygraphs candlestick plot with background shading
-#' oh_lc <- rutils::env_etf$VTI
+#' oh_lc <- rutils::etf_env$VTI
 #' v_wap <- TTR::VWAP(price=quantmod::Ad(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
 #' oh_lc <- cbind(oh_lc[, c(1:3, 6)], v_wap)["2009-02/2009-04"]
 #' rutils::chart_dygraph(oh_lc, in_dic=(oh_lc[, 4] > v_wap))
@@ -1189,7 +1189,7 @@ chart_dygraph <- function(oh_lc, in_dic=NULL, ...) {
 #'
 #' @examples
 #' # plot an interactive dygraphs line plot with two "y" axes
-#' price_s <- cbind(Ad(rutils::env_etf$VTI), Ad(rutils::env_etf$IEF))
+#' price_s <- cbind(Ad(rutils::etf_env$VTI), Ad(rutils::etf_env$IEF))
 #' colnames(price_s) <- get_name(colnames(price_s), field=2)
 #' rutils::chart_dygraph2y(price_s)
 

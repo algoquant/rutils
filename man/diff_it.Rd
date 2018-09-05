@@ -41,6 +41,5 @@ rutils::diff_it(1:10, lagg=2)
 # diff matrix by negative 2 periods
 rutils::diff_it(matrix(1:10, ncol=2), lagg=-2)
 # diff an xts time series
-rutils::diff_it(rutils::env_etf$VTI, lagg=10)
+rutils::diff_it(rutils::etf_env$VTI, lagg=10)
 }
-

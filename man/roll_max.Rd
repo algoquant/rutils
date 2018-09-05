@@ -39,4 +39,3 @@ For example, if look_back=3, then the rolling sum at any point is
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 rutils::roll_max(x_ts, look_back=3)
 }
-

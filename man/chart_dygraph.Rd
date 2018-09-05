@@ -33,9 +33,8 @@ The function \code{chart_dygraph()} creates an interactive dygraphs
 }
 \examples{
 # plot an interactive dygraphs candlestick plot with background shading
-oh_lc <- rutils::env_etf$VTI
+oh_lc <- rutils::etf_env$VTI
 v_wap <- TTR::VWAP(price=quantmod::Ad(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
 oh_lc <- cbind(oh_lc[, c(1:3, 6)], v_wap)["2009-02/2009-04"]
 rutils::chart_dygraph(oh_lc, in_dic=(oh_lc[, 4] > v_wap))
 }
-

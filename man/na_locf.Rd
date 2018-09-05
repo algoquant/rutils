@@ -68,4 +68,3 @@ in_put <- xts::xts(in_put, order.by=seq.Date(from=Sys.Date(),
 # replace NA values with the most recent non-NA values
 rutils::na_locf(in_put)
 }
-

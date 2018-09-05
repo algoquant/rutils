@@ -41,8 +41,7 @@ The function \code{do_call_assign()} performs an lapply loop over
 new_env <- new.env()
 rutils::do_call_assign(
    func_tion=get_col,
-   sym_bols=rutils::env_etf$sym_bols,
+   sym_bols=rutils::etf_env$sym_bols,
    out_put="price_s",
-   env_in=env_etf, env_out=new_env)
+   env_in=etf_env, env_out=new_env)
 }
-

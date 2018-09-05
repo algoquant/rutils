@@ -51,8 +51,7 @@ The end points are a vector of integers which divide the elements
 # calculate end points with initial stub interval
 rutils::calc_endpoints(1:100, inter_val=11)
 # calculate end points with a stub interval at the end
-rutils::calc_endpoints(rutils::env_etf$VTI, inter_val=365, stub_front=FALSE)
+rutils::calc_endpoints(rutils::etf_env$VTI, inter_val=365, stub_front=FALSE)
 # calculate end points at the end of every hour
-rutils::calc_endpoints(rutils::env_etf$VTI, inter_val="hours")
+rutils::calc_endpoints(rutils::etf_env$VTI, inter_val="hours")
 }
-

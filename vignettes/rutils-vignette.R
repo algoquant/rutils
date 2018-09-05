@@ -6,43 +6,43 @@
 
 ## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
 suppressMessages(suppressWarnings(library(rutils)))
-# show list of ETF time series in env_etf
-rutils::env_etf$sym_bols
+# show list of ETF time series in etf_env
+rutils::etf_env$sym_bols
 # get first six rows of VTI prices
-head(rutils::env_etf$VTI)
+head(rutils::etf_env$VTI)
 # plot
-quantmod::chart_Series(x=rutils::env_etf$VTI["2009-11"])
+quantmod::chart_Series(x=rutils::etf_env$VTI["2009-11"])
 
 ## ----echo=TRUE, eval=FALSE-----------------------------------------------
 #  suppressMessages(suppressWarnings(library(rutils)))
 #  # new environment for data
-#  env_etf <- new.env()
+#  etf_env <- new.env()
 #  # download data and copy it into environment
-#  get_symbols("XOM", env_out=env_etf, start_date="1990-01-01")
+#  get_symbols("XOM", env_out=etf_env, start_date="1990-01-01")
 #  # plot
 #  x11()
-#  quantmod::chart_Series(x=rutils::env_etf$XOM["2016/"], TA="add_Vo()", name="XOM stock")
+#  quantmod::chart_Series(x=rutils::etf_env$XOM["2016/"], TA="add_Vo()", name="XOM stock")
 
 ## ----echo=-1, eval=TRUE--------------------------------------------------
 suppressMessages(suppressWarnings(library(rutils)))
 # get name for VTI
-get_name(colnames(rutils::env_etf$VTI)[1])
+get_name(colnames(rutils::etf_env$VTI)[1])
 # get first six rows of VTI prices
-head(rutils::env_etf$VTI)
+head(rutils::etf_env$VTI)
 # get first six rows of price_s
-rutils::env_etf$price_s[1:6, 1:4]
+rutils::etf_env$price_s[1:6, 1:4]
 # get first six rows of re_turns
-rutils::env_etf$re_turns[1:6, 1:4]
+rutils::etf_env$re_turns[1:6, 1:4]
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # calculate end points with initial stub interval
-#  calc_endpoints(rutils::env_etf$VTI, inter_val=7)
+#  calc_endpoints(rutils::etf_env$VTI, inter_val=7)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # get close prices for VTI
-#  get_col(rutils::env_etf$VTI)
+#  get_col(rutils::etf_env$VTI)
 #  # get volumes for VTI
-#  get_col(rutils::env_etf$VTI, col_name="vol")
+#  get_col(rutils::etf_env$VTI, col_name="vol")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # lag vector by 2 periods
@@ -58,7 +58,7 @@ rutils::env_etf$re_turns[1:6, 1:4]
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # calculate time differences over lag by 10 periods
-#  diff_xts(rutils::env_etf$VTI, lag=10)
+#  diff_xts(rutils::etf_env$VTI, lag=10)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # create xts time series
@@ -79,13 +79,13 @@ rutils::env_etf$re_turns[1:6, 1:4]
 ## ----eval=FALSE----------------------------------------------------------
 #  rutils::do_call_assign(
 #     func_tion=get_col,
-#     sym_bols=rutils::env_etf$sym_bols,
+#     sym_bols=rutils::etf_env$sym_bols,
 #     out_put="price_s",
-#     env_in=env_etf, env_out=new_env)
+#     env_in=etf_env, env_out=new_env)
 
 ## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
 suppressMessages(suppressWarnings(library(rutils)))
-chart_xts(rutils::env_etf$VTI["2015-11"], x_11=FALSE,
+chart_xts(rutils::etf_env$VTI["2015-11"], x_11=FALSE,
           name="VTI in Nov 2015", ylim=c(102, 108),
-          in_dic=index(rutils::env_etf$VTI["2015-11"]) > as.Date("2015-11-18"))
+          in_dic=index(rutils::etf_env$VTI["2015-11"]) > as.Date("2015-11-18"))
 

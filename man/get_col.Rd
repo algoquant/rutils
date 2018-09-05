@@ -53,13 +53,12 @@ The function \code{get_col()} extracts columns from \emph{OHLC} time
 }
 \examples{
 # get close prices for VTI
-rutils::get_col(rutils::env_etf$VTI)
+rutils::get_col(rutils::etf_env$VTI)
 # get volumes for VTI
-rutils::get_col(rutils::env_etf$VTI, field_name="Vol")
+rutils::get_col(rutils::etf_env$VTI, field_name="Vol")
 # get close prices and volumes for VTI
-rutils::get_col(rutils::env_etf$VTI, field_name=c("Cl", "Vol"))
+rutils::get_col(rutils::etf_env$VTI, field_name=c("Cl", "Vol"))
 # get close prices and volumes for VTI and IEF
 rutils::get_col(oh_lc=c("VTI", "IEF"), field_name=c("Cl", "Vol"),
-  data_env=rutils::env_etf)
+  data_env=rutils::etf_env)
 }
-

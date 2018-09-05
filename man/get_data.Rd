@@ -84,4 +84,3 @@ rutils::get_data(sym_bols=c("MSFT", "XOM"),
             end_date="2015-12-01")
 }
 }
-

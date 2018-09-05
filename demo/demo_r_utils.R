@@ -41,14 +41,14 @@ output_dir <- "C:/Develop/data/hfreq/scrub/"
 
 ### extractors
 # extract the name of the time series from its column name
-get_name(colnames(rutils::env_etf$VTI)[1])
+get_name(colnames(rutils::etf_env$VTI)[1])
 
 # extract close prices
-price_s <- get_col(env_etf$VTI)
+price_s <- get_col(etf_env$VTI)
 # extract high prices
-price_s <- get_col(env_etf$VTI, field_name="High")
+price_s <- get_col(etf_env$VTI, field_name="High")
 # produces error
-price_s <- get_col(env_etf$VTI, field_name="blah")
+price_s <- get_col(etf_env$VTI, field_name="blah")
 
 
 ### do_call_rbind()
@@ -75,8 +75,8 @@ rm(price_s2, envir=new_env)
 
 # first run benchmark
 assign("price_s", do.call(merge,
-                          lapply(env_etf$sym_bols, function(sym_bol) {
-                            x_ts <- Cl(get(sym_bol, env_etf))
+                          lapply(etf_env$sym_bols, function(sym_bol) {
+                            x_ts <- Cl(get(sym_bol, etf_env))
                             colnames(x_ts) <- sym_bol
                             x_ts
                           })), envir=new_env)
@@ -86,15 +86,15 @@ do_call_assign(
     x_ts <- Cl(x_ts)
     colnames(x_ts) <- rutils::get_name(colnames(x_ts))
     x_ts},
-  sym_bols=env_etf$sym_bols,
+  sym_bols=etf_env$sym_bols,
   out_put="price_s2",
-  env_in=env_etf, env_out=new_env)
+  env_in=etf_env, env_out=new_env)
 # perform do_call_assign() using function get_col()
 do_call_assign(
   func_tion=get_col,
-  sym_bols=env_etf$sym_bols,
+  sym_bols=etf_env$sym_bols,
   out_put="price_s2",
-  env_in=env_etf, env_out=new_env)
+  env_in=etf_env, env_out=new_env)
 # compare to benchmark
 ls(new_env)
 identical(new_env$price_s, new_env$price_s2)

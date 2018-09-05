@@ -2,12 +2,12 @@
 #' @docType data
 #' @keywords datasets
 #'
-#' @title The etf_data dataset contains a single environment called env_etf,
+#' @title The etf_data dataset contains a single environment called etf_env,
 #'   which includes daily \code{OHLC} time series data for a portfolio of
 #'   symbols.
 #'
 #' @description
-#' The env_etf environment includes daily \code{OHLC} time series
+#' The etf_env environment includes daily \code{OHLC} time series
 #' data for a portfolio of symbols, and reference data:
 #' \describe{
 #'   \item{sym_bols}{a \code{vector} of \code{strings} with the portfolio symbols.}
@@ -34,6 +34,6 @@
 #' @examples
 #' # data(etf_data)  # not needed - data is lazy load
 #' # get first six rows of OHLC prices
-#' head(env_etf$VTI)
-#' \donttest{chart_Series(x=env_etf$VTI["2009-11"])}
-"env_etf"
+#' head(etf_env$VTI)
+#' \donttest{chart_Series(x=etf_env$VTI["2009-11"])}
+"etf_env"

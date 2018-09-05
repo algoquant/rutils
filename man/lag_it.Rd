@@ -43,6 +43,5 @@ rutils::lag_it(1:10, lag=2)
 # lag matrix by negative 2 periods
 rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
 # lag an xts time series
-rutils::lag_it(rutils::env_etf$VTI, lag=10)
+rutils::lag_it(rutils::etf_env$VTI, lag=10)
 }
-

@@ -41,4 +41,3 @@ list_xts <- split(x_ts, "days")
 # rbind the list back into a time series and compare with the original
 identical(x_ts, rutils::do_call(rbind, list_xts))
 }
-
