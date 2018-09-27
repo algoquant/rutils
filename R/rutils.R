@@ -138,7 +138,7 @@ calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
 #'   values.
 #'
 #'   The function \code{na_locf()} performs the same operation as function
-#'   \code{na.locf()} from package
+#'   \code{xts:::na.locf.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/zoo/index.html}{zoo}, but
 #'   it also accepts vectors as input.
 #'
@@ -146,7 +146,7 @@ calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
 #'   from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, which
 #'   allows it to perform its calculations about three times faster than
-#'   \code{na.locf()}.
+#'   \code{xts:::na.locf.xts()}.
 #'
 #' @examples
 #' # create vector containing NA values

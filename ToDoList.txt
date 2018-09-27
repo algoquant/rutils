@@ -17,9 +17,17 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] create function calc_startpoints() as the multi-period lag of end_points
+
++ [x] Replace zoo::na.locf() with xts:::na.locf.xts()
+
++ [x] Update DESCRIPTION file: remove RcppRoll from Depends
+
++ [ ] Modify function to_period() so it doesn't require the value 0 at the beginning of the argument end_points.
+
 + [ ] fix unit testing using testthat and devtools
 
-+ [ ] modify chart_dygraph() to also plot line plot
++ [ ] Modify chart_dygraph() to also plot line plot
 
 + [ ] add function acf_plus()
 
@@ -40,6 +48,8 @@ https://stackoverflow.com/questions/23849354/equivalent-of-which-function-in-rcp
 + [ ] create new roll functions using RcppRoll::rollit() ?
 
 + [ ] convert roll_*() functions to RcppRoll ?
+No, because RcppArmadillo and Rcpp
+are better
 
 + [ ] create function acf_plus() from lecture notes  
 

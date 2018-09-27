@@ -2,7 +2,7 @@ Package: rutils
 Type: Package
 Title: Utility Functions for Simplifying Financial Data Management and Modeling
 Version: 0.2
-Date: 2017-09-04
+Date: 2018-09-12
 Author: Jerzy Pawlowski (algoquant)
 Maintainer: Jerzy Pawlowski <jp3900@nyu.edu>
 Description: Functions for managing object names and attributes, applying
@@ -11,7 +11,6 @@ License: GPL (>= 2)
 Depends:
     xts, 
     quantmod, 
-    RcppRoll, 
     dygraphs
 Suggests: 
     knitr,
