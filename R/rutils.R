@@ -777,13 +777,13 @@ roll_sum <- function(x_ts, look_back) {
   if (xts::is.xts(x_ts)) {
     cum_sum <- cumsum(x_ts)
     roll_sum <- cum_sum - rutils::lag_it(cum_sum, lag=look_back)
-    roll_sum[1:look_back] <- cum_sum[1:look_back]
+    roll_sum[1:look_back, ] <- cum_sum[1:look_back, ]
   }
   else {
     if (is.null(dim(x_ts))) {
       cum_sum <- cumsum(x_ts)
       roll_sum <- cum_sum - rutils::lag_it(cum_sum, lag=look_back)
-      roll_sum[1:look_back] <- cum_sum[1:look_back]
+      roll_sum[1:look_back, ] <- cum_sum[1:look_back, ]
     }
     else {
       cum_sum <- apply(x_ts, MARGIN=2, function(col_umn) cumsum(col_umn))

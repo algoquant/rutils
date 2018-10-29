@@ -19,11 +19,11 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 + [ ] create function calc_startpoints() as the multi-period lag of end_points
 
-+ [x] Replace zoo::na.locf() with xts:::na.locf.xts()
-
-+ [x] Update DESCRIPTION file: remove RcppRoll from Depends
-
 + [ ] Modify function to_period() so it doesn't require the value 0 at the beginning of the argument end_points.
+
++ [ ] Create functions write_xts() and read_xts() for writing and reading xts time series from csv files, using package data.table
+https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
+https://github.com/Rdatatable/data.table/wiki
 
 + [ ] fix unit testing using testthat and devtools
 
@@ -68,6 +68,10 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] Replace zoo::na.locf() with xts:::na.locf.xts()
+
++ [x] Update DESCRIPTION file: remove RcppRoll from Depends
 
 + [x] modify etf_data.RData: rename env_etf to etf_env, add SVXY, and update the data
 
