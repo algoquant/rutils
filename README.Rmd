@@ -1,8 +1,12 @@
 ---
-title: rutils Package for Simplifying Financial Data Management and Modeling
-author: Jerzy Pawlowski (algoquant)
-abstract: Functions for managing object names and attributes, applying functions over lists, managing objects in environments.
+title: "rutils Package for Simplifying Financial Data Management and Modeling"
+author: "Jerzy Pawlowski (algoquant)"
 tags: high frequency, time series, plot, xts
+abstract: Functions for managing object names and attributes, applying functions over
+  lists, managing objects in environments.
+output:
+  md_document:
+    variant: markdown_github
 ---
 
 [![Build Status](https://travis-ci.org/algoquant/rutils.svg?branch=master)](https://travis-ci.org/algoquant/rutils)
