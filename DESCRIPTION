@@ -12,6 +12,10 @@ Depends:
     xts, 
     quantmod, 
     dygraphs
+Imports:
+    xts, 
+    quantmod, 
+    dygraphs
 Suggests: 
     knitr,
     rmarkdown,

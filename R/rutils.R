@@ -486,7 +486,7 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' # lag matrix by negative 2 periods
 #' rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
 #' # lag an xts time series
-#' rutils::lag_it(rutils::etf_env$VTI, lag=10)
+#' lag_ged <- rutils::lag_it(rutils::etf_env$VTI, lag=10)
 
 lag_it <- function(in_put, lagg=1, ...) {
   if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
