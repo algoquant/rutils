@@ -17,53 +17,53 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
-+ [ ] create function calc_startpoints() as the multi-period lag of end_points
++ [ ] Create function calc_startpoints() as the multi-period lag of end_points
 
 + [ ] Modify function to_period() so it doesn't require the value 0 at the beginning of the argument end_points.
 
-+ [ ] Create functions write_xts() and read_xts() for writing and reading xts time series from csv files, using package data.table
++ [ ] Create functions write_xts() and read_xts() for writing and reading xts time series to csv files, using package data.table
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
 https://github.com/Rdatatable/data.table/wiki
 
-+ [ ] fix unit testing using testthat and devtools
++ [ ] Fix unit testing using testthat and devtools
 
 + [ ] Modify chart_dygraph() to also plot line plot
 
-+ [ ] add function acf_plus()
++ [ ] Add function acf_plus()
 
-+ [ ] add functions read_clip() and write_clip()
++ [ ] Add functions read_clip() and write_clip()
 
-+ [ ] add functions for median and MAD in Rcpp
++ [ ] Add functions for median and MAD in Rcpp
 http://gallery.rcpp.org/articles/robust-estimators/
 
-+ [ ] perform find, which, or tapply operations assuming adjacent elements are equal and ordered
++ [ ] Perform find, which, or tapply operations assuming adjacent elements are equal and ordered
 
-+ [ ] apply STL algorithm function to perform find/which operation
++ [ ] Apply STL algorithm function to perform find/which operation
 http://adv-r.had.co.nz/Rcpp.html#stl
 
-+ [ ] add very fast RcppArmadillo functions: whi_ch(), cum_sum(), select_sub_mat()
++ [ ] Add very fast RcppArmadillo functions: whi_ch(), cum_sum(), select_sub_mat()
 http://arma.sourceforge.net/docs.html
 https://stackoverflow.com/questions/23849354/equivalent-of-which-function-in-rcpp
 
-+ [ ] create new roll functions using RcppRoll::rollit() ?
++ [ ] Create new roll functions using RcppRoll::rollit() ?
 
-+ [ ] convert roll_*() functions to RcppRoll ?
++ [ ] Convert roll_*() functions to RcppRoll ?
 No, because RcppArmadillo and Rcpp
 are better
 
-+ [ ] create function acf_plus() from lecture notes  
++ [ ] Create function acf_plus() from lecture notes  
 
-+ [ ] remove single quotes around names in documentation  
++ [ ] Remove single quotes around names in documentation  
 
-+ [ ] create function chart_strategy() for plotting PnL of trading strategy  
++ [ ] Create function chart_strategy() for plotting PnL of trading strategy  
 
-+ [ ] create function logist_ic() that accepts a uniform random number and returns a vector of uniform random numbers, by applying the logistic map  
++ [ ] Create function logist_ic() that accepts a uniform random number and returns a vector of uniform random numbers, by applying the logistic map  
 
-+ [ ] create function gauss_ian() that maps uniform random numbers into Gaussian (normal) numbers
++ [ ] Create function gauss_ian() that maps uniform random numbers into Gaussian (normal) numbers
 
-+ [ ] create locally a package description in HTML format and upload it to gh-pages branch  
++ [ ] Create locally a package description in HTML format and upload it to gh-pages branch  
 
-+ [ ] add qmao functions: ?
++ [ ] Add qmao functions: ?
 gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
@@ -73,139 +73,139 @@ http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-envir
 
 + [x] Update DESCRIPTION file: remove RcppRoll from Depends
 
-+ [x] modify etf_data.RData: rename env_etf to etf_env, add SVXY, and update the data
++ [x] Modify etf_data.RData: rename env_etf to etf_env, add SVXY, and update the data
 
-+ [x] add ByteCompile: true to the DESCRIPTION
++ [x] Add ByteCompile: true to the DESCRIPTION
 
-+ [x] replace calls to lag_xts() with lag_it()
++ [x] Replace calls to lag_xts() with lag_it()
 
-+ [x] replace calls to diff_xts() with diff_it()
++ [x] Replace calls to diff_xts() with diff_it()
 
-+ [x] fix bug function lag_xts(): 
++ [x] Fix bug function lag_xts(): 
 from:
 x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, lagg), byrow=TRUE, nr=lagg)
 to:
 x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
 
-+ [x] fix bug function lag_it(): 
++ [x] Fix bug function lag_it(): 
 from: in_put <- xts::lag.xts(in_put, k=-lagg, ...)
 to: in_put <- xts::lag.xts(in_put, k=lagg, ...)
 
-+ [x] merge function diff_xts() into diff_it(), and lag_xts() into lag_it(), so that diff_it() and lag_it() can accept both vectors, matrices, and xts
++ [x] Merge function diff_xts() into diff_it(), and lag_xts() into lag_it(), so that diff_it() and lag_it() can accept both vectors, matrices, and xts
 
-+ [x] modify functions diff_xts() and diff_it() and remove is.vector() type checking  
++ [x] Modify functions diff_xts() and diff_it() and remove is.vector() type checking  
 Replace calls to is.vector(in_put) with is.null(dim(in_put))
 
-+ [x] replace argument "lag" with "lagg" (to avoid confusing it with stats function lag())  
++ [x] Replace argument "lag" with "lagg" (to avoid confusing it with stats function lag())  
 
-+ [x] modify function chart_xts(): by default open x11() window for plotting, similar to chart_xts2y()  
++ [x] Modify function chart_xts(): by default open x11() window for plotting, similar to chart_xts2y()  
 
-+ [x] add to function get_col() feature for extracting columns from multiple time series data in an environment, and cbinding the columns into a single xts  
++ [x] Add to function get_col() feature for extracting columns from multiple time series data in an environment, and cbinding the columns into a single xts  
 
-+ [x] rename function get_symbols() to get_data() 
++ [x] Rename function get_symbols() to get_data() 
 merge load_env() into get_data()
 Add feature for loading time series data from csv files into an environment.
 
-+ [x] merge function na_me() into get_name(), and simplify function get_name()  
++ [x] Merge function na_me() into get_name(), and simplify function get_name()  
 
-+ [x] add function chart_xts2y() for plotting two time series with two y-axes
++ [x] Add function chart_xts2y() for plotting two time series with two y-axes
 
-+ [x] add function chart_dygraph() for plotting dygraphs with background shading
++ [x] Add function chart_dygraph() for plotting dygraphs with background shading
 
-+ [x] add function chart_dygraph2y() for plotting two time series with two "y" axes
++ [x] Add function chart_dygraph2y() for plotting two time series with two "y" axes
 
-+ [x] replace "win_dow" with "look_back"
++ [x] Replace "win_dow" with "look_back"
 
 + [x] Create function sub_set() to subset time series.
 sub_set() should accept as inputs a time series, a start date, and either an end date or the number of data points to be returned.  If a positive number is passed to sub_set(), then it should return data points from the future, and if a negative is passed then it should return data points from the past.  If a date is passed to sub_set() then it should return the usual subset from start date to end date.
 
-+ [x] create function get_name(), to extract symbol names from strings
++ [x] Create function get_name(), to extract symbol names from strings
 get_name() <- function(str_ing, separator="_", field=1) strsplit(str_ing split=split)[[1]][field])
 
-+ [x] rename function ex_tract() to get_col()  
++ [x] Rename function ex_tract() to get_col()  
 
-+ [x] modify function calc_endpoints(): first end point should be equal to either (look_back) or (n_row-num_agg*look_back), not zero
++ [x] Modify function calc_endpoints(): first end point should be equal to either (look_back) or (n_row-num_agg*look_back), not zero
 
-+ [x] rename function end_points() to calc_endpoints()  
++ [x] Rename function end_points() to calc_endpoints()  
 
-+ [x] replace calls to xts::.subset_xts() with brackets operator []
++ [x] Replace calls to xts::.subset_xts() with brackets operator []
 
-+ [x] replace calls to length() with NROW()
++ [x] Replace calls to length() with NROW()
 
-+ [x] add to function chart_xts() argument col_ors to pass line color parameters into chart_Series(): 
++ [x] Add to function chart_xts() argument col_ors to pass line color parameters into chart_Series(): 
 
-+ [x] modify function roll_sum() so that it can also accept a vector or matrix
++ [x] Modify function roll_sum() so that it can also accept a vector or matrix
 
-+ [x] create function do_call()  
++ [x] Create function do_call()  
 
-+ [x] create function na_locf()
++ [x] Create function na_locf()
 
-+ [x] add is.logical() clause in functions lag_it() and diff_it() 
++ [x] Add is.logical() clause in functions lag_it() and diff_it() 
 
-+ [x] move functions adjust_ohlc(), to_period() and get_symbols() from HighFreq to rutils  
++ [x] Move functions adjust_ohlc(), to_period() and get_symbols() from HighFreq to rutils  
 
-+ [x] rename function clo_se() to ex_tract()  
++ [x] Rename function clo_se() to ex_tract()  
 
-+ [x] replace quantmod extractor functions Op(), Hi(), Lo(), Cl(), Vo() with direct subsetting: oh_lc[, 3] instead of Lo(oh_lc)  
++ [x] Replace quantmod extractor functions Op(), Hi(), Lo(), Cl(), Vo() with direct subsetting: oh_lc[, 3] Instead of Lo(oh_lc)  
 
-+ [x] create function diff_OHLC()
++ [x] Create function diff_OHLC()
 returns reduced form of OHLC data using differences  
 returns standard form of OHLC data using cumsum  
 
-+ [x] create function roll_max() using RcppRoll::roll_max()  
++ [x] Create function roll_max() using RcppRoll::roll_max()  
 it's not any faster than TTR::runMax()  
 
-+ [x] introduce unit testing using testthat and devtools: create /tests directory
++ [x] Introduce unit testing using testthat and devtools: create /tests directory
 
-+ [x] move function roll_sum() from HighFreq to rutils
++ [x] Move function roll_sum() from HighFreq to rutils
 
-+ [x] create functional do_call_assign() and function do_call_rbind()  
++ [x] Create functional do_call_assign() and function do_call_rbind()  
 
-+ [x] remotely create package description on gh-pages branch without YAML
++ [x] Remotely create package description on gh-pages branch without YAML
 
-+ [x] add vignettes directory and automatically build vignette  
++ [x] Add vignettes directory and automatically build vignette  
 
-+ [x] add more detailed description about etf_data.RData in README.Rmd
++ [x] Add more detailed description about etf_data.RData in README.Rmd
 
-+ [x] add travis Build Status tag to README.Rmd, add .travis.yml file
++ [x] Add travis Build Status tag to README.Rmd, add .travis.yml file
 
 + [x] Delete etf_data.Rdata in the GitHub remote repository because it has wrong extension, and replace it with etf_data.RData.  
 GitHub Desktop is case-insensitive to extension, so it didn't replace etf_data.Rdata in the remote repository, even after I replaced it locally with etf_data.RData. 
 
-+ [x] rename functions *.xts to *_xts
++ [x] Rename functions *.xts to *_xts
 
-+ [x] create project website for rutils on GitHub Pages using R Markdown  
++ [x] Create project website for rutils on GitHub Pages using R Markdown  
 
-+ [x] rename README.md to .Rmd and add more detailed description similar this to README.md
++ [x] Rename README.md to .Rmd and add more detailed description similar this to README.md
 
-+ [x] create function chart_xts() which accepts argument ylim and in_dex - adapt chart_xts() from chartLib.new.R  
++ [x] Create function chart_xts() which accepts argument ylim and in_dex - adapt chart_xts() from chartLib.new.R  
 
-+ [x] create functions lag_it() and diff_it() that apply a lags and difference vectors and matrices  
++ [x] Create functions lag_it() and diff_it() that apply a lags and difference vectors and matrices  
 
-+ [x] create functions lag.xts() and diff.xts() that pad xts series with 0 instead of NA  
++ [x] Create functions lag.xts() and diff.xts() that pad xts series with 0 instead of NA  
 
-+ [x] create function end_points()  
++ [x] Create function end_points()  
 
-+ [x] rename function get_close() to clo_se()  
++ [x] Rename function get_close() to clo_se()  
 
-+ [x] rename function col_name() to na_me()  
++ [x] Rename function col_name() to na_me()  
 
-+ [x] add @export to roxygen code  
++ [x] Add @export to roxygen code  
 
-+ [x] convert all code from nrow() and ncol() to NROW() and NCOL()  
++ [x] Convert all code from nrow() and ncol() to NROW() and NCOL()  
 
-+ [x] create issue for file extension error when using .Rdata instead of .RData
++ [x] Create issue for file extension error when using .Rdata instead of .RData
 https://github.com/klutometis/roxygen
 http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-package
 
 
 ### tasks deprecated
 
-+ [ ] create function do_call_cbind() - do_call(cbind, foo) is good enough
++ [ ] Create function do_call_cbind() - do_call(cbind, foo) is good enough
 
-+ [ ] rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
++ [ ] Rewrite function roll_sum() so that it calls RcppRoll::roll_sum() - no, makes it slower
 
-+ [ ] add function lm_fast() in RcppArmadillo from RcppArmadillo Eddelbuettel 2014.pdf
++ [ ] Add function lm_fast() in RcppArmadillo from RcppArmadillo Eddelbuettel 2014.pdf
 Added HighFreq::calc_lm() instead of lm_fast()
 
 
