@@ -17,6 +17,14 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] Modify the padding of leading or trailing values in the functions lag_it() and diff_it()
+The returns should be padded with 0, not the first or last element of the input vector.
+The prices should be padded with the first or last element of the input vector, not 0.
+Add Boolean argument pad_zeros with default TRUE.
+The first element returned by lag_it() should be 0, not the first element of the input vector.
+The first element returned by diff_it() should be the first element of the input vector, not 0.
+This is based on the AUC calculation in the lecture slides.
+
 + [ ] Create function calc_startpoints() as the multi-period lag of end_points
 
 + [ ] Modify function to_period() so it doesn't require the value 0 at the beginning of the argument end_points.

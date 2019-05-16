@@ -460,8 +460,8 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' @export
 #' @param in_put A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
-#' @param lagg An integer equal to the number of time periods of lag (default is
-#'   1).
+#' @param lagg An integer equal to the number of time periods (rows) of lag
+#'   (default is 1).
 #'
 #' @return A vector, matrix, or \emph{xts} time series. with the same dimensions
 #'   as the input object.
@@ -470,11 +470,13 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #'   shifting its rows by the number of time periods equal to the integer
 #'   argument \code{lagg}.
 #'   For positive \code{lagg} values the current row is replaced with values
-#'   from the row that is \code{lagg} rows above. (vice versa for negative
-#'   \code{lagg} values).  This also applies to vectors, since they can be
-#'   viewed as single-column matrices.
+#'   from the row that is \code{lagg} rows above (previous). (vice versa for
+#'   negative \code{lagg} values).  This also applies to vectors, since they can
+#'   be viewed as single-column matrices.
+#'
 #'   To avoid leading or trailing \emph{NA} values, the output object is padded
 #'   with values from either the first or the last row.
+#'
 #'   When applied to \emph{xts} time series, the function \code{lag_it()} calls
 #'   the function \code{lag.xts()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
