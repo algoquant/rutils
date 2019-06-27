@@ -17,6 +17,8 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] Download to the ETF dataset etf_data.RData the newest data
+
 + [ ] Modify the padding of leading or trailing values in the functions lag_it() and diff_it()
 The returns should be padded with 0, not the first or last element of the input vector.
 The prices should be padded with the first or last element of the input vector, not 0.
