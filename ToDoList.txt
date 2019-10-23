@@ -17,6 +17,10 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] Create function last() - just use xts::last()?
+
++ [ ] Modify functions lag_it(), diff_it(), and na_locf(): add to if() clause xts::is.timeBased(in_put)
+
 + [ ] Download to the ETF dataset etf_data.RData the newest data
 
 + [ ] Modify the padding of leading or trailing values in the functions lag_it() and diff_it()

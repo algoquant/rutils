@@ -167,8 +167,8 @@ calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
 #' rutils::na_locf(in_put)
 
 na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) {
-  if (!(is.numeric(in_put) | is.logical(in_put) | xts::is.xts(in_put))) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, Boolean, or xts."))
+  if (!(is.numeric(in_put) || is.logical(in_put) || xts::is.timeBased(in_put) || xts::is.xts(in_put))) {  # in_put is not numeric
+    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts."))
     return(NULL)  # return NULL
   }  # end if
   if (NCOL(in_put) > 1) {
@@ -491,8 +491,8 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' lag_ged <- rutils::lag_it(rutils::etf_env$VTI, lag=10)
 
 lag_it <- function(in_put, lagg=1, ...) {
-  if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
+  if (!(is.numeric(in_put) || is.logical(in_put) || xts::is.timeBased(in_put) || xts::is.xts(in_put))) {  # in_put is not numeric
+    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts."))
     return(NULL)  # return NULL
   }  # end if
   n_row <- NROW(in_put)
@@ -566,8 +566,8 @@ lag_it <- function(in_put, lagg=1, ...) {
 #' rutils::diff_it(rutils::etf_env$VTI, lagg=10)
 
 diff_it <- function(in_put, lagg=1, ...) {
-  if (!(is.numeric(in_put) | is.logical(in_put))) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric or Boolean."))
+  if (!(is.numeric(in_put) || is.logical(in_put) || xts::is.timeBased(in_put) || xts::is.xts(in_put))) {  # in_put is not numeric
+    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts."))
     return(NULL)  # return NULL
   }  # end if
   n_row <- NROW(in_put)
