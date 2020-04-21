@@ -19,11 +19,7 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 + [ ] Create function last() - just use xts::last()?
 
-+ [ ] Change license from GPL to MPL.
-
 + [ ] Modify functions lag_it(), diff_it(), and na_locf(): add to if() clause xts::is.timeBased(in_put)
-
-+ [ ] Download to the ETF dataset etf_data.RData the newest data
 
 + [ ] Modify the padding of leading or trailing values in the functions lag_it() and diff_it()
 The returns should be padded with 0, not the first or last element of the input vector.
@@ -84,6 +80,10 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] Change license from GPL to MPL, similar to package data.table.
+
++ [x] Download to the ETF dataset etf_data.RData the newest data - updated on 2020-04-18
 
 + [x] Replace zoo::na.locf() with xts:::na.locf.xts()
 
