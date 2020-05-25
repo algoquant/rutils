@@ -45,23 +45,9 @@ https://github.com/Rdatatable/data.table/wiki
 
 + [ ] Add functions read_clip() and write_clip()
 
-+ [ ] Add functions for median and MAD in Rcpp
-http://gallery.rcpp.org/articles/robust-estimators/
++ [ ] Add data.table and fst functions for aggregating large datasets
 
 + [ ] Perform find, which, or tapply operations assuming adjacent elements are equal and ordered
-
-+ [ ] Apply STL algorithm function to perform find/which operation
-http://adv-r.had.co.nz/Rcpp.html#stl
-
-+ [ ] Add very fast RcppArmadillo functions: whi_ch(), cum_sum(), select_sub_mat()
-http://arma.sourceforge.net/docs.html
-https://stackoverflow.com/questions/23849354/equivalent-of-which-function-in-rcpp
-
-+ [ ] Create new roll functions using RcppRoll::rollit() ?
-
-+ [ ] Convert roll_*() functions to RcppRoll ?
-No, because RcppArmadillo and Rcpp
-are better
 
 + [ ] Create function acf_plus() from lecture notes  
 
