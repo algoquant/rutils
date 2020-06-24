@@ -43,12 +43,13 @@ get_name <- function(str_ing, sepa_rator="[.]", field=1) {
 #' vector, matrix, or time series.
 #'
 #' @export
-#' @param x_ts A vector, matrix, or time series.
-#' @param inter_val The number of elements between neighboring end points. or a
-#'   \emph{string} representing a time period (minutes, hours, days, etc.)
-#' @param stub_front \emph{Boolean} argument: if \code{TRUE} then add a stub
-#'   interval at the beginning, else add a stub interval at the end.  (default
-#'   is \code{TRUE})
+#' @param \code{x_ts} A vector, matrix, or time series.
+#' @param \code{inter_val} The number of elements between neighboring end
+#'   points. or a \emph{string} representing a time period (minutes, hours,
+#'   days, etc.)
+#' @param \code{stub_front} \emph{Boolean} argument: if \code{TRUE} then add a
+#'   stub interval at the beginning, else add a stub interval at the end.
+#'   (default is \code{TRUE})
 #'
 #' @return An \emph{integer} vector of equally spaced end points (vector of
 #'   integers).
@@ -209,9 +210,8 @@ na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) 
 #' Aggregate an \emph{OHLC} time series to a lower periodicity.
 #'
 #' Given an \emph{OHLC} time series at high periodicity (say seconds),
-#' calculates the \emph{OHLC} prices at lower periodicity (say minutes).
+#' calculates the \emph{OHLC} prices at a lower periodicity (say minutes).
 #'
-#' @export
 #' @param oh_lc An \emph{OHLC} time series of prices in \emph{xts} format.
 #' @param period aggregation interval ("seconds", "minutes", "hours", "days",
 #'   "weeks", "months", "quarters", and "years").
@@ -223,7 +223,7 @@ na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) 
 #'   lower periodicity defined by the end_points.
 #'
 #' @details The function \code{to_period()} performs a similar aggregation as
-#'   function \code{to.period()} from package
+#'   function \code{xts::to.period()} from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but has
 #'   the flexibility to aggregate to a user-specified vector of end points. The
 #'   function \code{to_period()} simply calls the compiled function
@@ -241,9 +241,10 @@ na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) 
 #' # aggregate over days:
 #' rutils::to_period(oh_lc=HighFreq::SPY["2009"], period="days")
 #' # equivalent to:
-#' to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
+#' xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 #' }
-
+#'
+#' @export
 to_period <- function(oh_lc,
                       period="minutes", k=1,
                       end_points=xts::endpoints(oh_lc, period, k)) {

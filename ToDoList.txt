@@ -17,17 +17,18 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] Modify function calc_endpoints(): first end point should be equal to 0, as in xts, not the stub period ?
+
 + [ ] Create function last() - just use xts::last()?
 
-+ [ ] Modify functions lag_it(), diff_it(), and na_locf(): add to if() clause xts::is.timeBased(in_put)
++ [x] Modify functions lag_it(), diff_it(), and na_locf(): add to if() clause xts::is.timeBased(in_put)
 
-+ [ ] Modify the padding of leading or trailing values in the functions lag_it() and diff_it()
-The returns should be padded with 0, not the first or last element of the input vector.
-The prices should be padded with the first or last element of the input vector, not 0.
++ [ ] Modify function diff_it() to pad with initial (warmup) period, not zeros
+
++ [ ] Modify the padding of leading or trailing values in the functions lag_it() and lag_vec()
 Add Boolean argument pad_zeros with default TRUE.
-The first element returned by lag_it() should be 0, not the first element of the input vector.
-The first element returned by diff_it() should be the first element of the input vector, not 0.
-This is based on the AUC calculation in the lecture slides.
+The returns data should be padded with zeros, not the first or last element of the input vector.
+The prices should be padded with the first or last element of the input vector, not with zeros.
 
 + [ ] Create function calc_startpoints() as the multi-period lag of end_points
 
