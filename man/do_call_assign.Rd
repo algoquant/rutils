@@ -5,8 +5,8 @@
 \title{Apply a function to a list of objects, merge the outputs into a single
 object, and assign the object to the output environment.}
 \usage{
-do_call_assign(func_tion, sym_bols = NULL, out_put, env_in = .GlobalEnv,
-  env_out = .GlobalEnv, ...)
+do_call_assign(func_tion, sym_bols = NULL, out_put,
+  env_in = .GlobalEnv, env_out = .GlobalEnv, ...)
 }
 \arguments{
 \item{func_tion}{The name of a function that returns a single object

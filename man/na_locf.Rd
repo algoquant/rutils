@@ -5,7 +5,8 @@
 \title{Replace \emph{NA} values with the most recent \emph{non-NA} values prior to
 them.}
 \usage{
-na_locf(in_put, from_last = FALSE, na_rm = FALSE, max_gap = NROW(in_put))
+na_locf(in_put, from_last = FALSE, na_rm = FALSE,
+  max_gap = NROW(in_put))
 }
 \arguments{
 \item{in_put}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
@@ -40,7 +41,7 @@ The function \code{na_locf()} replaces \emph{NA} values with the
   values.
 
   The function \code{na_locf()} performs the same operation as function
-  \code{na.locf()} from package
+  \code{xts:::na.locf.xts()} from package
   \href{https://cran.r-project.org/web/packages/zoo/index.html}{zoo}, but
   it also accepts vectors as input.
 
@@ -48,7 +49,7 @@ The function \code{na_locf()} replaces \emph{NA} values with the
   from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, which
   allows it to perform its calculations about three times faster than
-  \code{na.locf()}.
+  \code{xts:::na.locf.xts()}.
 }
 \examples{
 # create vector containing NA values

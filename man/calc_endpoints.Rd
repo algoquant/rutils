@@ -8,14 +8,15 @@ vector, matrix, or time series.}
 calc_endpoints(x_ts, inter_val, stub_front = TRUE)
 }
 \arguments{
-\item{x_ts}{A vector, matrix, or time series.}
+\item{\code{x_ts}}{A vector, matrix, or time series.}
 
-\item{inter_val}{The number of elements between neighboring end points. or a
-\emph{string} representing a time period (minutes, hours, days, etc.)}
+\item{\code{inter_val}}{The number of elements between neighboring end
+points. or a \emph{string} representing a time period (minutes, hours,
+days, etc.)}
 
-\item{stub_front}{\emph{Boolean} argument: if \code{TRUE} then add a stub
-interval at the beginning, else add a stub interval at the end.  (default
-is \code{TRUE})}
+\item{\code{stub_front}}{\emph{Boolean} argument: if \code{TRUE} then add a
+stub interval at the beginning, else add a stub interval at the end.
+(default is \code{TRUE})}
 }
 \value{
 An \emph{integer} vector of equally spaced end points (vector of

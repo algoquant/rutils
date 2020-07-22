@@ -24,11 +24,11 @@ A \emph{OHLC} time series of prices in \emph{xts} format, with a
 }
 \description{
 Given an \emph{OHLC} time series at high periodicity (say seconds),
-calculates the \emph{OHLC} prices at lower periodicity (say minutes).
+calculates the \emph{OHLC} prices at a lower periodicity (say minutes).
 }
 \details{
 The function \code{to_period()} performs a similar aggregation as
-  function \code{to.period()} from package
+  function \code{xts::to.period()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but has
   the flexibility to aggregate to a user-specified vector of end points. The
   function \code{to_period()} simply calls the compiled function
@@ -46,6 +46,7 @@ rutils::to_period(oh_lc=HighFreq::SPY["2009"], end_points=end_points)
 # aggregate over days:
 rutils::to_period(oh_lc=HighFreq::SPY["2009"], period="days")
 # equivalent to:
-to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
+xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 }
+
 }

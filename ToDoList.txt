@@ -17,6 +17,9 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [ ] Modify function get_data(): download from Tiingo not Yahoo
+
+
 + [ ] Modify function calc_endpoints(): first end point should be equal to 0, as in xts, not the stub period ?
 
 + [ ] Create function last() - just use xts::last()?

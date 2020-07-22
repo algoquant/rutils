@@ -5,8 +5,8 @@
 \title{Plot either a line plot or a candlestick plot of an \emph{xts} time series,
 with custom line colors, y-axis range, and with vertical background shading.}
 \usage{
-chart_xts(x_ts, col_ors = NULL, ylim = NULL, in_dic = NULL, x_11 = TRUE,
-  ...)
+chart_xts(x_ts, col_ors = NULL, ylim = NULL, in_dic = NULL,
+  x_11 = TRUE, ...)
 }
 \arguments{
 \item{x_ts}{An \emph{xts} time series or an \emph{OHLC} time series.}

@@ -6,9 +6,10 @@
 external source (download from \emph{YAHOO}), or from \emph{CSV} files in a
 local drive.}
 \usage{
-get_data(sym_bols, data_dir = NULL, data_env, start_date = "2007-01-01",
-  end_date = Sys.Date(), date_fun = match.fun("as.Date"),
-  for_mat = "\%Y-\%m-\%d", header = TRUE, e_cho = TRUE, scrub = TRUE)
+get_data(sym_bols, data_dir = NULL, data_env,
+  start_date = "2007-01-01", end_date = Sys.Date(),
+  date_fun = match.fun("as.Date"), for_mat = "\%Y-\%m-\%d",
+  header = TRUE, e_cho = TRUE, scrub = TRUE)
 }
 \arguments{
 \item{sym_bols}{A vector of strings representing instrument symbols
