@@ -8,13 +8,13 @@ for an \emph{OHLC} time series in \emph{xts} format.}
 chart_dygraph(oh_lc, in_dic = NULL, ...)
 }
 \arguments{
-\item{oh_lc}{An \emph{OHLC} time series in \emph{xts} format.}
+\item{\code{oh_lc}}{An \emph{OHLC} time series in \emph{xts} format.}
 
-\item{in_dic}{A \emph{Boolean} time series in \emph{xts} format for
+\item{\code{in_dic}}{A \emph{Boolean} time series in \emph{xts} format for
 specifying the shading areas, with TRUE indicating "lightgreen" shading,
 and FALSE indicating "antiquewhite" shading (default is \code{NULL}).}
 
-\item{...}{additional arguments to function \code{dygraphs::dygraph()}.}
+\item{\code{...}}{Additional arguments to function \code{dygraphs::dygraph()}.}
 }
 \value{
 A \code{dygraphs} plot object, and a \code{dygraphs} plot produced as
@@ -32,7 +32,7 @@ The function \code{chart_dygraph()} creates an interactive dygraphs
   \href{https://cran.r-project.org/web/packages/dygraphs/index.html}{dygraphs}.
 }
 \examples{
-# plot an interactive dygraphs candlestick plot with background shading
+# Plot an interactive dygraphs candlestick plot with background shading
 oh_lc <- rutils::etf_env$VTI
 v_wap <- TTR::VWAP(price=quantmod::Ad(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
 oh_lc <- cbind(oh_lc[, c(1:3, 6)], v_wap)["2009-02/2009-04"]

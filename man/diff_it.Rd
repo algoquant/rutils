@@ -8,11 +8,11 @@ matrix, or \emph{xts} time series.}
 diff_it(in_put, lagg = 1, ...)
 }
 \arguments{
-\item{in_put}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\item{\code{in_put}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
 \emph{xts} time series.}
 
-\item{lagg}{An integer equal to the number of time periods of lag (default is
-1).}
+\item{\code{lagg}}{An integer equal to the number of time periods of lag
+(default is \code{1}).}
 }
 \value{
 A vector, matrix, or \emph{xts} time series. with the same dimensions
@@ -26,20 +26,20 @@ matrix, or \emph{xts} time series.
 The function \code{diff_it()} calculates the row differences between
   rows that are \code{lagg} rows apart. Positive \code{lagg} means that the
   difference is calculated as the current row minus the row that is
-  \code{lagg} rows above. (vice versa negative \code{lagg}).  This also
+  \code{lagg} rows above. (vice versa for a negative \code{lagg}).  This also
   applies to vectors, since they can be viewed as single-column matrices. The
   leading or trailing stub periods are padded with \emph{zeros}.
 
   When applied to \emph{xts} time series, the function \code{diff_it()} calls
   the function \code{diff.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
-  pads the output with zeros instead of with \emph{NAs}.
+  pads the output with zeros instead of with \code{NA}s.
 }
 \examples{
-# diff vector by 2 periods
+# Diff vector by 2 periods
 rutils::diff_it(1:10, lagg=2)
-# diff matrix by negative 2 periods
+# Diff matrix by negative 2 periods
 rutils::diff_it(matrix(1:10, ncol=2), lagg=-2)
-# diff an xts time series
+# Diff an xts time series
 rutils::diff_it(rutils::etf_env$VTI, lagg=10)
 }

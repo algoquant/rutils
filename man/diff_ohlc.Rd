@@ -8,12 +8,12 @@ standard form from the reduced form of an \emph{OHLC} time series.}
 diff_ohlc(oh_lc, re_duce = TRUE, ...)
 }
 \arguments{
-\item{oh_lc}{An \emph{OHLC} time series of prices in \emph{xts} format.}
+\item{\code{oh_lc}}{An \emph{OHLC} time series of prices in \emph{xts} format.}
 
-\item{re_duce}{\emph{Boolean} argument: should the reduced form be calculated
-or the standard form? (default is \code{TRUE})}
+\item{\code{re_duce}}{A \emph{Boolean} argument: should the reduced form be
+calculated or the standard form? (default is \code{TRUE})}
 
-\item{...}{additional arguments to function \code{xts::diff.xts()}.}
+\item{\code{...}}{Additional arguments to function \code{xts::diff.xts()}.}
 }
 \value{
 An \emph{OHLC} time series with five columns for the \emph{Open},
@@ -33,9 +33,9 @@ The reduced form of an \emph{OHLC} time series is obtained by
   form by reversing those operations.
 }
 \examples{
-# calculate reduced form of an OHLC time series
+# Calculate reduced form of an OHLC time series
 diff_VTI <- rutils::diff_ohlc(rutils::etf_env$VTI)
-# calculate standard form of an OHLC time series
+# Calculate standard form of an OHLC time series
 VTI <- rutils::diff_ohlc(diff_VTI, re_duce=FALSE)
 identical(VTI, rutils::etf_env$VTI[, 1:5])
 }

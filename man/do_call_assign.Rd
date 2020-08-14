@@ -9,22 +9,22 @@ do_call_assign(func_tion, sym_bols = NULL, out_put,
   env_in = .GlobalEnv, env_out = .GlobalEnv, ...)
 }
 \arguments{
-\item{func_tion}{The name of a function that returns a single object
-(\code{vector}, \emph{xts} time series, etc.)}
+\item{\code{func_tion}}{The name of a function that returns a single object
+(\emph{vector}, \emph{xts} time series, etc.)}
 
-\item{sym_bols}{A vector of \emph{character} strings with the names of input
-objects.}
+\item{\code{sym_bols}}{A vector of \emph{character} strings with the names of
+input objects.}
 
-\item{out_put}{The string with name of output object.}
+\item{\code{out_put}}{The string with name of output object.}
 
-\item{env_in}{The environment containing the input \code{sym_bols}.}
+\item{\code{env_in}}{The environment containing the input \code{sym_bols}.}
 
-\item{env_out}{The environment for creating the \code{out_put}.}
+\item{\code{env_out}}{The environment for creating the \code{out_put}.}
 
-\item{...}{additional arguments to function \code{func_tion()}.}
+\item{\code{...}}{Additional arguments to function \code{func_tion()}.}
 }
 \value{
-A single object (\code{matrix}, \emph{xts} time series, etc.)
+A single object (\emph{matrix}, \emph{xts} time series, etc.)
 }
 \description{
 Apply a function to a list of objects, merge the outputs into a single

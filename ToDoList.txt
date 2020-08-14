@@ -19,23 +19,9 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 + [ ] Modify function get_data(): download from Tiingo not Yahoo
 
-
-+ [ ] Modify function calc_endpoints(): first end point should be equal to 0, as in xts, not the stub period ?
-
-+ [ ] Create function last() - just use xts::last()?
-
-+ [x] Modify functions lag_it(), diff_it(), and na_locf(): add to if() clause xts::is.timeBased(in_put)
-
-+ [ ] Modify function diff_it() to pad with initial (warmup) period, not zeros
-
-+ [ ] Modify the padding of leading or trailing values in the functions lag_it() and lag_vec()
-Add Boolean argument pad_zeros with default TRUE.
-The returns data should be padded with zeros, not the first or last element of the input vector.
-The prices should be padded with the first or last element of the input vector, not with zeros.
-
 + [ ] Create function calc_startpoints() as the multi-period lag of end_points
 
-+ [ ] Modify function to_period() so it doesn't require the value 0 at the beginning of the argument end_points.
++ [ ] Create function last() - just use xts::last()?
 
 + [ ] Create functions write_xts() and read_xts() for writing and reading xts time series to csv files, using package data.table
 https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html
@@ -53,8 +39,6 @@ https://github.com/Rdatatable/data.table/wiki
 
 + [ ] Perform find, which, or tapply operations assuming adjacent elements are equal and ordered
 
-+ [ ] Create function acf_plus() from lecture notes  
-
 + [ ] Remove single quotes around names in documentation  
 
 + [ ] Create function chart_strategy() for plotting PnL of trading strategy  
@@ -70,6 +54,19 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] Create function acf_plus() from lecture notes  
+
++ [x] Modify the padding of leading or trailing values in the functions lag_it()
+Add Boolean argument pad_zeros with default TRUE, similar to HighFreq::lag_it().
+The asset returns data should be padded with zeros, not the first or last element of the input vector.
+The prices should be padded with the first or last element of the input vector, not with zeros.
+
++ [x] Modify function diff_it() to pad with zeros
+
++ [x] Modify function calc_endpoints(): first end point should be equal to 0, as in xts, not the stub period ?
+
++ [x] Modify functions lag_it(), diff_it(), and na_locf(): add to if() clause xts::is.timeBased(in_put)
 
 + [x] Change license from GPL to MPL, similar to package data.table.
 
@@ -206,6 +203,8 @@ http://stackoverflow.com/questions/35467185/dataset-does-not-appear-in-my-r-pack
 
 
 ### tasks deprecated
+
++ [ ] Modify function to_period() so it doesn't require the value 0 at the beginning of the argument end_points - no, modified calc_endpoints() instead
 
 + [ ] Create function do_call_cbind() - do_call(cbind, foo) is good enough
 

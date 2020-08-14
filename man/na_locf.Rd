@@ -2,42 +2,42 @@
 % Please edit documentation in R/rutils.R
 \name{na_locf}
 \alias{na_locf}
-\title{Replace \emph{NA} values with the most recent \emph{non-NA} values prior to
+\title{Replace \code{NA} values with the most recent non-\code{NA} values prior to
 them.}
 \usage{
 na_locf(in_put, from_last = FALSE, na_rm = FALSE,
   max_gap = NROW(in_put))
 }
 \arguments{
-\item{in_put}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\item{\code{in_put}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
 \emph{xts} time series.}
 
-\item{from_last}{\emph{Boolean} argument: should \emph{non-NA} values be
-carried backward rather than forward? (default is \code{FALSE})}
+\item{\code{from_last}}{A  \emph{Boolean} argument: should non-\code{NA}
+values be carried backward rather than forward? (default is \code{FALSE})}
 
-\item{na_rm}{\emph{Boolean} argument: should any remaining (leading or
-trailing) \emph{NA} values be removed? (default is \code{FALSE})}
+\item{\code{na_rm}}{A \emph{Boolean} argument: should any remaining (leading
+or trailing) \code{NA} values be removed? (default is \code{FALSE})}
 
-\item{max_gap}{The maximum number of neighboring \emph{NA} values that can be
-replaced (default is \code{NROW(in_put)}).}
+\item{\code{max_gap}}{The maximum number of neighboring \code{NA} values that
+can be replaced (default is \code{NROW(in_put)}).}
 }
 \value{
 A vector, matrix, or \emph{xts} time series with the same dimensions
   and data type as the argument \code{in_put}.
 }
 \description{
-Replace \emph{NA} values with the most recent \emph{non-NA} values prior to
+Replace \code{NA} values with the most recent non-\code{NA} values prior to
 them.
 }
 \details{
-The function \code{na_locf()} replaces \emph{NA} values with the
-  most recent \emph{non-NA} values prior to them.
+The function \code{na_locf()} replaces \code{NA} values with the
+  most recent non-\code{NA} values prior to them.
 
   If the \code{from_last} argument is \code{FALSE} (the default), then the
-  previous or past \emph{non-NA} values are carried forward to replace the
-  \emph{NA} values.
+  previous or past non-\code{NA} values are carried forward to replace the
+  \code{NA} values.
   If the \code{from_last} argument is \code{TRUE}, then the following or
-  future \emph{non-NA} values are carried backward to replace the \emph{NA}
+  future non-\code{NA} values are carried backward to replace the \code{NA}
   values.
 
   The function \code{na_locf()} performs the same operation as function
@@ -52,20 +52,20 @@ The function \code{na_locf()} replaces \emph{NA} values with the
   \code{xts:::na.locf.xts()}.
 }
 \examples{
-# create vector containing NA values
+# Create vector containing NA values
 in_put <- sample(22)
 in_put[sample(NROW(in_put), 4)] <- NA
-# replace NA values with the most recent non-NA values
+# Replace NA values with the most recent non-NA values
 rutils::na_locf(in_put)
-# create matrix containing NA values
+# Create matrix containing NA values
 in_put <- sample(44)
 in_put[sample(NROW(in_put), 8)] <- NA
 in_put <- matrix(in_put, nc=2)
-# replace NA values with the most recent non-NA values
+# Replace NA values with the most recent non-NA values
 rutils::na_locf(in_put)
-# create xts series containing NA values
+# Create xts series containing NA values
 in_put <- xts::xts(in_put, order.by=seq.Date(from=Sys.Date(),
   by=1, length.out=NROW(in_put)))
-# replace NA values with the most recent non-NA values
+# Replace NA values with the most recent non-NA values
 rutils::na_locf(in_put)
 }

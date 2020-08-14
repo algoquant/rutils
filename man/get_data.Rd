@@ -12,35 +12,36 @@ get_data(sym_bols, data_dir = NULL, data_env,
   header = TRUE, e_cho = TRUE, scrub = TRUE)
 }
 \arguments{
-\item{sym_bols}{A vector of strings representing instrument symbols
+\item{\code{sym_bols}}{A vector of strings representing instrument symbols
 (tickers).}
 
-\item{data_dir}{The directory containing \emph{CSV} files (default is
+\item{\code{data_dir}}{The directory containing \emph{CSV} files (default is
 \code{NULL}).}
 
-\item{data_env}{The environment for loading the data into.}
+\item{\code{data_env}}{The environment for loading the data into.}
 
-\item{start_date}{The start date of time series data (default is
+\item{\code{start_date}}{The start date of time series data (default is
 "2007-01-01").}
 
-\item{end_date}{The end date of time series data (default is
+\item{\code{end_date}}{The end date of time series data (default is
 \code{Sys.Date()}).}
 
-\item{date_fun}{The name of the function for formatting the date fields in
-the \emph{CSV} files (default is \code{as.Date()}).}
+\item{\code{date_fun}}{The name of the function for formatting the date
+fields in the \emph{CSV} files (default is \code{as.Date()}).}
 
-\item{for_mat}{The format of the date fields in the \emph{CSV} files
+\item{\code{for_mat}}{The format of the date fields in the \emph{CSV} files
 (default is \code{\%Y-\%m-\%d}).}
 
-\item{header}{\emph{Boolean} argument: if \code{TRUE} then read the header in
-the \emph{CSV} files (default is \code{TRUE}).}
+\item{\code{header}}{A \emph{Boolean} argument: if \code{TRUE} then read the
+header in the \emph{CSV} files (default is \code{TRUE}).}
 
-\item{e_cho}{\emph{Boolean} argument: if \code{TRUE} then print to console
-information on the progress of \emph{CSV} file loading (default is
+\item{\code{e_cho}}{A \emph{Boolean} argument: if \code{TRUE} then print to
+console information on the progress of \emph{CSV} file loading (default is
 \code{TRUE}).}
 
-\item{scrub}{\emph{Boolean} argument: if \code{TRUE} then remove \code{NA}
-values using function \code{rutils::na_locf()} (default is \code{TRUE}).}
+\item{\code{scrub}}{A \emph{Boolean} argument: if \code{TRUE} then remove
+\code{NA} values using function \code{rutils::na_locf()} (default is
+\code{TRUE}).}
 }
 \value{
 A vector of \code{sym_bols} returned invisibly.
@@ -74,11 +75,11 @@ The function \code{get_data()} loads \emph{OHLC} time series data
 \examples{
 \dontrun{
 new_env <- new.env()
-# load prices from local csv files
+# Load prices from local csv files
 rutils::get_data(sym_bols=c("SPY", "EEM"),
             data_dir="C:/Develop/data/bbg_records",
             data_env=new_env)
-# download prices from YAHOO
+# Download prices from YAHOO
 rutils::get_data(sym_bols=c("MSFT", "XOM"),
             data_env=new_env,
             start_date="2012-12-01",

@@ -9,21 +9,21 @@ chart_xts(x_ts, col_ors = NULL, ylim = NULL, in_dic = NULL,
   x_11 = TRUE, ...)
 }
 \arguments{
-\item{x_ts}{An \emph{xts} time series or an \emph{OHLC} time series.}
+\item{\code{x_ts}}{An \emph{xts} time series or an \emph{OHLC} time series.}
 
-\item{col_ors}{A vector of \emph{strings} with the custom line colors.}
+\item{\code{col_ors}}{A vector of \emph{strings} with the custom line colors.}
 
-\item{ylim}{A \emph{numeric} vector with two elements containing the y-axis
-range.}
+\item{\code{ylim}}{A \emph{numeric} vector with two elements containing the
+y-axis range.}
 
-\item{in_dic}{A \emph{Boolean} vector or \emph{xts} time series for
+\item{\code{in_dic}}{A \emph{Boolean} vector or \emph{xts} time series for
 specifying the shading areas, with TRUE indicating "lightgreen" shading,
 and FALSE indicating "antiquewhite" shading.}
 
-\item{x_11}{\emph{Boolean} argument: if \code{TRUE} then open x11 window for
+\item{\code{x_11}}{A \emph{Boolean} argument: if \code{TRUE} then open x11 window for
 plotting, else plot in standard window (default is \code{TRUE}).}
 
-\item{...}{additional arguments to function \code{chart_Series()}.}
+\item{\code{...}}{Additional arguments to function \code{chart_Series()}.}
 }
 \value{
 A \code{chart_Series()} object returned invisibly.
@@ -49,11 +49,11 @@ The function \code{chart_xts()} plots a line plot of a \emph{xts}
   \code{chart_xts()} plots the chart object and returns it invisibly.
 }
 \examples{
-# plot candlestick chart with shading
+# Plot candlestick chart with shading
 rutils::chart_xts(rutils::etf_env$VTI["2015-11"],
   name="VTI in Nov 2015", ylim=c(102, 108),
   in_dic=zoo::index(rutils::etf_env$VTI["2015-11"]) > as.Date("2015-11-18"))
-# plot two time series with custom line colors
+# Plot two time series with custom line colors
 rutils::chart_xts(na.omit(cbind(rutils::etf_env$XLU[, 4],
   rutils::etf_env$XLP[, 4])), col_ors=c("blue", "green"))
 }

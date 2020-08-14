@@ -8,12 +8,12 @@ series.}
 do_call_rbind(li_st)
 }
 \arguments{
-\item{li_st}{A list of objects, such as \code{vectors}, \code{matrices},
-\code{data frames}, or \code{time series}.}
+\item{\code{li_st}}{A list of objects, such as \emph{vectors}, \emph{matrices},
+\emph{data frames}, or \emph{time series}.}
 }
 \value{
-A single \code{vector}, \code{matrix}, \code{data frame}, or
-  \code{time series}.
+A single \emph{vector}, \emph{matrix}, \emph{data frame}, or
+  \emph{time series}.
 }
 \description{
 Recursively \sQuote{\code{rbind}} a list of objects, such as \emph{xts} time
@@ -34,9 +34,9 @@ Performs lapply loop, each time binding neighboring elements and
   \sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
 }
 \examples{
-# create xts time series
+# Create xts time series
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-# split time series into daily list
+# Split time series into daily list
 list_xts <- split(x_ts, "days")
 # rbind the list back into a time series and compare with the original
 identical(x_ts, rutils::do_call_rbind(list_xts))

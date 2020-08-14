@@ -4,15 +4,18 @@
 \alias{lag_xts}
 \title{Apply a time lag to an \emph{xts} time series.}
 \usage{
-lag_xts(x_ts, lagg = 1, ...)
+lag_xts(x_ts, lagg = 1, pad_zeros = TRUE, ...)
 }
 \arguments{
-\item{x_ts}{An \emph{xts} time series.}
+\item{\code{x_ts}}{An \emph{xts} time series.}
 
-\item{lagg}{An integer equal to the number of time periods of lag (default is
-1).}
+\item{\code{lagg}}{An integer equal to the number of time periods of lag
+(default is \code{1}).}
 
-\item{...}{additional arguments to function \code{xts::lag_xts()}.}
+\item{\code{pad_zeros}}{A \emph{Boolean} argument: Should the output be
+padded with zeros? (The default is \code{pad_zeros = TRUE}.)}
+
+\item{\code{...}}{Additional arguments to function \code{xts::lag_xts()}.}
 }
 \value{
 An \emph{xts} time series with the same dimensions and the same time
@@ -23,20 +26,30 @@ Apply a time lag to an \emph{xts} time series.
 }
 \details{
 Applies a time lag to an \emph{xts} time series and pads with the
-  first and last values instead of \emph{NAs}.
+  first and last elements instead of \code{NA}s.
 
-  A positive lag argument \code{lagg} means values from \code{lagg} periods
+  A positive lag argument \code{lagg} means elements from \code{lagg} periods
   in the past are moved to the present. A negative lag argument \code{lagg}
-  moves values from the future to the present.  The function \code{lag_xts()}
-  is just a wrapper for function \code{lag.xts()} from package
+  moves elements from the future to the present.
+
+  To avoid leading or trailing \code{NA} values, the output xts is padded
+  with zeroes, or with elements from either the first or the last row.
+
+  For the lag of asset returns, they should be padded with zeros, to avoid
+  look-ahead bias.
+  For the lag of prices, they should be padded with the first or last prices,
+  not with zeros.
+
+  The function \code{lag_xts()} is just a wrapper for function
+  \code{lag.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
-  pads with the first and last values instead of \emph{NAs}.
+  pads with the first and last elements instead of \code{NA}s.
 
   The function \code{lag_it()} has incorporated the functionality of
   \code{lag_xts()}, so that \code{lag_xts()} will be retired in future
   package versions.
 }
 \examples{
-# lag by 10 periods
+# Lag by 10 periods
 rutils::lag_xts(rutils::etf_env$VTI, lag=10)
 }

@@ -8,10 +8,11 @@ window (lookback period).}
 roll_max(x_ts, look_back)
 }
 \arguments{
-\item{x_ts}{An \emph{xts} time series containing one or more columns of data.}
+\item{\code{x_ts}}{An \emph{xts} time series containing one or more columns
+of data.}
 
-\item{look_back}{The size of the lookback window, equal to the number of data
-points for calculating the rolling sum.}
+\item{\code{look_back}}{The size of the lookback window, equal to the number
+of data points for calculating the rolling sum.}
 }
 \value{
 An \emph{xts} time series with the same dimensions as the input
@@ -27,7 +28,7 @@ For example, if look_back=3, then the rolling sum at any point is
   points.
 
   The initial values of roll_max() are equal to cumsum() values, so that
-  roll_max() doesn't return any NA values.
+  roll_max() doesn't return any \code{NA} values.
 
   The function \code{roll_max()} performs the same operation as function
   \code{runMax()} from package
@@ -35,7 +36,7 @@ For example, if look_back=3, then the rolling sum at any point is
   using vectorized functions, so it's a little faster.
 }
 \examples{
-# create xts time series
+# Create xts time series
 x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 rutils::roll_max(x_ts, look_back=3)
 }

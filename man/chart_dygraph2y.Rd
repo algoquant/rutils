@@ -8,9 +8,9 @@ with two \emph{"y"} axes.}
 chart_dygraph2y(x_ts, ...)
 }
 \arguments{
-\item{x_ts}{An \emph{xts} time series with two columns.}
+\item{\code{x_ts}}{An \emph{xts} time series with two columns.}
 
-\item{...}{additional arguments to function \code{dygraphs::dygraph()}.}
+\item{\code{...}}{Additional arguments to function \code{dygraphs::dygraph()}.}
 }
 \value{
 A \code{dygraphs} plot object.
@@ -27,7 +27,7 @@ The function \code{chart_dygraph2y()} creates an interactive dygraphs
   \href{https://cran.r-project.org/web/packages/dygraphs/index.html}{dygraphs}.
 }
 \examples{
-# plot an interactive dygraphs line plot with two "y" axes
+# Plot an interactive dygraphs line plot with two "y" axes
 price_s <- cbind(Ad(rutils::etf_env$VTI), Ad(rutils::etf_env$IEF))
 colnames(price_s) <- get_name(colnames(price_s), field=2)
 rutils::chart_dygraph2y(price_s)

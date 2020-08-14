@@ -187,7 +187,6 @@ chart_xts(rutils::etf_env$VTI["2015-11"], x_11=FALSE,
 Plot a candlestick plot for an *OHLC* time series, with vertical background shading (using package *quantmod*):  
 ```{r echo=-1, eval=TRUE, fig.width=6, fig.height=4}
 suppressMessages(suppressWarnings(library(rutils)))
-suppressMessages(suppressWarnings(library(HighFreq)))
 # select VTI
 oh_lc <- rutils::etf_env$VTI
 # calculate volume-weighted average price
@@ -218,7 +217,7 @@ Plot an interactive dygraphs candlestick plot with background shading (using pac
 ```{r echo=-1, eval=TRUE, fig.width=6, fig.height=4}
 suppressMessages(suppressWarnings(library(rutils)))
 oh_lc <- rutils::etf_env$VTI
-v_wap <- TTR::VWAP(price=quantmod::Ad(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
-oh_lc <- cbind(oh_lc[, c(1:3, 6)], v_wap)["2016"]
+v_wap <- TTR::VWAP(price=quantmod::Cl(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
+oh_lc <- cbind(oh_lc[, c(1:4)], v_wap)["2016"]
 rutils::chart_dygraph(oh_lc, in_dic=(oh_lc[, 4] > v_wap))
 ```

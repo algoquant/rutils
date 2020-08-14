@@ -8,7 +8,7 @@ column.}
 adjust_ohlc(oh_lc)
 }
 \arguments{
-\item{oh_lc}{An \emph{OHLC} time series of prices in \emph{xts} format.}
+\item{\code{oh_lc}}{An \emph{OHLC} time series of prices in \emph{xts} format.}
 }
 \value{
 An \emph{OHLC} time series with the same dimensions as the input
@@ -24,6 +24,6 @@ Adjusts the first four \emph{OHLC} price columns by multiplying them
   \emph{Close} (fourth) price column.
 }
 \examples{
-# adjust VTI prices
+# Adjust VTI prices
 VTI <- rutils::adjust_ohlc(rutils::etf_env$VTI)
 }

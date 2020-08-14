@@ -8,15 +8,17 @@ to_period(oh_lc, period = "minutes", k = 1,
   end_points = xts::endpoints(oh_lc, period, k))
 }
 \arguments{
-\item{oh_lc}{An \emph{OHLC} time series of prices in \emph{xts} format.}
+\item{\code{oh_lc}}{An \emph{OHLC} time series of prices in \emph{xts}
+format.}
 
-\item{period}{aggregation interval ("seconds", "minutes", "hours", "days",
-"weeks", "months", "quarters", and "years").}
+\item{\code{period}}{aggregation interval ("seconds", "minutes", "hours",
+"days", "weeks", "months", "quarters", and "years").}
 
-\item{k}{The number of periods to aggregate over (for example if
-period="minutes" and k=2, then aggregate over two minute intervals.)}
+\item{\code{k}}{The number of periods to aggregate over (for example if
+\code{period="minutes"} and \code{k=2}, then aggregate over two minute
+intervals.)}
 
-\item{end_points}{An integer vector of end points.}
+\item{\code{end_points}}{An integer vector of end points.}
 }
 \value{
 A \emph{OHLC} time series of prices in \emph{xts} format, with a
@@ -39,13 +41,13 @@ The function \code{to_period()} performs a similar aggregation as
 }
 \examples{
 \dontrun{
-# define end points at 10-minute intervals (HighFreq::SPY is minutely bars)
+# Define end points at 10-minute intervals (HighFreq::SPY is minutely bars)
 end_points <- rutils::calc_endpoints(HighFreq::SPY["2009"], inter_val=10)
-# aggregate over 10-minute end_points:
+# Aggregate over 10-minute end_points:
 rutils::to_period(oh_lc=HighFreq::SPY["2009"], end_points=end_points)
-# aggregate over days:
+# Aggregate over days:
 rutils::to_period(oh_lc=HighFreq::SPY["2009"], period="days")
-# equivalent to:
+# Equivalent to:
 xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 }
 

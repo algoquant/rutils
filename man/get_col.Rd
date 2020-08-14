@@ -8,14 +8,15 @@ names.}
 get_col(oh_lc, field_name = "Close", data_env = NULL)
 }
 \arguments{
-\item{oh_lc}{An \emph{OHLC} time series in \emph{xts} format, or a vector of
-\emph{character} strings with the names of \emph{OHLC} time series.}
+\item{\code{oh_lc}}{An \emph{OHLC} time series in \emph{xts} format, or a
+vector of \emph{character} strings with the names of \emph{OHLC} time
+series.}
 
-\item{field_name}{A vector of strings with the field names of the columns to
-be be extracted (default is \emph{"Close"}).}
+\item{\code{field_name}}{A vector of strings with the field names of the
+columns to be be extracted (default is \code{"Close"}).}
 
-\item{data_env}{The environment containing \emph{OHLC} time series (default
-is \emph{NULL}).}
+\item{\code{data_env}}{The environment containing \emph{OHLC} time series
+(default is \code{NULL}).}
 }
 \value{
 The specified columns of the \emph{OHLC} time series bound into a

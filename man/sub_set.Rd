@@ -8,14 +8,14 @@ corresponding to the input dates).}
 sub_set(x_ts, start_date, end_date, get_rows = TRUE)
 }
 \arguments{
-\item{x_ts}{An \emph{xts} time series.}
+\item{\code{x_ts}}{An \emph{xts} time series.}
 
-\item{start_date}{The start date of the extracted time series data.}
+\item{\code{start_date}}{The start date of the extracted time series data.}
 
-\item{end_date}{The end date of the extracted time series data, or the
+\item{\code{end_date}}{The end date of the extracted time series data, or the
 number of data rows to be extracted.}
 
-\item{get_rows}{\emph{Boolean} argument: if \code{TRUE} then extract the
+\item{\code{get_rows}}{A \emph{Boolean} argument: if \code{TRUE} then extract the
 given number of rows of data, else extract the given number of calendar
 days (default is \code{TRUE}).}
 }
@@ -50,12 +50,12 @@ The function \code{sub_set()} extracts an \emph{xts} sub-series
   \code{sub_set()} extracts the maximum available range of \code{x_ts}.
 }
 \examples{
-# subset an xts time series using two dates
+# Subset an xts time series using two dates
 rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date="2015-01-10")
-# extract 6 consecutive rows of data from the past, using a date and a negative number
+# Extract 6 consecutive rows of data from the past, using a date and a negative number
 rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date=-6)
-# extract 6 calendar days of data
+# Extract 6 calendar days of data
 rutils::sub_set(rutils::etf_env$VTI, start_date="2015-01-01", end_date=6, get_rows=FALSE)
-# extract up to 100 consecutive rows of data
+# Extract up to 100 consecutive rows of data
 rutils::sub_set(rutils::etf_env$VTI, start_date="2016-08-01", end_date=100)
 }

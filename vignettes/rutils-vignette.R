@@ -89,3 +89,31 @@ chart_xts(rutils::etf_env$VTI["2015-11"], x_11=FALSE,
           name="VTI in Nov 2015", ylim=c(102, 108),
           in_dic=index(rutils::etf_env$VTI["2015-11"]) > as.Date("2015-11-18"))
 
+## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
+suppressMessages(suppressWarnings(library(rutils)))
+# select VTI
+oh_lc <- rutils::etf_env$VTI
+# calculate volume-weighted average price
+v_wap <- rutils::roll_sum(x_ts=oh_lc[, 4]*oh_lc[, 5], look_back=22)
+volume_rolling <- rutils::roll_sum(x_ts=oh_lc[, 5], look_back=22)
+v_wap <- v_wap/volume_rolling
+v_wap[is.na(v_wap)] <- 0
+# plot candlesticks with vertical background shading and trading volume.
+rutils::chart_xts(oh_lc["2016"], x_11=FALSE,
+                  name="VTI plus VWAP",
+                  TA="add_Vo(); add_TA(v_wap['2016'], col='red', lwd=2, on=1)",
+                  in_dic=(oh_lc["2016", 4] > v_wap["2016"]))
+
+## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
+suppressMessages(suppressWarnings(library(rutils)))
+rutils::chart_xts2y(cbind(quantmod::Cl(rutils::etf_env$VTI), 
+                          quantmod::Cl(rutils::etf_env$IEF))["2016"], 
+                    x_11=FALSE)
+
+## ----echo=-1, eval=TRUE, fig.width=6, fig.height=4-----------------------
+suppressMessages(suppressWarnings(library(rutils)))
+oh_lc <- rutils::etf_env$VTI
+v_wap <- TTR::VWAP(price=quantmod::Cl(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
+oh_lc <- cbind(oh_lc[, c(1:4)], v_wap)["2016"]
+rutils::chart_dygraph(oh_lc, in_dic=(oh_lc[, 4] > v_wap))
+

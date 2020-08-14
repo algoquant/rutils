@@ -14,7 +14,7 @@ calc_endpoints(x_ts, inter_val, stub_front = TRUE)
 points. or a \emph{string} representing a time period (minutes, hours,
 days, etc.)}
 
-\item{\code{stub_front}}{\emph{Boolean} argument: if \code{TRUE} then add a
+\item{\code{stub_front}}{A \emph{Boolean} argument: if \code{TRUE} then add a
 stub interval at the beginning, else add a stub interval at the end.
 (default is \code{TRUE})}
 }
@@ -29,6 +29,7 @@ vector, matrix, or time series.
 \details{
 The end points are a vector of integers which divide the elements
   (rows) of \code{x_ts} into equally spaced intervals.
+
   If \code{inter_val} is an \emph{integer} then \code{calc_endpoints()}
   calculates the number of whole intervals that fit over the elements (rows)
   of \code{x_ts}.
@@ -36,23 +37,23 @@ The end points are a vector of integers which divide the elements
   \code{x_ts}, then \code{calc_endpoints()} adds a stub interval either at
   the beginning (the default) or at the end.
 
-  The function \code{calc_endpoints()} is a generalization of function
-  \code{endpoints()} from package
-  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, since
-  \code{inter_val} can accept both \emph{integer} and \emph{string} values.
-  But unlike \code{xts::endpoints()}, the first integer returned by
-  \code{calc_endpoints()} is not equal to zero.
-
   If \code{inter_val} is a \emph{string} representing a time period (minutes,
   hours, days, etc.), then \code{calc_endpoints()} simply calls the function
   \code{endpoints()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
+
+  The function \code{calc_endpoints()} is a generalization of function
+  \code{endpoints()} from package
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, since
+  \code{inter_val} can accept both \emph{integer} and \emph{string} values.
+  Similar to \code{xts::endpoints()}, the first integer returned by
+  \code{calc_endpoints()} is equal to zero.
 }
 \examples{
-# calculate end points with initial stub interval
+# Calculate end points with initial stub interval
 rutils::calc_endpoints(1:100, inter_val=11)
-# calculate end points with a stub interval at the end
+# Calculate end points with a stub interval at the end
 rutils::calc_endpoints(rutils::etf_env$VTI, inter_val=365, stub_front=FALSE)
-# calculate end points at the end of every hour
+# Calculate end points at the end of every hour
 rutils::calc_endpoints(rutils::etf_env$VTI, inter_val="hours")
 }

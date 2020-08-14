@@ -5,14 +5,17 @@
 \title{Apply a lag to a \emph{numeric} or \emph{Boolean} vector, matrix, or
 \emph{xts} time series.}
 \usage{
-lag_it(in_put, lagg = 1, ...)
+lag_it(in_put, lagg = 1, pad_zeros = TRUE, ...)
 }
 \arguments{
-\item{in_put}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\item{\code{in_put}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
 \emph{xts} time series.}
 
-\item{lagg}{An integer equal to the number of time periods (rows) of lag
-(default is 1).}
+\item{\code{lagg}}{An integer equal to the number of time periods (rows) of
+lag (default is \code{1}).}
+
+\item{\code{pad_zeros}}{A \emph{Boolean} argument: Should the output be padded
+with zeros? (The default is \code{pad_zeros = TRUE}.)}
 }
 \value{
 A vector, matrix, or \emph{xts} time series. with the same dimensions
@@ -26,24 +29,30 @@ Apply a lag to a \emph{numeric} or \emph{Boolean} vector, matrix, or
 The function \code{lag_it()} applies a lag to the input object by
   shifting its rows by the number of time periods equal to the integer
   argument \code{lagg}.
-  For positive \code{lagg} values the current row is replaced with values
-  from the row that is \code{lagg} rows above (previous). (vice versa for
-  negative \code{lagg} values).  This also applies to vectors, since they can
-  be viewed as single-column matrices.
 
-  To avoid leading or trailing \emph{NA} values, the output object is padded
-  with values from either the first or the last row.
+  For positive \code{lagg} values, the current row is replaced with the row
+  that is \code{lagg} rows above it.  And vice versa for a negative
+  \code{lagg} values.  This also applies to vectors, since they can be viewed
+  as single-column matrices.
+
+  To avoid leading or trailing \code{NA} values, the output object is padded
+  with zeroes, or with elements from either the first or the last row.
+
+  For the lag of asset returns, they should be padded with zeros, to avoid
+  look-ahead bias.
+  For the lag of prices, they should be padded with the first or last prices,
+  not with zeros.
 
   When applied to \emph{xts} time series, the function \code{lag_it()} calls
   the function \code{lag.xts()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but it
-  pads the output with the first and last rows instead of with \emph{NAs}.
+  pads the output with the first and last rows, instead of with \code{NA}s.
 }
 \examples{
-# lag vector by 2 periods
+# Lag vector by 2 periods
 rutils::lag_it(1:10, lag=2)
-# lag matrix by negative 2 periods
+# Lag matrix by negative 2 periods
 rutils::lag_it(matrix(1:10, ncol=2), lag=-2)
-# lag an xts time series
+# Lag an xts time series
 lag_ged <- rutils::lag_it(rutils::etf_env$VTI, lag=10)
 }

@@ -7,15 +7,15 @@
 chart_xts2y(x_ts, col_or = "red", x_11 = TRUE, ...)
 }
 \arguments{
-\item{col_or}{A string specifying the color of the second line and axis
-(default is \code{"red"}).}
+\item{\code{x_ts}}{An \emph{xts} time series with two columns.}
 
-\item{x_11}{\emph{Boolean} argument: if \code{TRUE} then open x11 window for
-plotting, else plot in standard window (default is \code{TRUE}).}
+\item{\code{col_or}}{A string specifying the color of the second line and
+axis (default is \code{"red"}).}
 
-\item{...}{additional arguments to function \code{plot.zoo()}.}
+\item{\code{x_11}}{A \emph{Boolean} argument: if \code{TRUE} then open x11
+window for plotting, else plot in standard window (default is \code{TRUE}).}
 
-\item{An}{x_ts \emph{xts} time series with two columns.}
+\item{\code{...}}{Additional arguments to function \code{plot.zoo()}.}
 }
 \value{
 The \emph{x_ts} column names returned invisibly, and a plot
@@ -33,7 +33,7 @@ The function \code{chart_xts2y()} creates a plot of two \emph{xts}
   \href{https://cran.r-project.org/web/packages/zoo/index.html}{zoo}.
 }
 \examples{
-# plot two time series
+# Plot two time series
 rutils::chart_xts2y(cbind(quantmod::Cl(rutils::etf_env$VTI),
                           quantmod::Cl(rutils::etf_env$IEF))["2015"])
 }

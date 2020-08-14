@@ -7,14 +7,16 @@
 get_name(str_ing, sepa_rator = "[.]", field = 1)
 }
 \arguments{
-\item{str_ing}{A vector of \emph{character} strings containing symbol names.}
+\item{\code{str_ing}}{A vector of \emph{character} strings containing symbol
+names.}
 
-\item{sepa_rator}{The name separator, i.e. the single \emph{character} that
-separates the symbol name from the rest of the string (default is "[.]").}
+\item{code{sepa_rator}}{The name separator, i.e. the single \emph{character}
+that separates the symbol name from the rest of the string (default is
+"\code{[.]}").}
 
-\item{field}{The position of the name in the string, i.e. the integer index
-of the field to be extracted (default is \code{1}, i.e. the name is at
-the beginning of the string,)}
+\item{code{field}}{The position of the name in the string, i.e. the integer
+index of the field to be extracted (default is \code{1}, i.e. the name is
+at the beginning of the string,)}
 }
 \value{
 A vector of \emph{character} \emph{strings} containing symbol names.
@@ -36,11 +38,11 @@ The function \code{get_name()} extracts the symbol names (tickers)
   JK: I really don't like sepa_rator
 }
 \examples{
-# extract symbols "XLU" and"XLP" from file names
+# Extract symbols "XLU" and"XLP" from file names
 rutils::get_name(c("XLU.csv", "XLP.csv"))
-# extract symbols from file names
+# Extract symbols from file names
 rutils::get_name("XLU_2017_09_05.csv", sep="_")
 rutils::get_name("XLU 2017 09 05.csv", sep=" ")
-# extract fields "Open", "High", "Low", "Close" from column names
+# Extract fields "Open", "High", "Low", "Close" from column names
 rutils::get_name(colnames(rutils::etf_env$VTI), field=2)
 }
