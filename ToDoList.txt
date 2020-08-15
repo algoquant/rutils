@@ -31,8 +31,6 @@ https://github.com/Rdatatable/data.table/wiki
 
 + [ ] Modify chart_dygraph() to also plot line plot
 
-+ [ ] Add function acf_plus()
-
 + [ ] Add functions read_clip() and write_clip()
 
 + [ ] Add data.table and fst functions for aggregating large datasets
@@ -55,7 +53,7 @@ gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
 
-+ [x] Create function acf_plus() from lecture notes  
++ [x] Create function plot_acf() from the lecture notes for acf_plus()  
 
 + [x] Modify the padding of leading or trailing values in the functions lag_it()
 Add Boolean argument pad_zeros with default TRUE, similar to HighFreq::lag_it().

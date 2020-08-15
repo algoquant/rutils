@@ -1026,8 +1026,13 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 
 
 ######################################################################
-#' Calculate the autocorrelation function for a time series of returns, and plot
-#' it.
+## Functions for plotting
+######################################################################
+
+
+######################################################################
+#' Calculate the autocorrelation function (ACF) for a time series of returns,
+#' and plot it.
 #'
 #' @export
 #' @param \code{x_ts} A vector, matrix, or time series of returns.
@@ -1048,17 +1053,24 @@ do_call_assign <- function(func_tion, sym_bols=NULL, out_put,
 #'
 #' @return Returns the ACF data invisibly and creates a plot.
 #'
-#' @details The function \code{acf_plus()} calls the function
-#'   \code{stats::acf()}, removes the first element of the ACF data (which is
-#'   spurious), creates a plot, and returns the ACF data invisibly.
+#' @details The function \code{plot_acf()} calculates the autocorrelation
+#'   function (ACF) for a time series of returns, and plots it.  The function
+#'   \code{plot_acf()} is just a wrapper for the function \code{stats::acf()}.
+#'   The function \code{stats::acf()} calculates the autocorrelation function,
+#'   including the lag zero autocorrelation, which is by definition equal to
+#'   \code{1}.
+#'
+#'   The function \code{plot_acf()} calls the function \code{stats::acf()},
+#'   removes the spurious lag zero autocorrelation, creates a plot, and returns
+#'   the ACF data invisibly.
 #'
 #' @examples
 #' # Plot the ACF of random returns
-#' rutils::acf_plus(rnorm(1e4), lag=10, main="ACF of Random Returns")
+#' rutils::plot_acf(rnorm(1e4), lag=10, main="ACF of Random Returns")
 #' # Plot the ACF of VTI returns
-#' rutils::acf_plus(na.omit(rutils::etf_env$re_turns$VTI), lag=10, main="ACF of VTI Returns")
+#' rutils::plot_acf(na.omit(rutils::etf_env$re_turns$VTI), lag=10, main="ACF of VTI Returns")
 
-acf_plus <- function(x_ts, lagg=10,
+plot_acf <- function(x_ts, lagg=10,
                      plo_t=TRUE,
                      xlab="Lag", ylab="",
                      main="", ...) {
@@ -1084,7 +1096,7 @@ acf_plus <- function(x_ts, lagg=10,
   # Return the ACF data invisibly
   invisible(acf_data)
 
-}  # end acf_plus
+}  # end plot_acf
 
 
 
