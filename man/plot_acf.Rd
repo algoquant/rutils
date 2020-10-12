@@ -5,8 +5,15 @@
 \title{Calculate the autocorrelation function (ACF) for a time series of returns,
 and plot it.}
 \usage{
-plot_acf(x_ts, lagg = 10, plo_t = TRUE, xlab = "Lag", ylab = "",
-  main = "", ...)
+plot_acf(
+  x_ts,
+  lagg = 10,
+  plo_t = TRUE,
+  xlab = "Lag",
+  ylab = "",
+  main = "",
+  ...
+)
 }
 \arguments{
 \item{\code{x_ts}}{A vector, matrix, or time series of returns.}

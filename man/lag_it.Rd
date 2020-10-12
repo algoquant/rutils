@@ -34,6 +34,7 @@ The function \code{lag_it()} applies a lag to the input object by
   that is \code{lagg} rows above it.  And vice versa for a negative
   \code{lagg} values.  This also applies to vectors, since they can be viewed
   as single-column matrices.
+  If \code{lagg = 0}, then \code{lag_it()} returns the input object unchanged.
 
   To avoid leading or trailing \code{NA} values, the output object is padded
   with zeroes, or with elements from either the first or the last row.

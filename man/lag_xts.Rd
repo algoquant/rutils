@@ -31,6 +31,8 @@ Applies a time lag to an \emph{xts} time series and pads with the
   A positive lag argument \code{lagg} means elements from \code{lagg} periods
   in the past are moved to the present. A negative lag argument \code{lagg}
   moves elements from the future to the present.
+  If \code{lagg = 0}, then \code{lag_xts()} returns the input time series
+  unchanged.
 
   To avoid leading or trailing \code{NA} values, the output xts is padded
   with zeroes, or with elements from either the first or the last row.

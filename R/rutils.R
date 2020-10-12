@@ -107,7 +107,7 @@ calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
     # end if
     end_points
   } else {  # inter_val is neither numeric nor a string
-    warning(paste0("argument \"", deparse(substitute(inter_val)), "\" must be either numeric or a string."))
+    warning(paste0("Argument \"", deparse(substitute(inter_val)), "\" must be either numeric or a string."))
     return(NULL)  # Return NULL
   }  # end if
 
@@ -172,10 +172,12 @@ calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
 #' rutils::na_locf(in_put)
 
 na_locf <- function(in_put, from_last=FALSE, na_rm=FALSE, max_gap=NROW(in_put)) {
+
   if (!(is.numeric(in_put) || is.logical(in_put) || xts::is.timeBased(in_put) || xts::is.xts(in_put))) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts."))
+    warning(paste("Argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
+
   if (NCOL(in_put) > 1) {
     for (n in 1:NCOL(in_put))
       in_put[, n] <- .Call("na_locf", in_put[, n], from_last, max_gap, Inf, PACKAGE="xts")
@@ -453,7 +455,7 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
       }  # end if
     }  # end if
   } else {  # end_date is neither a date nor a string
-    warning(paste0("argument \"", deparse(substitute(end_date)), "\" must be either a date object or a string representing a date."))
+    warning(paste0("Argument \"", deparse(substitute(end_date)), "\" must be either a date object or a string representing a date."))
     return(NULL)  # Return NULL
   }  # end if
 
@@ -484,6 +486,7 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #'   that is \code{lagg} rows above it.  And vice versa for a negative
 #'   \code{lagg} values.  This also applies to vectors, since they can be viewed
 #'   as single-column matrices.
+#'   If \code{lagg = 0}, then \code{lag_it()} returns the input object unchanged.
 #'
 #'   To avoid leading or trailing \code{NA} values, the output object is padded
 #'   with zeroes, or with elements from either the first or the last row.
@@ -507,10 +510,18 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' lag_ged <- rutils::lag_it(rutils::etf_env$VTI, lag=10)
 
 lag_it <- function(in_put, lagg=1, pad_zeros=TRUE, ...) {
-  if (!(is.numeric(in_put) || is.logical(in_put) || xts::is.timeBased(in_put) || xts::is.xts(in_put))) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts."))
+
+  if (lagg == 0) {
+    # Return in_put if lagg is zero
+    return(in_put)
+  }  # end if
+
+  if (!(is.numeric(in_put) || is.logical(in_put) || xts::is.timeBased(in_put) || xts::is.xts(in_put))) {
+    # Return NULL if in_put is not numeric
+    warning(paste("Argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
+
   n_row <- NROW(in_put)
   n_col <- NCOL(in_put)
   if (pad_zeros)
@@ -544,7 +555,7 @@ lag_it <- function(in_put, lagg=1, pad_zeros=TRUE, ...) {
         in_put[-(1:(-lagg)), ]
       }  # end if
   } else {  # in_put is not a vector or matrix
-    warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts."))
+    warning(paste0("Argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
 }  # end lag_it
@@ -585,10 +596,12 @@ lag_it <- function(in_put, lagg=1, pad_zeros=TRUE, ...) {
 #' rutils::diff_it(rutils::etf_env$VTI, lagg=10)
 
 diff_it <- function(in_put, lagg=1, ...) {
+
   if (!(is.numeric(in_put) || is.logical(in_put) || xts::is.timeBased(in_put) || xts::is.xts(in_put))) {  # in_put is not numeric
-    warning(paste("argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts."))
+    warning(paste("Argument", deparse(substitute(in_put)), "must be numeric, date, Boolean, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
+
   n_row <- NROW(in_put)
   n_col <- NCOL(in_put)
   if (xts::is.xts(in_put)) {  # in_put is an xts
@@ -613,7 +626,7 @@ diff_it <- function(in_put, lagg=1, ...) {
       lagg_ed <- rbind(in_put[-(1:(-lagg)), ], in_put[(n_row+lagg+1):n_row, ])
     }  # end if
   } else {  # in_put is not a vector or matrix
-    warning(paste0("argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts."))
+    warning(paste0("Argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
 
@@ -646,6 +659,8 @@ diff_it <- function(in_put, lagg=1, ...) {
 #'   A positive lag argument \code{lagg} means elements from \code{lagg} periods
 #'   in the past are moved to the present. A negative lag argument \code{lagg}
 #'   moves elements from the future to the present.
+#'   If \code{lagg = 0}, then \code{lag_xts()} returns the input time series
+#'   unchanged.
 #'
 #'   To avoid leading or trailing \code{NA} values, the output xts is padded
 #'   with zeroes, or with elements from either the first or the last row.
@@ -669,6 +684,17 @@ diff_it <- function(in_put, lagg=1, ...) {
 #' rutils::lag_xts(rutils::etf_env$VTI, lag=10)
 
 lag_xts <- function(x_ts, lagg=1, pad_zeros=TRUE, ...) {
+
+  if (lagg == 0) {
+    # Return x_ts if lagg is zero
+    return(x_ts)
+  }  # end if
+
+  if (!xts::is.xts(in_put)) {
+    # Return NULL if x_ts is not an xts series
+    warning(paste("Argument", deparse(substitute(in_put)), "must be an xts series."))
+    return(NULL)  # Return NULL
+  }  # end if
 
   n_row <- NROW(x_ts)
 

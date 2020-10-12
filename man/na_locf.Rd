@@ -5,8 +5,7 @@
 \title{Replace \code{NA} values with the most recent non-\code{NA} values prior to
 them.}
 \usage{
-na_locf(in_put, from_last = FALSE, na_rm = FALSE,
-  max_gap = NROW(in_put))
+na_locf(in_put, from_last = FALSE, na_rm = FALSE, max_gap = NROW(in_put))
 }
 \arguments{
 \item{\code{in_put}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or

@@ -4,8 +4,12 @@
 \alias{to_period}
 \title{Aggregate an \emph{OHLC} time series to a lower periodicity.}
 \usage{
-to_period(oh_lc, period = "minutes", k = 1,
-  end_points = xts::endpoints(oh_lc, period, k))
+to_period(
+  oh_lc,
+  period = "minutes",
+  k = 1,
+  end_points = xts::endpoints(oh_lc, period, k)
+)
 }
 \arguments{
 \item{\code{oh_lc}}{An \emph{OHLC} time series of prices in \emph{xts}

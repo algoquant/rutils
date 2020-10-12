@@ -17,6 +17,8 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### tasks to-do
 
++ [x] In rutils::lag_it() handle case of lagg=0
+
 + [ ] Modify function get_data(): download from Tiingo not Yahoo
 
 + [ ] Create function calc_startpoints() as the multi-period lag of end_points
