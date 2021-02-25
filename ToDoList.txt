@@ -19,6 +19,13 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 + [x] In rutils::lag_it() handle case of lagg=0
 
++ [ ] Add all the market factor ETFs to etf_env (MTUM is already included): 
+Value Factor ETFs: IVE (large-cap) and VLUE (mid-cap)
+Quality Factor ETF: QUAL
+Dividend Appreciation ETF: VTV
+Size Factor ETF: SIZ
+Minimum Volatility Factor ETF: USMV
+
 + [ ] Modify function get_data(): download from Tiingo not Yahoo
 
 + [ ] Create function calc_startpoints() as the multi-period lag of end_points
@@ -54,6 +61,8 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] In function diff_it() fixed bug and added drop=FALSE for case when in_put is a matrix 
 
 + [x] Create function plot_acf() from the lecture notes for acf_plus()  
 

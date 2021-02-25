@@ -621,9 +621,9 @@ diff_it <- function(in_put, lagg=1, ...) {
     }  # end if
   } else if (is.matrix(in_put)) {  # in_put is a matrix
     if (lagg>0) {
-      lagg_ed <- rbind(in_put[1:lagg, ], in_put[1:(n_row-lagg), ])
+      lagg_ed <- rbind(in_put[1:lagg, , drop=FALSE], in_put[1:(n_row-lagg), , drop=FALSE])
     } else {
-      lagg_ed <- rbind(in_put[-(1:(-lagg)), ], in_put[(n_row+lagg+1):n_row, ])
+      lagg_ed <- rbind(in_put[-(1:(-lagg)), , drop=FALSE], in_put[(n_row+lagg+1):n_row, , drop=FALSE])
     }  # end if
   } else {  # in_put is not a vector or matrix
     warning(paste0("Argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts series."))
