@@ -4,10 +4,10 @@
 #' @export
 #' @param \code{str_ing} A vector of \emph{character} strings containing symbol
 #'   names.
-#' @param code{sepa_rator} The name separator, i.e. the single \emph{character}
+#' @param \code{sep} The name separator, i.e. the single \emph{character}
 #'   that separates the symbol name from the rest of the string (default is
 #'   "\code{[.]}").
-#' @param code{field} The position of the name in the string, i.e. the integer
+#' @param \code{field} The position of the name in the string, i.e. the integer
 #'   index of the field to be extracted (default is \code{1}, i.e. the name is
 #'   at the beginning of the string,)
 #'
@@ -21,9 +21,7 @@
 #'   name at the beginning of the string, but \code{get_name()} can also parse
 #'   the name from other string formats as well. For example, it extracts the
 #'   name "VTI" from the string "VTI.Close", or it extracts the name "XLU" from
-#'   the string "XLU_2017_09_05.csv" (with \code{sepa_rator="_"}).
-#'
-#'   JK: I really don't like sepa_rator
+#'   the string "XLU_2017_09_05.csv" (with \code{sep="_"}).
 #'
 #' @examples
 #' # Extract symbols "XLU" and"XLP" from file names
@@ -32,11 +30,12 @@
 #' rutils::get_name("XLU_2017_09_05.csv", sep="_")
 #' rutils::get_name("XLU 2017 09 05.csv", sep=" ")
 #' # Extract fields "Open", "High", "Low", "Close" from column names
-#' rutils::get_name(colnames(rutils::etf_env$VTI), field=2)
+#' rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), field=2)
 
-get_name <- function(str_ing, sepa_rator="[.]", field=1) {
-  str_ing <- strsplit(str_ing, split=sepa_rator)
-  sapply(str_ing, function(x) x[field])
+get_name <- function(str_ing, sep="[.]", field=1) {
+  # str_ing <- strsplit(str_ing, split=sep)
+  # sapply(str_ing, function(x) x[field])
+  do.call(rbind, strsplit(str_ing, split=sep))[, field]
 }  # end get_name
 
 

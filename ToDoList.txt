@@ -118,6 +118,8 @@ Replace calls to is.vector(in_put) with is.null(dim(in_put))
 merge load_env() into get_data()
 Add feature for loading time series data from csv files into an environment.
 
++ [x] Simplify function get_name()
+
 + [x] Merge function na_me() into get_name(), and simplify function get_name()  
 
 + [x] Add function chart_xts2y() for plotting two time series with two y-axes

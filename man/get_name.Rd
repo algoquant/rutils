@@ -4,17 +4,17 @@
 \alias{get_name}
 \title{Extract symbol names (tickers) from a vector of \emph{character} strings.}
 \usage{
-get_name(str_ing, sepa_rator = "[.]", field = 1)
+get_name(str_ing, sep = "[.]", field = 1)
 }
 \arguments{
 \item{\code{str_ing}}{A vector of \emph{character} strings containing symbol
 names.}
 
-\item{code{sepa_rator}}{The name separator, i.e. the single \emph{character}
+\item{\code{sep}}{The name separator, i.e. the single \emph{character}
 that separates the symbol name from the rest of the string (default is
 "\code{[.]}").}
 
-\item{code{field}}{The position of the name in the string, i.e. the integer
+\item{\code{field}}{The position of the name in the string, i.e. the integer
 index of the field to be extracted (default is \code{1}, i.e. the name is
 at the beginning of the string,)}
 }
@@ -33,9 +33,7 @@ The function \code{get_name()} extracts the symbol names (tickers)
   name at the beginning of the string, but \code{get_name()} can also parse
   the name from other string formats as well. For example, it extracts the
   name "VTI" from the string "VTI.Close", or it extracts the name "XLU" from
-  the string "XLU_2017_09_05.csv" (with \code{sepa_rator="_"}).
-
-  JK: I really don't like sepa_rator
+  the string "XLU_2017_09_05.csv" (with \code{sep="_"}).
 }
 \examples{
 # Extract symbols "XLU" and"XLP" from file names
@@ -44,5 +42,5 @@ rutils::get_name(c("XLU.csv", "XLP.csv"))
 rutils::get_name("XLU_2017_09_05.csv", sep="_")
 rutils::get_name("XLU 2017 09 05.csv", sep=" ")
 # Extract fields "Open", "High", "Low", "Close" from column names
-rutils::get_name(colnames(rutils::etf_env$VTI), field=2)
+rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), field=2)
 }
