@@ -91,16 +91,16 @@ calc_endpoints <- function(x_ts, inter_val, stub_front=TRUE) {
     xts::endpoints(x_ts, on=inter_val)
   } else if (is.numeric(inter_val)) {
     # Calculate number of intervals that fit over x_ts
-    n_row <- NROW(x_ts)
-    num_agg <- n_row %/% inter_val
-    if (n_row > inter_val*num_agg) {
+    n_rows <- NROW(x_ts)
+    num_agg <- n_rows %/% inter_val
+    if (n_rows > inter_val*num_agg) {
       # Need to add stub interval
       if (stub_front)
         # Stub interval at beginning
-        end_points <- c(0, n_row - num_agg*inter_val + (0:num_agg)*inter_val)
+        end_points <- c(0, n_rows - num_agg*inter_val + (0:num_agg)*inter_val)
       else
         # Stub interval at end
-        end_points <- c((0:num_agg)*inter_val, n_row)
+        end_points <- c((0:num_agg)*inter_val, n_rows)
     } else
       end_points <- (0:num_agg)*inter_val
     # end if
@@ -521,7 +521,7 @@ lag_it <- function(in_put, lagg=1, pad_zeros=TRUE, ...) {
     return(NULL)  # Return NULL
   }  # end if
 
-  n_row <- NROW(in_put)
+  n_rows <- NROW(in_put)
   n_col <- NCOL(in_put)
   if (pad_zeros)
     padd <- 0
@@ -530,27 +530,27 @@ lag_it <- function(in_put, lagg=1, pad_zeros=TRUE, ...) {
   if (is.null(dim(in_put))) {  # in_put is a vector
     if (lagg>0) {
       in_put <- c(rep(padd*in_put[1], lagg), in_put)
-      in_put[1:n_row]
+      in_put[1:n_rows]
     } else {
-      in_put <- c(in_put, rep(padd*in_put[n_row], -lagg))
+      in_put <- c(in_put, rep(padd*in_put[n_rows], -lagg))
       in_put[-(1:(-lagg))]
     }  # end if
   } else if (xts::is.xts(in_put)) {  # in_put is an xts
     fir_st <- in_put[1, ]
-    la_st <- in_put[n_row, ]
+    la_st <- in_put[n_rows, ]
     in_put <- xts::lag.xts(in_put, k=lagg, ...)
     if (lagg>0) {
       in_put[1:lagg, ] <- matrix(rep(padd*fir_st, lagg), byrow=TRUE, nr=lagg)
     } else {
-      in_put[(n_row+lagg+1):n_row, ] <- matrix(rep(padd*la_st, -lagg), byrow=TRUE, nr=-lagg)
+      in_put[(n_rows+lagg+1):n_rows, ] <- matrix(rep(padd*la_st, -lagg), byrow=TRUE, nr=-lagg)
     }  # end if
     return(in_put)
   } else if (is.matrix(in_put)) {  # in_put is a matrix
       if (lagg>0) {
         in_put <- rbind(matrix(rep(padd*in_put[1, ], lagg), byrow=TRUE, nr=lagg), in_put)
-        in_put[1:n_row, ]
+        in_put[1:n_rows, ]
       } else {
-        in_put <- rbind(in_put, matrix(rep(padd*in_put[n_row, ], -lagg), byrow=TRUE, nr=-lagg))
+        in_put <- rbind(in_put, matrix(rep(padd*in_put[n_rows, ], -lagg), byrow=TRUE, nr=-lagg))
         in_put[-(1:(-lagg)), ]
       }  # end if
   } else {  # in_put is not a vector or matrix
@@ -601,7 +601,7 @@ diff_it <- function(in_put, lagg=1, ...) {
     return(NULL)  # Return NULL
   }  # end if
 
-  n_row <- NROW(in_put)
+  n_rows <- NROW(in_put)
   n_col <- NCOL(in_put)
   if (xts::is.xts(in_put)) {  # in_put is an xts
     if (lagg>0) {
@@ -609,20 +609,20 @@ diff_it <- function(in_put, lagg=1, ...) {
       in_put[1:lagg, ] <- 0
     } else {
       in_put <- xts::diff.xts(in_put, lag=-lagg, ...)
-      in_put[(n_row+lagg+1):n_row, ] <- 0
+      in_put[(n_rows+lagg+1):n_rows, ] <- 0
     }  # end if
     return(in_put)
   } else if (is.null(dim(in_put))) {  # in_put is a vector
     if (lagg>0) {
-      lagg_ed <- c(in_put[1:lagg], in_put[1:(n_row-lagg)])
+      lagg_ed <- c(in_put[1:lagg], in_put[1:(n_rows-lagg)])
     } else {
-      lagg_ed <- c(in_put[-(1:(-lagg))], in_put[(n_row+lagg+1):n_row])
+      lagg_ed <- c(in_put[-(1:(-lagg))], in_put[(n_rows+lagg+1):n_rows])
     }  # end if
   } else if (is.matrix(in_put)) {  # in_put is a matrix
     if (lagg>0) {
-      lagg_ed <- rbind(in_put[1:lagg, , drop=FALSE], in_put[1:(n_row-lagg), , drop=FALSE])
+      lagg_ed <- rbind(in_put[1:lagg, , drop=FALSE], in_put[1:(n_rows-lagg), , drop=FALSE])
     } else {
-      lagg_ed <- rbind(in_put[-(1:(-lagg)), , drop=FALSE], in_put[(n_row+lagg+1):n_row, , drop=FALSE])
+      lagg_ed <- rbind(in_put[-(1:(-lagg)), , drop=FALSE], in_put[(n_rows+lagg+1):n_rows, , drop=FALSE])
     }  # end if
   } else {  # in_put is not a vector or matrix
     warning(paste0("Argument \"", deparse(substitute(in_put)), "\" must be either a vector, matrix, or xts series."))
@@ -695,7 +695,7 @@ lag_xts <- function(x_ts, lagg=1, pad_zeros=TRUE, ...) {
     return(NULL)  # Return NULL
   }  # end if
 
-  n_row <- NROW(x_ts)
+  n_rows <- NROW(x_ts)
 
   x_ts <- xts::lag.xts(x_ts, k=lagg, ...)
 
@@ -704,13 +704,13 @@ lag_xts <- function(x_ts, lagg=1, pad_zeros=TRUE, ...) {
     la_st <- 0
   } else {
     fir_st <- x_ts[1, ]
-    la_st <- x_ts[n_row, ]
+    la_st <- x_ts[n_rows, ]
   }  # end if
 
   if (lagg > 0)
     x_ts[1:lagg, ] <- matrix(rep(fir_st, lagg), byrow=TRUE, nr=lagg)
   else
-    x_ts[(n_row+lagg+1):n_row, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
+    x_ts[(n_rows+lagg+1):n_rows, ] <- matrix(rep(la_st, -lagg), byrow=TRUE, nr=-lagg)
 
   x_ts
 
