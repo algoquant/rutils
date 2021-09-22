@@ -469,8 +469,10 @@ sub_set <- function(x_ts, start_date, end_date, get_rows=TRUE) {
 #' @export
 #' @param \code{in_put} A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
+#'
 #' @param \code{lagg} An integer equal to the number of time periods (rows) of
 #'   lag (default is \code{1}).
+#'
 #' @param \code{pad_zeros} A \emph{Boolean} argument: Should the output be padded
 #'   with zeros? (The default is \code{pad_zeros = TRUE}.)
 #'
@@ -568,6 +570,7 @@ lag_it <- function(in_put, lagg=1, pad_zeros=TRUE, ...) {
 #' @export
 #' @param \code{in_put} A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
+#'
 #' @param \code{lagg} An integer equal to the number of time periods of lag
 #'   (default is \code{1}).
 #'
