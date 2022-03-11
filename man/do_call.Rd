@@ -5,16 +5,16 @@
 \title{Recursively apply a function to a list of objects, such as \emph{xts} time
 series.}
 \usage{
-do_call(func_tion, li_st, ...)
+do_call(func, listv, ...)
 }
 \arguments{
-\item{\code{func_tion}}{The name of function that returns a single object
+\item{\code{func}}{The name of function that returns a single object
 from a list of objects.}
 
-\item{\code{li_st}}{A list of objects, such as \emph{vectors},
+\item{\code{listv}}{A list of objects, such as \emph{vectors},
 \emph{matrices}, \emph{data frames}, or \emph{time series}.}
 
-\item{\code{...}}{Additional arguments to function \code{func_tion()}.}
+\item{\code{...}}{Additional arguments to function \code{func()}.}
 }
 \value{
 A single \emph{vector}, \emph{matrix}, \emph{data frame}, or
@@ -27,7 +27,7 @@ generalization of function \code{do_call_rbind()}.
 }
 \details{
 The function \code{do_call()} performs an lapply loop, each time
-  binding neighboring elements and dividing the length of \code{li_st} by
+  binding neighboring elements and dividing the length of \code{listv} by
   half. The result of performing \code{do_call(rbind, list_xts)} on a list of
   \emph{xts} time series is identical to performing \code{do.call(rbind,
   list_xts)}. But \code{do.call(rbind, list_xts)} is very slow, and often
@@ -35,9 +35,9 @@ The function \code{do_call()} performs an lapply loop, each time
 }
 \examples{
 # Create xts time series
-x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # Split time series into daily list
-list_xts <- split(x_ts, "days")
+list_xts <- split(xtes, "days")
 # rbind the list back into a time series and compare with the original
-identical(x_ts, rutils::do_call(rbind, list_xts))
+identical(xtes, rutils::do_call(rbind, list_xts))
 }

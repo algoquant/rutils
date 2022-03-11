@@ -5,10 +5,10 @@
 \title{Extract columns of data from \emph{OHLC} time series using column field
 names.}
 \usage{
-get_col(oh_lc, field_name = "Close", data_env = NULL)
+get_col(ohlc, field_name = "Close", data_env = NULL)
 }
 \arguments{
-\item{\code{oh_lc}}{An \emph{OHLC} time series in \emph{xts} format, or a
+\item{\code{ohlc}}{An \emph{OHLC} time series in \emph{xts} format, or a
 vector of \emph{character} strings with the names of \emph{OHLC} time
 series.}
 
@@ -37,7 +37,7 @@ The function \code{get_col()} extracts columns from \emph{OHLC} time
   names with column names. The \emph{OHLC} column names are assumed to be in
   the format \code{"symbol.field_name"}, for example \code{"VTI.Close"}.
 
-  In the simplest case when \code{oh_lc} is a single \emph{xts} time series
+  In the simplest case when \code{ohlc} is a single \emph{xts} time series
   and \emph{field_name} is a single string, the function \code{get_col()}
   performs a similar operation to the extractor functions \code{Op()},
   \code{Hi()}, \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
@@ -47,19 +47,19 @@ The function \code{get_col()} extracts columns from \emph{OHLC} time
   matched, for example "Vol" is matched to \code{Volume} (but it's case
   sensitive).
 
-  In the case when \code{oh_lc} is a vector of strings with the names of
+  In the case when \code{ohlc} is a vector of strings with the names of
   \emph{OHLC} time series, the function \code{get_col()} reads the
   \emph{OHLC} time series from the environment \code{data_env}, extracts the
   specified columns, and binds them into a single \emph{xts} time series.
 }
 \examples{
 # get close prices for VTI
-rutils::get_col(rutils::etf_env$VTI)
+rutils::get_col(rutils::etfenv$VTI)
 # get volumes for VTI
-rutils::get_col(rutils::etf_env$VTI, field_name="Vol")
+rutils::get_col(rutils::etfenv$VTI, field_name="Vol")
 # get close prices and volumes for VTI
-rutils::get_col(rutils::etf_env$VTI, field_name=c("Cl", "Vol"))
+rutils::get_col(rutils::etfenv$VTI, field_name=c("Cl", "Vol"))
 # get close prices and volumes for VTI and IEF
-rutils::get_col(oh_lc=c("VTI", "IEF"), field_name=c("Cl", "Vol"),
-  data_env=rutils::etf_env)
+rutils::get_col(ohlc=c("VTI", "IEF"), field_name=c("Cl", "Vol"),
+  data_env=rutils::etfenv)
 }

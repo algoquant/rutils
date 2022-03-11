@@ -4,21 +4,21 @@
 \alias{chart_xts2y}
 \title{Plot two \emph{xts} time series with two y-axes in an x11 window.}
 \usage{
-chart_xts2y(x_ts, col_or = "red", x_11 = TRUE, ...)
+chart_xts2y(xtes, color = "red", x11 = TRUE, ...)
 }
 \arguments{
-\item{\code{x_ts}}{An \emph{xts} time series with two columns.}
+\item{\code{xtes}}{An \emph{xts} time series with two columns.}
 
-\item{\code{col_or}}{A string specifying the color of the second line and
+\item{\code{color}}{A string specifying the color of the second line and
 axis (default is \code{"red"}).}
 
-\item{\code{x_11}}{A \emph{Boolean} argument: if \code{TRUE} then open x11
+\item{\code{x11}}{A \emph{Boolean} argument: if \code{TRUE} then open x11
 window for plotting, else plot in standard window (default is \code{TRUE}).}
 
 \item{\code{...}}{Additional arguments to function \code{plot.zoo()}.}
 }
 \value{
-The \emph{x_ts} column names returned invisibly, and a plot
+The \emph{xtes} column names returned invisibly, and a plot
   in an x11 window produced as a side effect.
 }
 \description{
@@ -34,6 +34,6 @@ The function \code{chart_xts2y()} creates a plot of two \emph{xts}
 }
 \examples{
 # Plot two time series
-rutils::chart_xts2y(cbind(quantmod::Cl(rutils::etf_env$VTI),
-                          quantmod::Cl(rutils::etf_env$IEF))["2015"])
+rutils::chart_xts2y(cbind(quantmod::Cl(rutils::etfenv$VTI),
+                          quantmod::Cl(rutils::etfenv$IEF))["2015"])
 }

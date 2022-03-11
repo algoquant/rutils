@@ -5,10 +5,10 @@
 \title{Adjust the first four columns of \emph{OHLC} data using the "adjusted" price
 column.}
 \usage{
-adjust_ohlc(oh_lc)
+adjust_ohlc(ohlc)
 }
 \arguments{
-\item{\code{oh_lc}}{An \emph{OHLC} time series of prices in \emph{xts} format.}
+\item{\code{ohlc}}{An \emph{OHLC} time series of prices in \emph{xts} format.}
 }
 \value{
 An \emph{OHLC} time series with the same dimensions as the input
@@ -25,5 +25,5 @@ Adjusts the first four \emph{OHLC} price columns by multiplying them
 }
 \examples{
 # Adjust VTI prices
-VTI <- rutils::adjust_ohlc(rutils::etf_env$VTI)
+VTI <- rutils::adjust_ohlc(rutils::etfenv$VTI)
 }

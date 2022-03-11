@@ -5,10 +5,10 @@
 \title{Calculate the rolling maximum of an \emph{xts} time series over a sliding
 window (lookback period).}
 \usage{
-roll_max(x_ts, look_back)
+roll_max(xtes, look_back)
 }
 \arguments{
-\item{\code{x_ts}}{An \emph{xts} time series containing one or more columns
+\item{\code{xtes}}{An \emph{xts} time series containing one or more columns
 of data.}
 
 \item{\code{look_back}}{The size of the lookback window, equal to the number
@@ -24,7 +24,7 @@ window (lookback period).
 }
 \details{
 For example, if look_back=3, then the rolling sum at any point is
-  equal to the sum of \code{x_ts} values for that point plus two preceding
+  equal to the sum of \code{xtes} values for that point plus two preceding
   points.
 
   The initial values of roll_max() are equal to cumsum() values, so that
@@ -37,6 +37,6 @@ For example, if look_back=3, then the rolling sum at any point is
 }
 \examples{
 # Create xts time series
-x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-rutils::roll_max(x_ts, look_back=3)
+xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+rutils::roll_max(xtes, look_back=3)
 }

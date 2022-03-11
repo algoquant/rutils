@@ -41,26 +41,26 @@ output_dir <- "C:/Develop/data/hfreq/scrub/"
 
 ### extractors
 # extract the name of the time series from its column name
-get_name(colnames(rutils::etf_env$VTI)[1])
+get_name(colnames(rutils::etfenv$VTI)[1])
 
 # extract close prices
-price_s <- get_col(etf_env$VTI)
+prices <- get_col(etfenv$VTI)
 # extract high prices
-price_s <- get_col(etf_env$VTI, field_name="High")
+prices <- get_col(etfenv$VTI, field_name="High")
 # produces error
-price_s <- get_col(etf_env$VTI, field_name="blah")
+prices <- get_col(etfenv$VTI, field_name="blah")
 
 
 ### do_call_rbind()
-x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # split time series into daily list
-list_xts <- split(x_ts, "days")
+list_xts <- split(xtes, "days")
 
 # do_call_rbind() the list back into a time series and compare with the original
-identical(x_ts, do_call_rbind(list_xts))
+identical(xtes, do_call_rbind(list_xts))
 
 # do_call() the list back into a time series and compare with the original
-identical(x_ts, do_call(rbind, list_xts))
+identical(xtes, do_call(rbind, list_xts))
 
 # do_call() calling paste()
 do_call(paste, c("a", "b", "c"), sep="/")
@@ -70,34 +70,34 @@ do_call(paste, c("a", "b", "c"), sep="/")
 ### do_call_assign()
 # perform do_call_assign() and compare to benchmark
 load(file="C:/Develop/data/etf_data.RData")
-rm(price_s, envir=new_env)
-rm(price_s2, envir=new_env)
+rm(prices, envir=new_env)
+rm(prices2, envir=new_env)
 
 # first run benchmark
-assign("price_s", do.call(merge,
-                          lapply(etf_env$sym_bols, function(sym_bol) {
-                            x_ts <- Cl(get(sym_bol, etf_env))
-                            colnames(x_ts) <- sym_bol
-                            x_ts
+assign("prices", do.call(merge,
+                          lapply(etfenv$symbolv, function(symbol) {
+                            xtes <- Cl(get(symbol, etfenv))
+                            colnames(xtes) <- symbol
+                            xtes
                           })), envir=new_env)
 # perform do_call_assign() using anon function
 do_call_assign(
-  func_tion=function(x_ts) {
-    x_ts <- Cl(x_ts)
-    colnames(x_ts) <- rutils::get_name(colnames(x_ts))
-    x_ts},
-  sym_bols=etf_env$sym_bols,
-  out_put="price_s2",
-  env_in=etf_env, env_out=new_env)
+  func=function(xtes) {
+    xtes <- Cl(xtes)
+    colnames(xtes) <- rutils::get_name(colnames(xtes))
+    xtes},
+  symbolv=etfenv$symbolv,
+  output="prices2",
+  env_in=etfenv, env_out=new_env)
 # perform do_call_assign() using function get_col()
 do_call_assign(
-  func_tion=get_col,
-  sym_bols=etf_env$sym_bols,
-  out_put="price_s2",
-  env_in=etf_env, env_out=new_env)
+  func=get_col,
+  symbolv=etfenv$symbolv,
+  output="prices2",
+  env_in=etfenv, env_out=new_env)
 # compare to benchmark
 ls(new_env)
-identical(new_env$price_s, new_env$price_s2)
+identical(new_env$prices, new_env$prices2)
 
 
 ### estimating rolling moments using package rutils

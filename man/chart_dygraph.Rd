@@ -5,12 +5,12 @@
 \title{Plot an interactive \emph{dygraphs} candlestick plot with background shading
 for an \emph{OHLC} time series in \emph{xts} format.}
 \usage{
-chart_dygraph(oh_lc, in_dic = NULL, ...)
+chart_dygraph(ohlc, indic = NULL, ...)
 }
 \arguments{
-\item{\code{oh_lc}}{An \emph{OHLC} time series in \emph{xts} format.}
+\item{\code{ohlc}}{An \emph{OHLC} time series in \emph{xts} format.}
 
-\item{\code{in_dic}}{A \emph{Boolean} time series in \emph{xts} format for
+\item{\code{indic}}{A \emph{Boolean} time series in \emph{xts} format for
 specifying the shading areas, with TRUE indicating "lightgreen" shading,
 and FALSE indicating "antiquewhite" shading (default is \code{NULL}).}
 
@@ -33,8 +33,8 @@ The function \code{chart_dygraph()} creates an interactive dygraphs
 }
 \examples{
 # Plot an interactive dygraphs candlestick plot with background shading
-oh_lc <- rutils::etf_env$VTI
-v_wap <- TTR::VWAP(price=quantmod::Ad(oh_lc), volume=quantmod::Vo(oh_lc), n=20)
-oh_lc <- cbind(oh_lc[, c(1:3, 6)], v_wap)["2009-02/2009-04"]
-rutils::chart_dygraph(oh_lc, in_dic=(oh_lc[, 4] > v_wap))
+ohlc <- rutils::etfenv$VTI
+vwapv <- TTR::VWAP(price=quantmod::Ad(ohlc), volume=quantmod::Vo(ohlc), n=20)
+ohlc <- cbind(ohlc[, c(1:3, 6)], vwapv)["2009-02/2009-04"]
+rutils::chart_dygraph(ohlc, indic=(ohlc[, 4] > vwapv))
 }

@@ -5,21 +5,21 @@
 \title{Plot either a line plot or a candlestick plot of an \emph{xts} time series,
 with custom line colors, y-axis range, and with vertical background shading.}
 \usage{
-chart_xts(x_ts, col_ors = NULL, ylim = NULL, in_dic = NULL, x_11 = TRUE, ...)
+chart_xts(xtes, colors = NULL, ylim = NULL, indic = NULL, x11 = TRUE, ...)
 }
 \arguments{
-\item{\code{x_ts}}{An \emph{xts} time series or an \emph{OHLC} time series.}
+\item{\code{xtes}}{An \emph{xts} time series or an \emph{OHLC} time series.}
 
-\item{\code{col_ors}}{A vector of \emph{strings} with the custom line colors.}
+\item{\code{colors}}{A vector of \emph{strings} with the custom line colors.}
 
 \item{\code{ylim}}{A \emph{numeric} vector with two elements containing the
 y-axis range.}
 
-\item{\code{in_dic}}{A \emph{Boolean} vector or \emph{xts} time series for
+\item{\code{indic}}{A \emph{Boolean} vector or \emph{xts} time series for
 specifying the shading areas, with TRUE indicating "lightgreen" shading,
 and FALSE indicating "antiquewhite" shading.}
 
-\item{\code{x_11}}{A \emph{Boolean} argument: if \code{TRUE} then open x11 window for
+\item{\code{x11}}{A \emph{Boolean} argument: if \code{TRUE} then open x11 window for
 plotting, else plot in standard window (default is \code{TRUE}).}
 
 \item{\code{...}}{Additional arguments to function \code{chart_Series()}.}
@@ -33,7 +33,7 @@ A wrapper for function \code{chart_Series()} from package
 }
 \details{
 The function \code{chart_xts()} plots a line plot of a \emph{xts}
-  time series, or a candlestick plot if \emph{x_ts} is a \emph{OHLC} time
+  time series, or a candlestick plot if \emph{xtes} is a \emph{OHLC} time
   series. The function \code{chart_xts()} plots with custom line colors and
   vertical background shading, using the function \code{chart_Series()} from
   package
@@ -42,17 +42,17 @@ The function \code{chart_xts()} plots a line plot of a \emph{xts}
 
   The function \code{chart_xts()} extracts the \code{chart_Series()} chart
   object and modifies its \emph{ylim} parameter using accessor and setter
-  functions. It also adds background shading specified by the \code{in_dic}
-  argument, using function \code{add_TA()}. The \code{in_dic} argument should
-  have the same length as the \code{x_ts} time series. Finally the function
+  functions. It also adds background shading specified by the \code{indic}
+  argument, using function \code{add_TA()}. The \code{indic} argument should
+  have the same length as the \code{xtes} time series. Finally the function
   \code{chart_xts()} plots the chart object and returns it invisibly.
 }
 \examples{
 # Plot candlestick chart with shading
-rutils::chart_xts(rutils::etf_env$VTI["2015-11"],
+rutils::chart_xts(rutils::etfenv$VTI["2015-11"],
   name="VTI in Nov 2015", ylim=c(102, 108),
-  in_dic=zoo::index(rutils::etf_env$VTI["2015-11"]) > as.Date("2015-11-18"))
+  indic=zoo::index(rutils::etfenv$VTI["2015-11"]) > as.Date("2015-11-18"))
 # Plot two time series with custom line colors
-rutils::chart_xts(na.omit(cbind(rutils::etf_env$XLU[, 4],
-  rutils::etf_env$XLP[, 4])), col_ors=c("blue", "green"))
+rutils::chart_xts(na.omit(cbind(rutils::etfenv$XLU[, 4],
+  rutils::etfenv$XLP[, 4])), colors=c("blue", "green"))
 }

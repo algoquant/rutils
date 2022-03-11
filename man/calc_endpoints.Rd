@@ -5,12 +5,12 @@
 \title{Calculate a vector of equally spaced end points along the elements of a
 vector, matrix, or time series.}
 \usage{
-calc_endpoints(x_ts, inter_val, stub_front = TRUE)
+calc_endpoints(xtes, interval, stub_front = TRUE)
 }
 \arguments{
-\item{\code{x_ts}}{A vector, matrix, or time series.}
+\item{\code{xtes}}{A vector, matrix, or time series.}
 
-\item{\code{inter_val}}{The number of elements between neighboring end
+\item{\code{interval}}{The number of elements between neighboring end
 points. or a \emph{string} representing a time period (minutes, hours,
 days, etc.)}
 
@@ -28,16 +28,16 @@ vector, matrix, or time series.
 }
 \details{
 The end points are a vector of integers which divide the elements
-  (rows) of \code{x_ts} into equally spaced intervals.
+  (rows) of \code{xtes} into equally spaced intervals.
 
-  If \code{inter_val} is an \emph{integer} then \code{calc_endpoints()}
+  If \code{interval} is an \emph{integer} then \code{calc_endpoints()}
   calculates the number of whole intervals that fit over the elements (rows)
-  of \code{x_ts}.
+  of \code{xtes}.
   If a whole number of intervals doesn't fit over the elements (rows) of
-  \code{x_ts}, then \code{calc_endpoints()} adds a stub interval either at
+  \code{xtes}, then \code{calc_endpoints()} adds a stub interval either at
   the beginning (the default) or at the end.
 
-  If \code{inter_val} is a \emph{string} representing a time period (minutes,
+  If \code{interval} is a \emph{string} representing a time period (minutes,
   hours, days, etc.), then \code{calc_endpoints()} simply calls the function
   \code{endpoints()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
@@ -45,15 +45,15 @@ The end points are a vector of integers which divide the elements
   The function \code{calc_endpoints()} is a generalization of function
   \code{endpoints()} from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, since
-  \code{inter_val} can accept both \emph{integer} and \emph{string} values.
+  \code{interval} can accept both \emph{integer} and \emph{string} values.
   Similar to \code{xts::endpoints()}, the first integer returned by
   \code{calc_endpoints()} is equal to zero.
 }
 \examples{
 # Calculate end points with initial stub interval
-rutils::calc_endpoints(1:100, inter_val=11)
+rutils::calc_endpoints(1:100, interval=11)
 # Calculate end points with a stub interval at the end
-rutils::calc_endpoints(rutils::etf_env$VTI, inter_val=365, stub_front=FALSE)
+rutils::calc_endpoints(rutils::etfenv$VTI, interval=365, stub_front=FALSE)
 # Calculate end points at the end of every hour
-rutils::calc_endpoints(rutils::etf_env$VTI, inter_val="hours")
+rutils::calc_endpoints(rutils::etfenv$VTI, interval="hours")
 }

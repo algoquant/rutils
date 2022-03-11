@@ -5,10 +5,10 @@
 \title{Plot an interactive \emph{dygraphs} line plot for two \emph{xts} time series,
 with two \emph{"y"} axes.}
 \usage{
-chart_dygraph2y(x_ts, ...)
+chart_dygraph2y(xtes, ...)
 }
 \arguments{
-\item{\code{x_ts}}{An \emph{xts} time series with two columns.}
+\item{\code{xtes}}{An \emph{xts} time series with two columns.}
 
 \item{\code{...}}{Additional arguments to function \code{dygraphs::dygraph()}.}
 }
@@ -28,7 +28,7 @@ The function \code{chart_dygraph2y()} creates an interactive dygraphs
 }
 \examples{
 # Plot an interactive dygraphs line plot with two "y" axes
-price_s <- cbind(Ad(rutils::etf_env$VTI), Ad(rutils::etf_env$IEF))
-colnames(price_s) <- get_name(colnames(price_s), field=2)
-rutils::chart_dygraph2y(price_s)
+prices <- cbind(Ad(rutils::etfenv$VTI), Ad(rutils::etfenv$IEF))
+colnames(prices) <- get_name(colnames(prices), field=2)
+rutils::chart_dygraph2y(prices)
 }

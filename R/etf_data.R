@@ -2,21 +2,21 @@
 #' @docType data
 #' @keywords datasets
 #'
-#' @title The etf_data dataset contains a single environment called etf_env,
+#' @title The etf_data dataset contains a single environment called etfenv,
 #'   which includes daily \code{OHLC} time series data for a portfolio of
 #'   symbols.  All the prices are already adjusted.
 #'
 #' @description
-#' The etf_env environment includes daily \code{OHLC} time series data for a
+#' The etfenv environment includes daily \code{OHLC} time series data for a
 #' portfolio of symbols, and reference data:
 #' \describe{
-#'   \item{sym_bols}{a \code{vector} of \code{strings} with the portfolio symbols.}
-#'   \item{price_s}{a single \code{xts} time series containing daily closing
-#'   prices for all the \code{sym_bols}.}
-#'   \item{re_turns}{a single \code{xts} time series containing daily returns
-#'   for all the \code{sym_bols}.}
+#'   \item{symbolv}{a \code{vector} of \code{strings} with the portfolio symbols.}
+#'   \item{prices}{a single \code{xts} time series containing daily closing
+#'   prices for all the \code{symbolv}.}
+#'   \item{returns}{a single \code{xts} time series containing daily returns
+#'   for all the \code{symbolv}.}
 #'   \item{Individual time series}{"VTI", "VEU", etc., containing daily
-#'   \code{OHLC} prices for the \code{sym_bols}.}
+#'   \code{OHLC} prices for the \code{symbolv}.}
 #' }
 #'
 #' @format Each \code{xts} time series contains the following columns with
@@ -35,6 +35,6 @@
 #' # Loading is not not needed - data is lazy load
 #' # data(etf_data)
 #' # Get first six rows of OHLC prices
-#' head(etf_env$VTI)
-#' \donttest{chart_Series(x=etf_env$VTI["2009-11"])}
-"etf_env"
+#' head(etfenv$VTI)
+#' \donttest{chart_Series(x=etfenv$VTI["2009-11"])}
+"etfenv"

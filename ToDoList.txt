@@ -17,6 +17,18 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### Tasks to-do
 
++ [ ] Update the .csv file with S&P500 constituents and download prices from Polygon into rutils::etf_env
+/Users/jerzy/Develop/lecture_slides/data/sp500_constituents.csv
+
++ [x] Simplify variable names by removing underscores: sym_bols -> symbolv, x_ts -> xtes
+Use last letter "d" for dates, "t" for times, "v" for variables, vectors and lists, "s" for series, etc.
+Add sed commands to file run.sh, then run it:
+/Users/jerzy/Develop/lecture_slides/scripts/run.sh
+chmod +x run.sh
+./run.sh
+
++ [ ] Create function getpoly() for downloading prices from Polygon
+
 + [ ] Modify function get_data(): download from Tiingo not Yahoo
 
 + [ ] Create function calc_startpoints() as the multi-period lag of end_points

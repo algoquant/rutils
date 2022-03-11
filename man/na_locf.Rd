@@ -5,10 +5,10 @@
 \title{Replace \code{NA} values with the most recent non-\code{NA} values prior to
 them.}
 \usage{
-na_locf(in_put, from_last = FALSE, na_rm = FALSE, max_gap = NROW(in_put))
+na_locf(input, from_last = FALSE, na_rm = FALSE, max_gap = NROW(input))
 }
 \arguments{
-\item{\code{in_put}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\item{\code{input}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
 \emph{xts} time series.}
 
 \item{\code{from_last}}{A  \emph{Boolean} argument: should non-\code{NA}
@@ -18,11 +18,11 @@ values be carried backward rather than forward? (default is \code{FALSE})}
 or trailing) \code{NA} values be removed? (default is \code{FALSE})}
 
 \item{\code{max_gap}}{The maximum number of neighboring \code{NA} values that
-can be replaced (default is \code{NROW(in_put)}).}
+can be replaced (default is \code{NROW(input)}).}
 }
 \value{
 A vector, matrix, or \emph{xts} time series with the same dimensions
-  and data type as the argument \code{in_put}.
+  and data type as the argument \code{input}.
 }
 \description{
 Replace \code{NA} values with the most recent non-\code{NA} values prior to
@@ -52,19 +52,19 @@ The function \code{na_locf()} replaces \code{NA} values with the
 }
 \examples{
 # Create vector containing NA values
-in_put <- sample(22)
-in_put[sample(NROW(in_put), 4)] <- NA
+input <- sample(22)
+input[sample(NROW(input), 4)] <- NA
 # Replace NA values with the most recent non-NA values
-rutils::na_locf(in_put)
+rutils::na_locf(input)
 # Create matrix containing NA values
-in_put <- sample(44)
-in_put[sample(NROW(in_put), 8)] <- NA
-in_put <- matrix(in_put, nc=2)
+input <- sample(44)
+input[sample(NROW(input), 8)] <- NA
+input <- matrix(input, nc=2)
 # Replace NA values with the most recent non-NA values
-rutils::na_locf(in_put)
+rutils::na_locf(input)
 # Create xts series containing NA values
-in_put <- xts::xts(in_put, order.by=seq.Date(from=Sys.Date(),
-  by=1, length.out=NROW(in_put)))
+input <- xts::xts(input, order.by=seq.Date(from=Sys.Date(),
+  by=1, length.out=NROW(input)))
 # Replace NA values with the most recent non-NA values
-rutils::na_locf(in_put)
+rutils::na_locf(input)
 }

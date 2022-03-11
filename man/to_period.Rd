@@ -5,14 +5,14 @@
 \title{Aggregate an \emph{OHLC} time series to a lower periodicity.}
 \usage{
 to_period(
-  oh_lc,
+  ohlc,
   period = "minutes",
   k = 1,
-  end_points = xts::endpoints(oh_lc, period, k)
+  endpoints = xts::endpoints(ohlc, period, k)
 )
 }
 \arguments{
-\item{\code{oh_lc}}{An \emph{OHLC} time series of prices in \emph{xts}
+\item{\code{ohlc}}{An \emph{OHLC} time series of prices in \emph{xts}
 format.}
 
 \item{\code{period}}{aggregation interval ("seconds", "minutes", "hours",
@@ -22,11 +22,11 @@ format.}
 \code{period="minutes"} and \code{k=2}, then aggregate over two minute
 intervals.)}
 
-\item{\code{end_points}}{An integer vector of end points.}
+\item{\code{endpoints}}{An integer vector of end points.}
 }
 \value{
 A \emph{OHLC} time series of prices in \emph{xts} format, with a
-  lower periodicity defined by the end_points.
+  lower periodicity defined by the endpoints.
 }
 \description{
 Given an \emph{OHLC} time series at high periodicity (say seconds),
@@ -40,17 +40,17 @@ The function \code{to_period()} performs a similar aggregation as
   function \code{to_period()} simply calls the compiled function
   \code{toPeriod()} (from package
   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}), to
-  perform the actual aggregations.  If \code{end_points} are passed in
+  perform the actual aggregations.  If \code{endpoints} are passed in
   explicitly, then the \code{period} argument is ignored.
 }
 \examples{
 \dontrun{
 # Define end points at 10-minute intervals (HighFreq::SPY is minutely bars)
-end_points <- rutils::calc_endpoints(HighFreq::SPY["2009"], inter_val=10)
-# Aggregate over 10-minute end_points:
-rutils::to_period(oh_lc=HighFreq::SPY["2009"], end_points=end_points)
+endpoints <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
+# Aggregate over 10-minute endpoints:
+rutils::to_period(ohlc=HighFreq::SPY["2009"], endpoints=endpoints)
 # Aggregate over days:
-rutils::to_period(oh_lc=HighFreq::SPY["2009"], period="days")
+rutils::to_period(ohlc=HighFreq::SPY["2009"], period="days")
 # Equivalent to:
 xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 }

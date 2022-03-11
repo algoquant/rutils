@@ -6,9 +6,9 @@
 and plot it.}
 \usage{
 plot_acf(
-  x_ts,
+  xtes,
   lagg = 10,
-  plo_t = TRUE,
+  plotobj = TRUE,
   xlab = "Lag",
   ylab = "",
   main = "",
@@ -16,12 +16,12 @@ plot_acf(
 )
 }
 \arguments{
-\item{\code{x_ts}}{A vector, matrix, or time series of returns.}
+\item{\code{xtes}}{A vector, matrix, or time series of returns.}
 
 \item{\code{lagg}}{The maximum lag at which to calculate the ACF (default is
 \code{10}).}
 
-\item{\code{plo_t}}{A \emph{Boolean} argument: should a plot be made?
+\item{\code{plotobj}}{A \emph{Boolean} argument: should a plot be made?
 (default is \code{TRUE})}
 
 \item{\code{xlab}}{A string with the x-axis label.}
@@ -55,5 +55,5 @@ The function \code{plot_acf()} calculates the autocorrelation
 # Plot the ACF of random returns
 rutils::plot_acf(rnorm(1e4), lag=10, main="ACF of Random Returns")
 # Plot the ACF of VTI returns
-rutils::plot_acf(na.omit(rutils::etf_env$re_turns$VTI), lag=10, main="ACF of VTI Returns")
+rutils::plot_acf(na.omit(rutils::etfenv$returns$VTI), lag=10, main="ACF of VTI Returns")
 }

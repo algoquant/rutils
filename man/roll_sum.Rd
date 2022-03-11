@@ -5,10 +5,10 @@
 \title{Calculate the rolling sum of a \emph{numeric} vector, matrix, or \emph{xts}
 time series over a sliding window (lookback period).}
 \usage{
-roll_sum(x_ts, look_back)
+roll_sum(xtes, look_back)
 }
 \arguments{
-\item{\code{x_ts}}{A vector, matrix, or \emph{xts} time series containing one
+\item{\code{xtes}}{A vector, matrix, or \emph{xts} time series containing one
 or more columns of data.}
 
 \item{\code{look_back}}{The size of the lookback window, equal to the number
@@ -24,7 +24,7 @@ time series over a sliding window (lookback period).
 }
 \details{
 For example, if look_back=3, then the rolling sum at any point is
-  equal to the sum of \code{x_ts} values for that point plus two preceding
+  equal to the sum of \code{xtes} values for that point plus two preceding
   points. The initial values of roll_sum() are equal to cumsum() values, so
   that roll_sum() doesn't return any \code{NA} values.
 
@@ -35,12 +35,12 @@ For example, if look_back=3, then the rolling sum at any point is
 }
 \examples{
 # Rolling sum of vector
-vec_tor <- rnorm(1000)
-rutils::roll_sum(vec_tor, look_back=3)
+vectorv <- rnorm(1000)
+rutils::roll_sum(vectorv, look_back=3)
 # Rolling sum of matrix
-mat_rix <- matrix(rnorm(1000), nc=5)
-rutils::roll_sum(mat_rix, look_back=3)
+matrixv <- matrix(rnorm(1000), nc=5)
+rutils::roll_sum(matrixv, look_back=3)
 # Rolling sum of xts time series
-x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-rutils::roll_sum(x_ts, look_back=3)
+xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+rutils::roll_sum(xtes, look_back=3)
 }

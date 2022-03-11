@@ -7,20 +7,20 @@ external source (download from \emph{YAHOO}), or from \emph{CSV} files in a
 local drive.}
 \usage{
 get_data(
-  sym_bols,
+  symbolv,
   data_dir = NULL,
   data_env,
-  start_date = "2007-01-01",
-  end_date = Sys.Date(),
-  date_fun = match.fun("as.Date"),
-  for_mat = "\%Y-\%m-\%d",
+  startd = "2007-01-01",
+  endd = Sys.Date(),
+  func = match.fun("as.Date"),
+  formatv = "\%Y-\%m-\%d",
   header = TRUE,
-  e_cho = TRUE,
+  echo = TRUE,
   scrub = TRUE
 )
 }
 \arguments{
-\item{\code{sym_bols}}{A vector of strings representing instrument symbols
+\item{\code{symbolv}}{A vector of strings representing instrument symbols
 (tickers).}
 
 \item{\code{data_dir}}{The directory containing \emph{CSV} files (default is
@@ -28,22 +28,22 @@ get_data(
 
 \item{\code{data_env}}{The environment for loading the data into.}
 
-\item{\code{start_date}}{The start date of time series data (default is
+\item{\code{startd}}{The start date of time series data (default is
 "2007-01-01").}
 
-\item{\code{end_date}}{The end date of time series data (default is
+\item{\code{endd}}{The end date of time series data (default is
 \code{Sys.Date()}).}
 
-\item{\code{date_fun}}{The name of the function for formatting the date
+\item{\code{func}}{The name of the function for formatting the date
 fields in the \emph{CSV} files (default is \code{as.Date()}).}
 
-\item{\code{for_mat}}{The format of the date fields in the \emph{CSV} files
+\item{\code{formatv}}{The format of the date fields in the \emph{CSV} files
 (default is \code{\%Y-\%m-\%d}).}
 
 \item{\code{header}}{A \emph{Boolean} argument: if \code{TRUE} then read the
 header in the \emph{CSV} files (default is \code{TRUE}).}
 
-\item{\code{e_cho}}{A \emph{Boolean} argument: if \code{TRUE} then print to
+\item{\code{echo}}{A \emph{Boolean} argument: if \code{TRUE} then print to
 console information on the progress of \emph{CSV} file loading (default is
 \code{TRUE}).}
 
@@ -52,7 +52,7 @@ console information on the progress of \emph{CSV} file loading (default is
 \code{TRUE}).}
 }
 \value{
-A vector of \code{sym_bols} returned invisibly.
+A vector of \code{symbolv} returned invisibly.
 }
 \description{
 Load \emph{OHLC} time series data into an environment, either from an
@@ -62,7 +62,7 @@ local drive.
 \details{
 The function \code{get_data()} loads \emph{OHLC} time series data
   into an environment (as a side-effect), and returns invisibly the vector of
-  \code{sym_bols}.
+  \code{symbolv}.
 
   If the argument \code{data_dir} is specified, then \code{get_data()} loads
   from \emph{CSV} files in that directory, and overwrites \code{NA} values if
@@ -77,20 +77,20 @@ The function \code{get_data()} loads \emph{OHLC} time series data
   But \code{get_data()} is faster because it performs less overhead
   operations, and it's able to handle symbols like \emph{LOW}, which
   \code{getSymbols()} can't handle because the function \code{Lo()} can't
-  handle them. The \code{start_date} and \code{end_date} must be either of
+  handle them. The \code{startd} and \code{endd} must be either of
   class \emph{Date}, or a string in the format \emph{"YYYY-mm-dd"}.
 }
 \examples{
 \dontrun{
 new_env <- new.env()
 # Load prices from local csv files
-rutils::get_data(sym_bols=c("SPY", "EEM"),
+rutils::get_data(symbolv=c("SPY", "EEM"),
             data_dir="C:/Develop/data/bbg_records",
             data_env=new_env)
 # Download prices from YAHOO
-rutils::get_data(sym_bols=c("MSFT", "XOM"),
+rutils::get_data(symbolv=c("MSFT", "XOM"),
             data_env=new_env,
-            start_date="2012-12-01",
-            end_date="2015-12-01")
+            startd="2012-12-01",
+            endd="2015-12-01")
 }
 }

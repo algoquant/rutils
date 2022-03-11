@@ -5,10 +5,10 @@
 \title{Recursively \sQuote{\code{rbind}} a list of objects, such as \emph{xts} time
 series.}
 \usage{
-do_call_rbind(li_st)
+do_call_rbind(listv)
 }
 \arguments{
-\item{\code{li_st}}{A list of objects, such as \emph{vectors}, \emph{matrices},
+\item{\code{listv}}{A list of objects, such as \emph{vectors}, \emph{matrices},
 \emph{data frames}, or \emph{time series}.}
 }
 \value{
@@ -21,23 +21,23 @@ series.
 }
 \details{
 Performs lapply loop, each time binding neighboring elements and
-  dividing the length of \code{li_st} by half. The result of performing
+  dividing the length of \code{listv} by half. The result of performing
   \code{do_call_rbind(list_xts)} on a list of \emph{xts} time series is
   identical to performing \code{do.call(rbind, list_xts)}. But
   \code{do.call(rbind, list_xts)} is very slow, and often causes an
   \sQuote{out of memory} error.
 
   The function \code{do_call_rbind()} performs the same operation as
-  \code{do.call(rbind, li_st)}, but using recursion, which is much faster and
+  \code{do.call(rbind, listv)}, but using recursion, which is much faster and
   uses less memory. This is the same function as
   \sQuote{\code{\link[qmao]{do.call.rbind}}} from package
   \sQuote{\href{https://r-forge.r-project.org/R/?group_id=1113}{qmao}}.
 }
 \examples{
 # Create xts time series
-x_ts <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # Split time series into daily list
-list_xts <- split(x_ts, "days")
+list_xts <- split(xtes, "days")
 # rbind the list back into a time series and compare with the original
-identical(x_ts, rutils::do_call_rbind(list_xts))
+identical(xtes, rutils::do_call_rbind(list_xts))
 }

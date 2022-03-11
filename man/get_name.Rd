@@ -33,13 +33,13 @@ The function \code{get_name()} extracts the symbol names (tickers)
   name at the beginning of the string, but \code{get_name()} can also parse
   the name from other string formats as well. For example, it extracts the
   name "VTI" from the string "VTI.Close", or it extracts the name "XLU" from
-  the string "XLU_2017_09_05.csv" (with \code{sep="_"}).
+  the string "XLU2017_09_05.csv" (with \code{sep="_"}).
 }
 \examples{
 # Extract symbols "XLU" and"XLP" from file names
 rutils::get_name(c("XLU.csv", "XLP.csv"))
 # Extract symbols from file names
-rutils::get_name("XLU_2017_09_05.csv", sep="_")
+rutils::get_name("XLU2017_09_05.csv", sep="_")
 rutils::get_name("XLU 2017 09 05.csv", sep=" ")
 # Extract fields "Open", "High", "Low", "Close" from column names
 rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), field=2)
