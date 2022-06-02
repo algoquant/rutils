@@ -45,7 +45,7 @@ get_name <- function(str_ing, sep="[.]", field=1) {
 #' vector, matrix, or time series.
 #'
 #' @export
-#' @param \code{xtes} A vector, matrix, or time series.
+#' @param \code{xtsv} A vector, matrix, or time series.
 #' @param \code{interval} The number of elements between neighboring end
 #'   points. or a \emph{string} representing a time period (minutes, hours,
 #'   days, etc.)
@@ -57,13 +57,13 @@ get_name <- function(str_ing, sep="[.]", field=1) {
 #'   integers).
 #'
 #' @details The end points are a vector of integers which divide the elements
-#'   (rows) of \code{xtes} into equally spaced intervals.
+#'   (rows) of \code{xtsv} into equally spaced intervals.
 #'
 #'   If \code{interval} is an \emph{integer} then \code{calc_endpoints()}
 #'   calculates the number of whole intervals that fit over the elements (rows)
-#'   of \code{xtes}.
+#'   of \code{xtsv}.
 #'   If a whole number of intervals doesn't fit over the elements (rows) of
-#'   \code{xtes}, then \code{calc_endpoints()} adds a stub interval either at
+#'   \code{xtsv}, then \code{calc_endpoints()} adds a stub interval either at
 #'   the beginning (the default) or at the end.
 #'
 #'   If \code{interval} is a \emph{string} representing a time period (minutes,
@@ -86,12 +86,12 @@ get_name <- function(str_ing, sep="[.]", field=1) {
 #' # Calculate end points at the end of every hour
 #' rutils::calc_endpoints(rutils::etfenv$VTI, interval="hours")
 
-calc_endpoints <- function(xtes, interval, stub_front=TRUE) {
+calc_endpoints <- function(xtsv, interval, stub_front=TRUE) {
   if (is.character(interval)) {
-    xts::endpoints(xtes, on=interval)
+    xts::endpoints(xtsv, on=interval)
   } else if (is.numeric(interval)) {
-    # Calculate number of intervals that fit over xtes
-    nrows <- NROW(xtes)
+    # Calculate number of intervals that fit over xtsv
+    nrows <- NROW(xtsv)
     num_agg <- nrows %/% interval
     if (nrows > interval*num_agg) {
       # Need to add stub interval
@@ -378,7 +378,7 @@ adjust_ohlc <- function(ohlc) {
 #' corresponding to the input dates).
 #'
 #' @export
-#' @param \code{xtes} An \emph{xts} time series.
+#' @param \code{xtsv} An \emph{xts} time series.
 #'
 #' @param \code{startd} The start date of the extracted time series data.
 #'
@@ -410,8 +410,8 @@ adjust_ohlc <- function(ohlc) {
 #'   returns the data rows from the past.
 #'
 #'   If \code{endd} is a number, and either \code{startd} or
-#'   \code{endd} are outside the date range of \code{xtes}, then
-#'   \code{sub_set()} extracts the maximum available range of \code{xtes}.
+#'   \code{endd} are outside the date range of \code{xtsv}, then
+#'   \code{sub_set()} extracts the maximum available range of \code{xtsv}.
 #'
 #' @examples
 #' # Subset an xts time series using two dates
@@ -423,13 +423,13 @@ adjust_ohlc <- function(ohlc) {
 #' # Extract up to 100 consecutive rows of data
 #' rutils::sub_set(rutils::etfenv$VTI, startd="2016-08-01", endd=100)
 
-sub_set <- function(xtes, startd, endd, get_rows=TRUE) {
+sub_set <- function(xtsv, startd, endd, get_rows=TRUE) {
   if (inherits(endd, c("Date", "POSIXt", "character"))) {
-    xtes[paste(startd, endd, sep = "/")]
+    xtsv[paste(startd, endd, sep = "/")]
   } else if (is.numeric(endd)) {
-    # Coerce startd from string into Date or POSIXt, depending on time index class of xtes
+    # Coerce startd from string into Date or POSIXt, depending on time index class of xtsv
     if (inherits(startd, "character")) {
-      indeks <- index(xtes[1, ])
+      indeks <- index(xtsv[1, ])
       if (inherits(indeks, "Date")) {
         startd <- as.Date(startd)
       } else if (inherits(indeks, "POSIXt")) {
@@ -439,21 +439,21 @@ sub_set <- function(xtes, startd, endd, get_rows=TRUE) {
     # Extract either a number of calendar days or a number of rows of data
     if (get_rows) {
       # Find the row number closest to startd
-      startpoint <- findInterval(startd, index(xtes))
-      if (startd > index(xtes[startpoint])) {
+      startpoint <- findInterval(startd, index(xtsv))
+      if (startd > index(xtsv[startpoint])) {
         startpoint <- startpoint + 1
       }  # end if
       endpoint <- (startpoint + endd - sign(endd))
-      endpoint <- max(1, min(endpoint, NROW(xtes)))
-      xtes[startpoint:endpoint]
+      endpoint <- max(1, min(endpoint, NROW(xtsv)))
+      xtsv[startpoint:endpoint]
     } else {
       endd <- startd + endd
-      endd <- max(start(xtes), min(endd, end(xtes)))
+      endd <- max(start(xtsv), min(endd, end(xtsv)))
       # Add numeric endd to startd to get the endd as a date
       if (endd > startd) {
-        xtes[paste(startd, endd, sep = "/")]
+        xtsv[paste(startd, endd, sep = "/")]
       } else {
-        xtes[paste(endd, startd, sep = "/")]
+        xtsv[paste(endd, startd, sep = "/")]
       }  # end if
     }  # end if
   } else {  # endd is neither a date nor a string
@@ -645,7 +645,7 @@ diffit <- function(input, lagg=1, ...) {
 #' Apply a time lag to an \emph{xts} time series.
 #'
 #' @export
-#' @param \code{xtes} An \emph{xts} time series.
+#' @param \code{xtsv} An \emph{xts} time series.
 #'
 #' @param \code{lagg} An integer equal to the number of time periods of lag
 #'   (default is \code{1}).
@@ -656,7 +656,7 @@ diffit <- function(input, lagg=1, ...) {
 #' @param \code{...} Additional arguments to function \code{xts::lagxts()}.
 #'
 #' @return An \emph{xts} time series with the same dimensions and the same time
-#'   index as the input \code{xtes} time series.
+#'   index as the input \code{xtsv} time series.
 #'
 #' @details Applies a time lag to an \emph{xts} time series and pads with the
 #'   first and last elements instead of \code{NA}s.
@@ -688,37 +688,37 @@ diffit <- function(input, lagg=1, ...) {
 #' # Lag by 10 periods
 #' rutils::lagxts(rutils::etfenv$VTI, lag=10)
 
-lagxts <- function(xtes, lagg=1, pad_zeros=TRUE, ...) {
+lagxts <- function(xtsv, lagg=1, pad_zeros=TRUE, ...) {
 
   if (lagg == 0) {
-    # Return xtes if lagg is zero
-    return(xtes)
+    # Return xtsv if lagg is zero
+    return(xtsv)
   }  # end if
 
   if (!xts::is.xts(input)) {
-    # Return NULL if xtes is not an xts series
+    # Return NULL if xtsv is not an xts series
     warning(paste("Argument", deparse(substitute(input)), "must be an xts series."))
     return(NULL)  # Return NULL
   }  # end if
 
-  nrows <- NROW(xtes)
+  nrows <- NROW(xtsv)
 
-  xtes <- xts::lag.xts(xtes, k=lagg, ...)
+  xtsv <- xts::lag.xts(xtsv, k=lagg, ...)
 
   if (pad_zeros) {
     firstv <- 0
     lastv <- 0
   } else {
-    firstv <- xtes[1, ]
-    lastv <- xtes[nrows, ]
+    firstv <- xtsv[1, ]
+    lastv <- xtsv[nrows, ]
   }  # end if
 
   if (lagg > 0)
-    xtes[1:lagg, ] <- matrix(rep(firstv, lagg), byrow=TRUE, nr=lagg)
+    xtsv[1:lagg, ] <- matrix(rep(firstv, lagg), byrow=TRUE, nr=lagg)
   else
-    xtes[(nrows+lagg+1):nrows, ] <- matrix(rep(lastv, -lagg), byrow=TRUE, nr=-lagg)
+    xtsv[(nrows+lagg+1):nrows, ] <- matrix(rep(lastv, -lagg), byrow=TRUE, nr=-lagg)
 
-  xtes
+  xtsv
 
 }  # end lagxts
 
@@ -728,7 +728,7 @@ lagxts <- function(xtes, lagg=1, pad_zeros=TRUE, ...) {
 #' Calculate the time differences of an \emph{xts} time series.
 #'
 #' @export
-#' @param \code{xtes} An \emph{xts} time series.
+#' @param \code{xtsv} An \emph{xts} time series.
 #' @param \code{lagg} An integer equal to the number of time periods of lag
 #'   (default is \code{1}).
 #' @param \code{...} Additional arguments to function \code{xts::diff.xts()}.
@@ -752,10 +752,10 @@ lagxts <- function(xtes, lagg=1, pad_zeros=TRUE, ...) {
 #' # Calculate time differences over lag by 10 periods
 #' rutils::diffxts(rutils::etfenv$VTI, lag=10)
 
-diffxts <- function(xtes, lagg=1, ...) {
-  xtes <- xts::diff.xts(xtes, lag=lagg, ...)
-  xtes[!complete.cases(xtes), ] <- 0
-  xtes
+diffxts <- function(xtsv, lagg=1, ...) {
+  xtsv <- xts::diff.xts(xtsv, lag=lagg, ...)
+  xtsv[!complete.cases(xtsv), ] <- 0
+  xtsv
 }  # end diffxts
 
 
@@ -820,7 +820,7 @@ diffohlc <- function(ohlc, reducit=TRUE, ...) {
 #' time series over a sliding window (lookback period).
 #'
 #' @export
-#' @param \code{xtes} A vector, matrix, or \emph{xts} time series containing one
+#' @param \code{xtsv} A vector, matrix, or \emph{xts} time series containing one
 #'   or more columns of data.
 #' @param \code{look_back} The size of the lookback window, equal to the number
 #'   of data points for calculating the rolling sum.
@@ -829,7 +829,7 @@ diffohlc <- function(ohlc, reducit=TRUE, ...) {
 #'   as the input series.
 #'
 #' @details For example, if look_back=3, then the rolling sum at any point is
-#'   equal to the sum of \code{xtes} values for that point plus two preceding
+#'   equal to the sum of \code{xtsv} values for that point plus two preceding
 #'   points. The initial values of roll_sum() are equal to cumsum() values, so
 #'   that roll_sum() doesn't return any \code{NA} values.
 #'
@@ -846,23 +846,23 @@ diffohlc <- function(ohlc, reducit=TRUE, ...) {
 #' matrixv <- matrix(rnorm(1000), nc=5)
 #' rutils::roll_sum(matrixv, look_back=3)
 #' # Rolling sum of xts time series
-#' xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-#' rutils::roll_sum(xtes, look_back=3)
+#' xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+#' rutils::roll_sum(xtsv, look_back=3)
 
-roll_sum <- function(xtes, look_back) {
-  if (xts::is.xts(xtes)) {
-    cumsumv <- cumsum(xtes)
+roll_sum <- function(xtsv, look_back) {
+  if (xts::is.xts(xtsv)) {
+    cumsumv <- cumsum(xtsv)
     roll_sum <- cumsumv - rutils::lagit(cumsumv, lag=look_back)
     roll_sum[1:look_back, ] <- cumsumv[1:look_back, ]
   }
   else {
-    if (is.null(dim(xtes))) {
-      cumsumv <- cumsum(xtes)
+    if (is.null(dim(xtsv))) {
+      cumsumv <- cumsum(xtsv)
       roll_sum <- cumsumv - rutils::lagit(cumsumv, lag=look_back)
       roll_sum[1:look_back] <- cumsumv[1:look_back]
     }
     else {
-      cumsumv <- apply(xtes, MARGIN=2, function(colnum) cumsum(colnum))
+      cumsumv <- apply(xtsv, MARGIN=2, function(colnum) cumsum(colnum))
       roll_sum <- cumsumv - rutils::lagit(cumsumv, lag=look_back)
       roll_sum[1:look_back, ] <- cumsumv[1:look_back, ]
     }
@@ -877,7 +877,7 @@ roll_sum <- function(xtes, look_back) {
 #' window (lookback period).
 #'
 #' @export
-#' @param \code{xtes} An \emph{xts} time series containing one or more columns
+#' @param \code{xtsv} An \emph{xts} time series containing one or more columns
 #'   of data.
 #' @param \code{look_back} The size of the lookback window, equal to the number
 #'   of data points for calculating the rolling sum.
@@ -886,7 +886,7 @@ roll_sum <- function(xtes, look_back) {
 #'   series.
 #'
 #' @details For example, if look_back=3, then the rolling sum at any point is
-#'   equal to the sum of \code{xtes} values for that point plus two preceding
+#'   equal to the sum of \code{xtsv} values for that point plus two preceding
 #'   points.
 #'
 #'   The initial values of roll_max() are equal to cumsum() values, so that
@@ -899,13 +899,13 @@ roll_sum <- function(xtes, look_back) {
 #'
 #' @examples
 #' # Create xts time series
-#' xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-#' rutils::roll_max(xtes, look_back=3)
+#' xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+#' rutils::roll_max(xtsv, look_back=3)
 
-roll_max <- function(xtes, look_back) {
-  roll_max <- RcppRoll::roll_max(c(rep(0,look_back-1), coredata(xtes)), n=look_back, align="right")
-  roll_max <- xts(x=roll_max, order.by=index(xtes))
-  colnames(roll_max) <- colnames(xtes)
+roll_max <- function(xtsv, look_back) {
+  roll_max <- RcppRoll::roll_max(c(rep(0,look_back-1), coredata(xtsv)), n=look_back, align="right")
+  roll_max <- xts(x=roll_max, order.by=index(xtsv))
+  colnames(roll_max) <- colnames(xtsv)
   roll_max
 }  # end roll_max
 
@@ -937,11 +937,11 @@ roll_max <- function(xtes, look_back) {
 #'
 #' @examples
 #' # Create xts time series
-#' xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+#' xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 #' # Split time series into daily list
-#' list_xts <- split(xtes, "days")
+#' list_xts <- split(xtsv, "days")
 #' # rbind the list back into a time series and compare with the original
-#' identical(xtes, rutils::do_call_rbind(list_xts))
+#' identical(xtsv, rutils::do_call_rbind(list_xts))
 
 do_call_rbind <- function(listv) {
   while (NROW(listv) > 1) {
@@ -986,11 +986,11 @@ do_call_rbind <- function(listv) {
 #'
 #' @examples
 #' # Create xts time series
-#' xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+#' xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 #' # Split time series into daily list
-#' list_xts <- split(xtes, "days")
+#' list_xts <- split(xtsv, "days")
 #' # rbind the list back into a time series and compare with the original
-#' identical(xtes, rutils::do_call(rbind, list_xts))
+#' identical(xtsv, rutils::do_call(rbind, list_xts))
 
 do_call <- function(func, listv, ...) {
 # Produce function name from argument
@@ -1066,7 +1066,7 @@ do_call_assign <- function(func, symbolv=NULL, output,
 #' and plot it.
 #'
 #' @export
-#' @param \code{xtes} A vector, matrix, or time series of returns.
+#' @param \code{xtsv} A vector, matrix, or time series of returns.
 #'
 #' @param \code{lagg} The maximum lag at which to calculate the ACF (default is
 #'   \code{10}).
@@ -1101,13 +1101,13 @@ do_call_assign <- function(func, symbolv=NULL, output,
 #' # Plot the ACF of VTI returns
 #' rutils::plot_acf(na.omit(rutils::etfenv$returns$VTI), lag=10, main="ACF of VTI Returns")
 
-plot_acf <- function(xtes, lagg=10,
+plot_acf <- function(xtsv, lagg=10,
                      plotobj=TRUE,
                      xlab="Lag", ylab="",
                      main="", ...) {
 
   # Calculate the ACF without a plot
-  acf_data <- acf(x=xtes, lag.max=lagg, plot=FALSE, ...)
+  acf_data <- acf(x=xtsv, lag.max=lagg, plot=FALSE, ...)
   # Remove first element of ACF data
   acf_data$acf <-  array(data=acf_data$acf[-1],
                          dim=c((dim(acf_data$acf)[1]-1), 1, 1))
@@ -1115,7 +1115,7 @@ plot_acf <- function(xtes, lagg=10,
                          dim=c((dim(acf_data$lag)[1]-1), 1, 1))
   # Plot ACF
   if (plotobj) {
-    ci <- qnorm((1+0.95)/2)*sqrt(1/NROW(xtes))
+    ci <- qnorm((1+0.95)/2)*sqrt(1/NROW(xtsv))
     ylim <- c(min(-ci, range(acf_data$acf[-1])),
               max(ci, range(acf_data$acf[-1])))
     plot(acf_data, xlab=xlab, ylab=ylab,
@@ -1140,7 +1140,7 @@ plot_acf <- function(xtes, lagg=10,
 #' \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 #'
 #' @export
-#' @param \code{xtes} An \emph{xts} time series or an \emph{OHLC} time series.
+#' @param \code{xtsv} An \emph{xts} time series or an \emph{OHLC} time series.
 #' @param \code{colors} A vector of \emph{strings} with the custom line colors.
 #' @param \code{ylim} A \emph{numeric} vector with two elements containing the
 #'   y-axis range.
@@ -1154,7 +1154,7 @@ plot_acf <- function(xtes, lagg=10,
 #' @return A \code{chart_Series()} object returned invisibly.
 #'
 #' @details The function \code{chart_xts()} plots a line plot of a \emph{xts}
-#'   time series, or a candlestick plot if \emph{xtes} is a \emph{OHLC} time
+#'   time series, or a candlestick plot if \emph{xtsv} is a \emph{OHLC} time
 #'   series. The function \code{chart_xts()} plots with custom line colors and
 #'   vertical background shading, using the function \code{chart_Series()} from
 #'   package
@@ -1165,7 +1165,7 @@ plot_acf <- function(xtes, lagg=10,
 #'   object and modifies its \emph{ylim} parameter using accessor and setter
 #'   functions. It also adds background shading specified by the \code{indic}
 #'   argument, using function \code{add_TA()}. The \code{indic} argument should
-#'   have the same length as the \code{xtes} time series. Finally the function
+#'   have the same length as the \code{xtsv} time series. Finally the function
 #'   \code{chart_xts()} plots the chart object and returns it invisibly.
 #'
 #' @examples
@@ -1177,8 +1177,8 @@ plot_acf <- function(xtes, lagg=10,
 #' rutils::chart_xts(na.omit(cbind(rutils::etfenv$XLU[, 4],
 #'   rutils::etfenv$XLP[, 4])), colors=c("blue", "green"))
 
-chart_xts <- function(xtes, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
-  stopifnot(xts::is.xts(xtes))
+chart_xts <- function(xtsv, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
+  stopifnot(xts::is.xts(xtsv))
   if (x11) {
     x11(10, 7)  # open x11 plot window
   }  # end if
@@ -1190,7 +1190,7 @@ chart_xts <- function(xtes, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
     plot_theme$col$line.col <- colors
   }  # end if
   # Extract chob chart object
-  chobj <- quantmod::chart_Series(x=xtes,
+  chobj <- quantmod::chart_Series(x=xtsv,
                                   theme=plot_theme,
                                   plot=FALSE, ...)
   # Modify ylim using accessor and setter functions
@@ -1202,7 +1202,7 @@ chart_xts <- function(xtes, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
 # Add vertical background shading
   if (!is.null(indic)) {
     if (!xts::is.xts(indic))
-      indic <- xts::xts(indic, order.by=zoo::index(xtes))
+      indic <- xts::xts(indic, order.by=zoo::index(xtsv))
     quantmod::add_TA(indic, on=-1, col="lightgreen", border=NA)
     quantmod::add_TA(!indic, on=-1, col="antiquewhite", border=NA)
   }  # end if
@@ -1217,14 +1217,14 @@ chart_xts <- function(xtes, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
 #' Plot two \emph{xts} time series with two y-axes in an x11 window.
 #'
 #' @export
-#' @param \code{xtes} An \emph{xts} time series with two columns.
+#' @param \code{xtsv} An \emph{xts} time series with two columns.
 #' @param \code{color} A string specifying the color of the second line and
 #'   axis (default is \code{"red"}).
 #' @param \code{x11} A \emph{Boolean} argument: if \code{TRUE} then open x11
 #'   window for plotting, else plot in standard window (default is \code{TRUE}).
 #' @param \code{...} Additional arguments to function \code{plot.zoo()}.
 #'
-#' @return The \emph{xtes} column names returned invisibly, and a plot
+#' @return The \emph{xtsv} column names returned invisibly, and a plot
 #'   in an x11 window produced as a side effect.
 #'
 #' @details The function \code{chart_xts2y()} creates a plot of two \emph{xts}
@@ -1239,8 +1239,8 @@ chart_xts <- function(xtes, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
 #' rutils::chart_xts2y(cbind(quantmod::Cl(rutils::etfenv$VTI),
 #'                           quantmod::Cl(rutils::etfenv$IEF))["2015"])
 
-chart_xts2y <- function(xtes, color="red", x11=TRUE, ...) {
-  stopifnot(xts::is.xts(xtes))
+chart_xts2y <- function(xtsv, color="red", x11=TRUE, ...) {
+  stopifnot(xts::is.xts(xtsv))
   if (x11) {
     x11(10, 7)  # open x11 plot window
   }  # end if
@@ -1248,15 +1248,15 @@ chart_xts2y <- function(xtes, color="red", x11=TRUE, ...) {
   par(mar=c(3, 3, 3, 3), oma=c(0, 0, 0, 0))
   par(las=1)  # Set text printing to horizontal
   ## Plot with two y-axes - plot first time series
-  zoo::plot.zoo(xtes[, 1], lwd=2, xlab=NA, ylab=NA, ...)
+  zoo::plot.zoo(xtsv[, 1], lwd=2, xlab=NA, ylab=NA, ...)
   par(new=TRUE)  # Allow new plot on same chart
   # Plot second time series without y-axis
-  zoo::plot.zoo(xtes[, 2], xlab=NA, ylab=NA,
+  zoo::plot.zoo(xtsv[, 2], xlab=NA, ylab=NA,
        lwd=2, yaxt="n", col=color, ...)
   # Plot second y-axis on right
   axis(side=4, col=color)
   # Add axis labels
-  colnamev <- colnames(xtes)
+  colnamev <- colnames(xtsv)
   mtext(colnamev[1], side=2, adj=-0.5, padj=-15)
   mtext(colnamev[2], side=4, adj=1.5, padj=-15, col=color)
   # Add title and legend
@@ -1329,7 +1329,7 @@ chart_dygraph <- function(ohlc, indic=NULL, ...) {
 #' with two \emph{"y"} axes.
 #'
 #' @export
-#' @param \code{xtes} An \emph{xts} time series with two columns.
+#' @param \code{xtsv} An \emph{xts} time series with two columns.
 #' @param \code{...} Additional arguments to function \code{dygraphs::dygraph()}.
 #'
 #' @return A \code{dygraphs} plot object.
@@ -1346,11 +1346,11 @@ chart_dygraph <- function(ohlc, indic=NULL, ...) {
 #' colnames(prices) <- get_name(colnames(prices), field=2)
 #' rutils::chart_dygraph2y(prices)
 
-chart_dygraph2y <- function(xtes, ...) {
-  stopifnot(xts::is.xts(xtes))
-  colnamev <- colnames(xtes)
+chart_dygraph2y <- function(xtsv, ...) {
+  stopifnot(xts::is.xts(xtsv))
+  colnamev <- colnames(xtsv)
   # Create dygraphs object
-  dyplot <- dygraphs::dygraph(xtes, main=paste(colnamev, collapse=" and "), ...) %>%
+  dyplot <- dygraphs::dygraph(xtsv, main=paste(colnamev, collapse=" and "), ...) %>%
     dyAxis("y", label=colnamev[1], independentTicks=TRUE) %>%
     dyAxis("y2", label=colnamev[2], independentTicks=TRUE) %>%
     dySeries(colnamev[2], axis="y2", col=c("red", "blue"))

@@ -17,6 +17,29 @@ R CMD Rd2pdf C:\Develop\R\rutils
 
 ### Tasks to-do
 
++ [ ] Create function to calculate the percentage returns
+
++ [ ] Create functions calc_skew() and calc_kurt()
+# calc_skew() calculates skew of returns
+calc_skew <- function(returns) {
+  returns <- na.omit(returns)
+  sum(((returns - mean(returns))/sd(returns))^3)/NROW(returns)
+}  # end calc_skew
+# calc_kurt() calculates kurtosis of returns
+calc_kurt <- function(returns) {
+  returns <- na.omit(returns)
+  sum(((returns - mean(returns))/sd(returns))^4)/NROW(returns)
+}  # end calc_kurt
+
++ [ ] Create in R the function tdistr() for non-standard Student’s t-distribution
+tdistr <- function(x, dfree, loc=0, scalev=1) {
+  dt((x-loc)/scalev, df=dfree)/scalev
+}  # end tdistr
+tdistr <- function(x, dfree, loc=0, scalev=1) {
+  gamma((dfree+1)/2)/(sqrt(pi*dfree)*gamma(dfree/2)*scalev)*
+    (1+((x-loc)/scalev)^2/dfree)^(-(dfree+1)/2)
+}  # end tdistr
+
 + [ ] Update the .csv file with S&P500 constituents and download prices from Polygon into rutils::etf_env
 /Users/jerzy/Develop/lecture_slides/data/sp500_constituents.csv
 
