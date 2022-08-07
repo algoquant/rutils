@@ -40,8 +40,9 @@ tdistr <- function(x, dfree, loc=0, scalev=1) {
     (1+((x-loc)/scalev)^2/dfree)^(-(dfree+1)/2)
 }  # end tdistr
 
-+ [ ] Update the .csv file with S&P500 constituents and download prices from Polygon into rutils::etf_env
-/Users/jerzy/Develop/lecture_slides/data/sp500_constituents.csv
++ [x] Rename etf_env to etfenv
+
++ [x] Update the .csv file with S&P500 constituents and download ETF prices from Tiingo into rutils::etf_env
 
 + [x] Simplify variable names by removing underscores: sym_bols -> symbolv, x_ts -> xtes
 Use last letter "d" for dates, "t" for times, "v" for variables, vectors and lists, "s" for series, etc.
