@@ -5,21 +5,24 @@
 # Install package from source on local drive
 install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source")
 # Install package from source on local drive using R CMD
-R CMD INSTALL C:\Develop\R\rutils
+R CMD INSTALL /Users/jerzy/Develop/rutils
 # Install package from github
 devtools::install_github(repo="algoquant/rutils", force=TRUE)
 # build vignette package reference manual from *.Rd files
 cd C:/Develop/R/rutils
 system("R CMD Rd2pdf C:/Develop/R/rutils")
-cd C:\Develop\R\rutils\vignettes
-R CMD Rd2pdf C:\Develop\R\rutils
+cd /Users/jerzy/Develop/rutils\vignettes
+R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 
 ### Tasks to-do
 
++ [ ] Create function calc_sharpe() to calculate the Sharpe and Sortino ratios:
+sqrt(252)*sapply(wealthv, function(x) c(Sharpe=mean(x)/sd(x), Sortino=mean(x)/sd(x[x<0])))
+
 + [ ] Create function to calculate the percentage returns
 
-+ [ ] Create functions calc_skew() and calc_kurt()
++ [ ] Create functions calc_skew() and calc_kurt() - clone HighFreq::calc_skew()
 # calc_skew() calculates skew of returns
 calc_skew <- function(returns) {
   returns <- na.omit(returns)

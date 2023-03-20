@@ -5,10 +5,10 @@
 \title{Plot either a line plot or a candlestick plot of an \emph{xts} time series,
 with custom line colors, y-axis range, and with vertical background shading.}
 \usage{
-chart_xts(xtes, colors = NULL, ylim = NULL, indic = NULL, x11 = TRUE, ...)
+chart_xts(xtsv, colors = NULL, ylim = NULL, indic = NULL, x11 = TRUE, ...)
 }
 \arguments{
-\item{\code{xtes}}{An \emph{xts} time series or an \emph{OHLC} time series.}
+\item{\code{xtsv}}{An \emph{xts} time series or an \emph{OHLC} time series.}
 
 \item{\code{colors}}{A vector of \emph{strings} with the custom line colors.}
 
@@ -33,7 +33,7 @@ A wrapper for function \code{chart_Series()} from package
 }
 \details{
 The function \code{chart_xts()} plots a line plot of a \emph{xts}
-  time series, or a candlestick plot if \emph{xtes} is a \emph{OHLC} time
+  time series, or a candlestick plot if \emph{xtsv} is a \emph{OHLC} time
   series. The function \code{chart_xts()} plots with custom line colors and
   vertical background shading, using the function \code{chart_Series()} from
   package
@@ -44,7 +44,7 @@ The function \code{chart_xts()} plots a line plot of a \emph{xts}
   object and modifies its \emph{ylim} parameter using accessor and setter
   functions. It also adds background shading specified by the \code{indic}
   argument, using function \code{add_TA()}. The \code{indic} argument should
-  have the same length as the \code{xtes} time series. Finally the function
+  have the same length as the \code{xtsv} time series. Finally the function
   \code{chart_xts()} plots the chart object and returns it invisibly.
 }
 \examples{

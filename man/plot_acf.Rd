@@ -6,7 +6,7 @@
 and plot it.}
 \usage{
 plot_acf(
-  xtes,
+  xtsv,
   lagg = 10,
   plotobj = TRUE,
   xlab = "Lag",
@@ -16,7 +16,7 @@ plot_acf(
 )
 }
 \arguments{
-\item{\code{xtes}}{A vector, matrix, or time series of returns.}
+\item{\code{xtsv}}{A vector, matrix, or time series of returns.}
 
 \item{\code{lagg}}{The maximum lag at which to calculate the ACF (default is
 \code{10}).}

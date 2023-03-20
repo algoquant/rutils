@@ -5,10 +5,10 @@
 \title{Subset an \emph{xts} time series (extract an \emph{xts} sub-series
 corresponding to the input dates).}
 \usage{
-sub_set(xtes, startd, endd, get_rows = TRUE)
+sub_set(xtsv, startd, endd, get_rows = TRUE)
 }
 \arguments{
-\item{\code{xtes}}{An \emph{xts} time series.}
+\item{\code{xtsv}}{An \emph{xts} time series.}
 
 \item{\code{startd}}{The start date of the extracted time series data.}
 
@@ -46,8 +46,8 @@ The function \code{sub_set()} extracts an \emph{xts} sub-series
   returns the data rows from the past.
 
   If \code{endd} is a number, and either \code{startd} or
-  \code{endd} are outside the date range of \code{xtes}, then
-  \code{sub_set()} extracts the maximum available range of \code{xtes}.
+  \code{endd} are outside the date range of \code{xtsv}, then
+  \code{sub_set()} extracts the maximum available range of \code{xtsv}.
 }
 \examples{
 # Subset an xts time series using two dates

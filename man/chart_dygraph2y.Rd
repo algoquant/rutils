@@ -5,10 +5,10 @@
 \title{Plot an interactive \emph{dygraphs} line plot for two \emph{xts} time series,
 with two \emph{"y"} axes.}
 \usage{
-chart_dygraph2y(xtes, ...)
+chart_dygraph2y(xtsv, ...)
 }
 \arguments{
-\item{\code{xtes}}{An \emph{xts} time series with two columns.}
+\item{\code{xtsv}}{An \emph{xts} time series with two columns.}
 
 \item{\code{...}}{Additional arguments to function \code{dygraphs::dygraph()}.}
 }

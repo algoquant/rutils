@@ -35,9 +35,9 @@ The function \code{do_call()} performs an lapply loop, each time
 }
 \examples{
 # Create xts time series
-xtes <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
+xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
 # Split time series into daily list
-list_xts <- split(xtes, "days")
+list_xts <- split(xtsv, "days")
 # rbind the list back into a time series and compare with the original
-identical(xtes, rutils::do_call(rbind, list_xts))
+identical(xtsv, rutils::do_call(rbind, list_xts))
 }

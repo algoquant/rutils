@@ -4,10 +4,10 @@
 \alias{diffxts}
 \title{Calculate the time differences of an \emph{xts} time series.}
 \usage{
-diffxts(xtes, lagg = 1, ...)
+diffxts(xtsv, lagg = 1, ...)
 }
 \arguments{
-\item{\code{xtes}}{An \emph{xts} time series.}
+\item{\code{xtsv}}{An \emph{xts} time series.}
 
 \item{\code{lagg}}{An integer equal to the number of time periods of lag
 (default is \code{1}).}

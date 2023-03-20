@@ -5,10 +5,10 @@
 \title{Calculate a vector of equally spaced end points along the elements of a
 vector, matrix, or time series.}
 \usage{
-calc_endpoints(xtes, interval, stub_front = TRUE)
+calc_endpoints(xtsv, interval, stub_front = TRUE)
 }
 \arguments{
-\item{\code{xtes}}{A vector, matrix, or time series.}
+\item{\code{xtsv}}{A vector, matrix, or time series.}
 
 \item{\code{interval}}{The number of elements between neighboring end
 points. or a \emph{string} representing a time period (minutes, hours,
@@ -28,13 +28,13 @@ vector, matrix, or time series.
 }
 \details{
 The end points are a vector of integers which divide the elements
-  (rows) of \code{xtes} into equally spaced intervals.
+  (rows) of \code{xtsv} into equally spaced intervals.
 
   If \code{interval} is an \emph{integer} then \code{calc_endpoints()}
   calculates the number of whole intervals that fit over the elements (rows)
-  of \code{xtes}.
+  of \code{xtsv}.
   If a whole number of intervals doesn't fit over the elements (rows) of
-  \code{xtes}, then \code{calc_endpoints()} adds a stub interval either at
+  \code{xtsv}, then \code{calc_endpoints()} adds a stub interval either at
   the beginning (the default) or at the end.
 
   If \code{interval} is a \emph{string} representing a time period (minutes,

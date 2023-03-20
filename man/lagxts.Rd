@@ -4,10 +4,10 @@
 \alias{lagxts}
 \title{Apply a time lag to an \emph{xts} time series.}
 \usage{
-lagxts(xtes, lagg = 1, pad_zeros = TRUE, ...)
+lagxts(xtsv, lagg = 1, pad_zeros = TRUE, ...)
 }
 \arguments{
-\item{\code{xtes}}{An \emph{xts} time series.}
+\item{\code{xtsv}}{An \emph{xts} time series.}
 
 \item{\code{lagg}}{An integer equal to the number of time periods of lag
 (default is \code{1}).}
@@ -19,7 +19,7 @@ padded with zeros? (The default is \code{pad_zeros = TRUE}.)}
 }
 \value{
 An \emph{xts} time series with the same dimensions and the same time
-  index as the input \code{xtes} time series.
+  index as the input \code{xtsv} time series.
 }
 \description{
 Apply a time lag to an \emph{xts} time series.
