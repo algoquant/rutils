@@ -2,14 +2,16 @@
 #' Extract symbol names (tickers) from a vector of \emph{character} strings.
 #'
 #' @export
-#' @param \code{str_ing} A vector of \emph{character} strings containing symbol
+#' @param \code{strng} A vector of \emph{character} strings containing symbol
 #'   names.
-#' @param \code{sep} The name separator, i.e. the single \emph{character}
-#'   that separates the symbol name from the rest of the string (default is
-#'   "\code{[.]}").
+#'
 #' @param \code{field} The position of the name in the string, i.e. the integer
 #'   index of the field to be extracted (default is \code{1}, i.e. the name is
 #'   at the beginning of the string,)
+#'
+#' @param \code{sep} The name separator, i.e. the single \emph{character}
+#'   that separates the symbol name from the rest of the string (default is
+#'   "\code{[.]}").
 #'
 #' @return A vector of \emph{character} \emph{strings} containing symbol names.
 #'
@@ -29,13 +31,13 @@
 #' # Extract symbols from file names
 #' rutils::get_name("XLU2017_09_05.csv", sep="_")
 #' rutils::get_name("XLU 2017 09 05.csv", sep=" ")
-#' # Extract fields "Open", "High", "Low", "Close" from column names
+#' # Extract fields "Open", "High", "Low", "Close" from the column names
 #' rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), field=2)
 
-get_name <- function(str_ing, sep="[.]", field=1) {
-  # str_ing <- strsplit(str_ing, split=sep)
-  # sapply(str_ing, function(x) x[field])
-  do.call(rbind, strsplit(str_ing, split=sep))[, field]
+get_name <- function(strng, field=1, sep="[.]") {
+  # strng <- strsplit(strng, split=sep)
+  # sapply(strng, function(x) x[field])
+  do.call(rbind, strsplit(strng, split=sep))[, field]
 }  # end get_name
 
 
@@ -97,14 +99,14 @@ calc_endpoints <- function(xtsv, interval, stub_front=TRUE) {
       # Need to add stub interval
       if (stub_front)
         # Stub interval at beginning
-        endpoints <- c(0, nrows - num_agg*interval + (0:num_agg)*interval)
+        endd <- c(0, nrows - num_agg*interval + (0:num_agg)*interval)
       else
         # Stub interval at end
-        endpoints <- c((0:num_agg)*interval, nrows)
+        endd <- c((0:num_agg)*interval, nrows)
     } else
-      endpoints <- (0:num_agg)*interval
+      endd <- (0:num_agg)*interval
     # end if
-    endpoints
+    endd
   } else {  # interval is neither numeric nor a string
     warning(paste0("Argument \"", deparse(substitute(interval)), "\" must be either numeric or a string."))
     return(NULL)  # Return NULL
@@ -217,7 +219,7 @@ na_locf <- function(input, from_last=FALSE, na_rm=FALSE, max_gap=NROW(input)) {
 #' Given an \emph{OHLC} time series at high periodicity (say seconds),
 #' calculates the \emph{OHLC} prices at a lower periodicity (say minutes).
 #'
-#' @param \code{ohlc} An \emph{OHLC} time series of prices in \emph{xts}
+#' @param \code{tseries} An \emph{OHLC} time series of prices in \emph{xts}
 #'   format.
 #' @param \code{period} aggregation interval ("seconds", "minutes", "hours",
 #'   "days", "weeks", "months", "quarters", and "years").
@@ -241,22 +243,22 @@ na_locf <- function(input, from_last=FALSE, na_rm=FALSE, max_gap=NROW(input)) {
 #'
 #' @examples
 #' \dontrun{
-#' # Define end points at 10-minute intervals (HighFreq::SPY is minutely bars)
-#' endpoints <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
+#' # Define end points at 10-minute intervals (HighFreq::SPY are minutes bars)
+#' endd <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
 #' # Aggregate over 10-minute endpoints:
-#' rutils::to_period(ohlc=HighFreq::SPY["2009"], endpoints=endpoints)
+#' ohlc <- rutils::to_period(tseries=HighFreq::SPY["2009"], endpoints=endd)
 #' # Aggregate over days:
-#' rutils::to_period(ohlc=HighFreq::SPY["2009"], period="days")
+#' ohlc <- rutils::to_period(tseries=HighFreq::SPY["2009"], period="days")
 #' # Equivalent to:
-#' xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
+#' ohlc <- xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 #' }
 #'
 #' @export
-to_period <- function(ohlc,
+to_period <- function(tseries,
                       period="minutes", k=1,
-                      endpoints=xts::endpoints(ohlc, period, k)) {
-  .Call("toPeriod", ohlc, as.integer(endpoints), TRUE, NCOL(ohlc),
-        FALSE, FALSE, colnames(ohlc), PACKAGE="xts")
+                      endpoints=xts::endpoints(tseries, period, k)) {
+  .Call("toPeriod", tseries, as.integer(endpoints), TRUE, NCOL(tseries),
+        FALSE, FALSE, colnames(tseries), PACKAGE="xts")
 }  # end to_period
 
 
@@ -316,24 +318,24 @@ to_period <- function(ohlc,
 get_col <- function(ohlc, field_name="Close", data_env=NULL) {
   if (is.xts(ohlc)) {
     # Extract columns, and return them
-    colnamev <- strsplit(colnames(ohlc), split="[.]")
-    colnamev <- sapply(colnamev, function(colname) colname[2])
-    return(ohlc[, pmatch(field_name, colnamev)])
+    colv <- strsplit(colnames(ohlc), split="[.]")
+    colv <- sapply(colv, function(coln) coln[2])
+    return(ohlc[, pmatch(field_name, colv)])
   } else if (is.character(ohlc)) {
     # Loop over the symbols in ohlc, extract columns, and cbind them
     datav <- lapply(ohlc, function(symbol) {
       ohlc <- get(symbol, envir=data_env)
-      colnamev <- strsplit(colnames(ohlc), split="[.]")
-      colnamev <- sapply(colnamev, function(colname) colname[2])
-      ohlc[, pmatch(field_name, colnamev)]
+      colv <- strsplit(colnames(ohlc), split="[.]")
+      colv <- sapply(colv, function(coln) coln[2])
+      ohlc[, pmatch(field_name, colv)]
     })  # end lapply
     return(rutils::do_call(cbind, datav))
   }  # end if
   ## below is a different version using as.list()
   # datav <- lapply(as.list(data_env)[ohlc], function(ohlc) {
-  #   colnamev <- strsplit(colnames(ohlc), split="[.]")
-  #   colnamev <- sapply(colnamev, function(colname) colname[2])
-  #   ohlc[, pmatch(field_name, colnamev)]
+  #   colv <- strsplit(colnames(ohlc), split="[.]")
+  #   colv <- sapply(colv, function(coln) coln[2])
+  #   ohlc[, pmatch(field_name, colv)]
   # })  # end lapply
   #
   ## below is the old version using grep()
@@ -1256,16 +1258,16 @@ chart_xts2y <- function(xtsv, color="red", x11=TRUE, ...) {
   # Plot second y-axis on right
   axis(side=4, col=color)
   # Add axis labels
-  colnamev <- colnames(xtsv)
-  mtext(colnamev[1], side=2, adj=-0.5, padj=-15)
-  mtext(colnamev[2], side=4, adj=1.5, padj=-15, col=color)
+  colv <- colnames(xtsv)
+  mtext(colv[1], side=2, adj=-0.5, padj=-15)
+  mtext(colv[2], side=4, adj=1.5, padj=-15, col=color)
   # Add title and legend
-  title(main=paste0(colnamev, collapse=" and "),
+  title(main=paste0(colv, collapse=" and "),
         line=0.5)
-  legend("top", legend=colnamev,
+  legend("top", legend=colv,
          bg="white", lty=c(1, 1), lwd=c(6, 6),
          col=c("black", color), bty="n")
-  invisible(colnamev)
+  invisible(colv)
 }  # end chart_xts2y
 
 
@@ -1348,12 +1350,12 @@ chart_dygraph <- function(ohlc, indic=NULL, ...) {
 
 chart_dygraph2y <- function(xtsv, ...) {
   stopifnot(xts::is.xts(xtsv))
-  colnamev <- colnames(xtsv)
+  colv <- colnames(xtsv)
   # Create dygraphs object
-  dyplot <- dygraphs::dygraph(xtsv, main=paste(colnamev, collapse=" and "), ...) %>%
-    dyAxis("y", label=colnamev[1], independentTicks=TRUE) %>%
-    dyAxis("y2", label=colnamev[2], independentTicks=TRUE) %>%
-    dySeries(colnamev[2], axis="y2", col=c("red", "blue"))
+  dyplot <- dygraphs::dygraph(xtsv, main=paste(colv, collapse=" and "), ...) %>%
+    dyAxis("y", label=colv[1], independentTicks=TRUE) %>%
+    dyAxis("y2", label=colv[2], independentTicks=TRUE) %>%
+    dySeries(colv[2], axis="y2", col=c("red", "blue"))
   # Render dygraph plot
   dyplot
 }  # end chart_dygraph2y

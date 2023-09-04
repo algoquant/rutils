@@ -17,6 +17,20 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 ### Tasks to-do
 
++ [ ] Fix to_period() - it produces an error: 
+Error in .Call("toPeriod", ohlc, as.integer(endpoints), TRUE, NCOL(ohlc),  : 
+  "toPeriod" not available for .Call() for package "xts"
+  Call xts::to.period():
+  ohlc <- xts::to.period(pricev, "seconds", 10)
+  Or call C_toPeriod:
+    xx <- .Call(C_toPeriod,
+              x, 
+              ep,
+              has.Vo(x), has.Vo(x,which=TRUE),
+              has.Ad(x) && is.OHLC(x),
+              index_at, 
+              cnames)
+
 + [ ] Create function calc_sharpe() to calculate the Sharpe and Sortino ratios:
 sqrt(252)*sapply(wealthv, function(x) c(Sharpe=mean(x)/sd(x), Sortino=mean(x)/sd(x[x<0])))
 
