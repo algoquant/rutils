@@ -31,6 +31,11 @@ Error in .Call("toPeriod", ohlc, as.integer(endpoints), TRUE, NCOL(ohlc),  :
               index_at, 
               cnames)
 
++ [ ] Rename "look_back" to  "lookb".
+
+
++ [x] Don't set first row of rutils::etfenv$returns to zero - retains the first row after applying na.locf(), and biases the correlations
+
 + [ ] Create function calc_sharpe() to calculate the Sharpe and Sortino ratios:
 sqrt(252)*sapply(wealthv, function(x) c(Sharpe=mean(x)/sd(x), Sortino=mean(x)/sd(x[x<0])))
 
