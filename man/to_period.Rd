@@ -5,14 +5,14 @@
 \title{Aggregate an \emph{OHLC} time series to a lower periodicity.}
 \usage{
 to_period(
-  ohlc,
+  timeser,
   period = "minutes",
   k = 1,
-  endpoints = xts::endpoints(ohlc, period, k)
+  endpoints = xts::endpoints(timeser, period, k)
 )
 }
 \arguments{
-\item{\code{ohlc}}{An \emph{OHLC} time series of prices in \emph{xts}
+\item{\code{timeser}}{An \emph{OHLC} time series of prices in \emph{xts}
 format.}
 
 \item{\code{period}}{aggregation interval ("seconds", "minutes", "hours",
@@ -45,14 +45,14 @@ The function \code{to_period()} performs a similar aggregation as
 }
 \examples{
 \dontrun{
-# Define end points at 10-minute intervals (HighFreq::SPY is minutely bars)
-endpoints <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
+# Define end points at 10-minute intervals (HighFreq::SPY are minutes bars)
+endd <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
 # Aggregate over 10-minute endpoints:
-rutils::to_period(ohlc=HighFreq::SPY["2009"], endpoints=endpoints)
+ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], endpoints=endd)
 # Aggregate over days:
-rutils::to_period(ohlc=HighFreq::SPY["2009"], period="days")
+ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], period="days")
 # Equivalent to:
-xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
+ohlc <- xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 }
 
 }

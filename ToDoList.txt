@@ -17,42 +17,6 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 ### Tasks to-do
 
-+ [ ] Fix to_period() - it produces an error: 
-Error in .Call("toPeriod", ohlc, as.integer(endpoints), TRUE, NCOL(ohlc),  : 
-  "toPeriod" not available for .Call() for package "xts"
-  Call xts::to.period():
-  ohlc <- xts::to.period(pricev, "seconds", 10)
-  Or call C_toPeriod:
-    xx <- .Call(C_toPeriod,
-              x, 
-              ep,
-              has.Vo(x), has.Vo(x,which=TRUE),
-              has.Ad(x) && is.OHLC(x),
-              index_at, 
-              cnames)
-
-+ [ ] Rename "look_back" to  "lookb".
-
-
-+ [x] Don't set first row of rutils::etfenv$returns to zero - retains the first row after applying na.locf(), and biases the correlations
-
-+ [ ] Create function calc_sharpe() to calculate the Sharpe and Sortino ratios:
-sqrt(252)*sapply(wealthv, function(x) c(Sharpe=mean(x)/sd(x), Sortino=mean(x)/sd(x[x<0])))
-
-+ [ ] Create function to calculate the percentage returns
-
-+ [ ] Create functions calc_skew() and calc_kurt() - clone HighFreq::calc_skew()
-# calc_skew() calculates skew of returns
-calc_skew <- function(returns) {
-  returns <- na.omit(returns)
-  sum(((returns - mean(returns))/sd(returns))^3)/NROW(returns)
-}  # end calc_skew
-# calc_kurt() calculates kurtosis of returns
-calc_kurt <- function(returns) {
-  returns <- na.omit(returns)
-  sum(((returns - mean(returns))/sd(returns))^4)/NROW(returns)
-}  # end calc_kurt
-
 + [ ] Create in R the function tdistr() for non-standard Student’s t-distribution
 tdistr <- function(x, dfree, loc=0, scalev=1) {
   dt((x-loc)/scalev, df=dfree)/scalev
@@ -62,16 +26,10 @@ tdistr <- function(x, dfree, loc=0, scalev=1) {
     (1+((x-loc)/scalev)^2/dfree)^(-(dfree+1)/2)
 }  # end tdistr
 
-+ [x] Rename etf_env to etfenv
++ [ ] Create the function calc_returns() to calculate the percentage returns.
 
-+ [x] Update the .csv file with S&P500 constituents and download ETF prices from Tiingo into rutils::etf_env
-
-+ [x] Simplify variable names by removing underscores: sym_bols -> symbolv, x_ts -> xtes
-Use last letter "d" for dates, "t" for times, "v" for variables, vectors and lists, "s" for series, etc.
-Add sed commands to file run.sh, then run it:
-/Users/jerzy/Develop/lecture_slides/scripts/run.sh
-chmod +x run.sh
-./run.sh
++ [ ] Rewrite to_period() and perform aggregation over the end points in C++.  Can't call xts executables.
+If the argument period is passed, then call xts::to_period(), else perform aggregation over the end points in C++.
 
 + [ ] Create function getpoly() for downloading prices from Polygon
 
@@ -110,6 +68,42 @@ gaa() for "get, apply, assign"
 gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
+
++ [x] Create the function calc_sharpe() to calculate the Sharpe and Sortino ratios.
+
++ [x] Create the function calc_skew() to calculate the skewness or kurtosis of a time series of returns.
+
++ [x] Rename
+tseries/timeser
+input/inputv
+output/outv
+look_back/lookb
+roll_sum/rolls
+roll_max/rollm
+
++ [x] Fix na_locf() - it didn't work for matrices.
+Rename na_locf() to nalocf().
+
++ [x] Fix to_period() - it produces an error because it can't call xts executables anymore, after xts update.
+  "toPeriod" not available for .Call() for package "xts"
+Because the executable toPeriod has been replaced by C_toPeriod.
+But C_toPeriod is not available for .Call() either:
+  .Call(C_toPeriod, x, ep, has.Vo(x), has.Vo(x, which=TRUE), has.Ad(x) && is.OHLC(x), index_at, cnames, PACKAGE="xts")
+  "C_toPeriod" not available for .Call() for package "xts"
+The solution is not to call xts executables, and rewrite to_period() in C++, using end points.
+
++ [x] Don't set first row of rutils::etfenv$returns to zero - retains the first row after applying na.locf(), and biases the correlations
+
++ [x] Rename etf_env to etfenv
+
++ [x] Update the .csv file with S&P500 constituents and download ETF prices from Tiingo into rutils::etf_env
+
++ [x] Simplify variable names by removing underscores: sym_bols -> symbolv, x_ts -> xtes
+Use last letter "d" for dates, "t" for times, "v" for variables, vectors and lists, "s" for series, etc.
+Add sed commands to file run.sh, then run it:
+/Users/jerzy/Develop/lecture_slides/scripts/run.sh
+chmod +x run.sh
+./run.sh
 
 + [x] In rutils::lag_it() handle case of lagg=0
 

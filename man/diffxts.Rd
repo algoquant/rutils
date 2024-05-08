@@ -10,7 +10,7 @@ diffxts(xtsv, lagg = 1, ...)
 \item{\code{xtsv}}{An \emph{xts} time series.}
 
 \item{\code{lagg}}{An integer equal to the number of time periods of lag
-(default is \code{1}).}
+(the default is \code{1}).}
 
 \item{\code{...}}{Additional arguments to function \code{xts::diff.xts()}.}
 }

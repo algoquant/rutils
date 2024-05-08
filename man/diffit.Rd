@@ -5,14 +5,14 @@
 \title{Calculate the row differences of a \emph{numeric} or \emph{Boolean} vector,
 matrix, or \emph{xts} time series.}
 \usage{
-diffit(input, lagg = 1, ...)
+diffit(inputv, lagg = 1, ...)
 }
 \arguments{
-\item{\code{input}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\item{\code{inputv}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
 \emph{xts} time series.}
 
 \item{\code{lagg}}{An integer equal to the number of time periods of lag
-(default is \code{1}).}
+(the default is \code{1}).}
 }
 \value{
 A vector, matrix, or \emph{xts} time series. with the same dimensions

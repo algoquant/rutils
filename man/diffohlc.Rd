@@ -11,7 +11,7 @@ diffohlc(ohlc, reducit = TRUE, ...)
 \item{\code{ohlc}}{An \emph{OHLC} time series of prices in \emph{xts} format.}
 
 \item{\code{reducit}}{A \emph{Boolean} argument: should the reduced form be
-calculated or the standard form? (default is \code{TRUE})}
+calculated or the standard form? (the default is \code{TRUE})}
 
 \item{\code{...}}{Additional arguments to function \code{xts::diff.xts()}.}
 }
@@ -34,8 +34,8 @@ The reduced form of an \emph{OHLC} time series is obtained by
 }
 \examples{
 # Calculate reduced form of an OHLC time series
-diff_VTI <- rutils::diffohlc(rutils::etfenv$VTI)
+diffVTI <- rutils::diffohlc(rutils::etfenv$VTI)
 # Calculate standard form of an OHLC time series
-VTI <- rutils::diffohlc(diff_VTI, reducit=FALSE)
+VTI <- rutils::diffohlc(diffVTI, reducit=FALSE)
 identical(VTI, rutils::etfenv$VTI[, 1:5])
 }

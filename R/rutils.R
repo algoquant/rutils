@@ -1,16 +1,126 @@
 ######################################################################
+#' Calculate the Sharpe and Sortino ratios of a time series of returns.
+#'
+#' @export
+#'
+#' @param \code{retp} A time series of returns, with multiple columns.
+#'
+#' @param \code{riskf} The annual risk-free interest rate (the default is
+#'   \code{0}).
+#'
+#' @param \code{nperiods} The number of time periods in a year (the default is
+#'   \code{252} days).
+#'
+#' @return A matrix of the Sharpe and Sortino ratios.
+#'
+#' @details The function \code{calc_sharpe()} calculates the Sharpe and Sortino
+#'   ratios of a time series of returns.
+#'
+#'   The function \code{calc_sharpe()} performs an sapply() loop over the
+#'   columns of the \code{retp} argument. It calculates the Sharpe and Sortino
+#'   ratios for each column. It subtracts from \code{retp} the annual risk-free
+#'   interest rate \code{riskf} divided by \code{nperiods}. It multiplies the
+#'   Sharpe and Sortino ratios by the square root of \code{nperiods}, in order
+#'   to obtain the annual ratios.
+#'
+#'   The Sharpe ratio \eqn{S_r} is defined as:
+#'   \deqn{
+#'     S_r = \sqrt{n} \frac{\bar{r}}{\sigma_r}
+#'   }
+#'   Where \eqn{r} are the daily excess returns (the returns minus the risk-free
+#'   rate), \eqn{\bar{r}} are the average excess returns, and \eqn{\sigma_r} is
+#'   their daily standard deviation.
+#'
+#'   The Sortino ratio \eqn{{So}_r} is defined as:
+#'   \deqn{
+#'     {So}_r = \sqrt{n} \frac{\bar{r}}{\sigma_d}
+#'   }
+#'   Where \eqn{r} are the daily excess returns (the returns minus the risk-free
+#'   rate), \eqn{\bar{r}} are the average excess returns, and \eqn{\sigma_d} is
+#'   their daily \emph{downside deviation}.
+#'   The \emph{downside deviation} \eqn{\sigma_d} is equal to the standard
+#'   deviation of the downside returns \eqn{r_d}, the returns that are less than
+#'   the risk-free rate.
+#'
+#' @examples
+#' # Calculate the Sharpe and Sortino ratios of VTI and IEF returns
+#' rutils::calc_sharpe(rutils::etfenv$returns[, c("VTI", "IEF")])
+
+calc_sharpe <- function(retp, riskf=0.0, nperiods=252) {
+
+  rf <- riskf/nperiods
+  retx <- (retp - rf)
+  return(sqrt(nperiods)*sapply(retx, function(x) {
+    x <- na.omit(x)
+    mx <- mean(x)
+    return(c(Sharpe=mx/sd(x), Sortino=mx/sd(x[x < rf])))
+  }))
+
+}  # end calc_sharpe
+
+
+
+######################################################################
+#' Calculate the skewness or kurtosis of a time series of returns.
+#'
+#' @export
+#'
+#' @param \code{retp} A time series of returns, with multiple columns.
+#'
+#' @param \code{expn} The power (exponent) to raise the returns (the default is
+#'   \code{3} for skewness).
+#'
+#' @return A matrix of the skewness or kurtosis values.
+#'
+#' @details The function \code{calc_skew()} calculates the skewness or kurtosis
+#'   of a time series of returns.
+#'
+#'   The function \code{calc_skew()} performs an sapply() loop over the columns
+#'   of the \code{retp} argument. It raise the returns to the power \code{expn}.
+#'   If \code{expn = 3} it calculates the skewness.
+#'   If \code{expn = 4} it calculates the kurtosis.
+#'
+#'   The skewness \eqn{\varsigma} is defined as:
+#'   \deqn{
+#'     \varsigma = \frac{1}{n-1} \sum_{i=1}^n {(\frac{r - \bar{r}}{\sigma})^3}
+#'   }
+#'   Where \eqn{r} are the daily returns, \eqn{\bar{r}} are the average returns,
+#'   and \eqn{\sigma} is their standard deviation.
+#'
+#'   The kurtosis \eqn{\kappa} is defined as:
+#'   \deqn{
+#'     \kappa = \frac{1}{n-1} \sum_{i=1}^n {(\frac{r - \bar{r}}{\sigma})^4}
+#'   }
+#'
+#' @examples
+#' # Calculate the kurtosis of VTI and IEF returns
+#' rutils::calc_skew(rutils::etfenv$returns[, c("VTI", "IEF")], expn=4)
+
+calc_skew <- function(retp, expn=3) {
+
+  return(sapply(retp, function(x) {
+    x <- na.omit(x)
+    mx <- mean(x)
+    return(sum(((x - mx)/sd(x))^expn)/(NROW(x)-1))
+  }))
+
+}  # end calc_skew
+
+
+
+######################################################################
 #' Extract symbol names (tickers) from a vector of \emph{character} strings.
 #'
 #' @export
 #' @param \code{strng} A vector of \emph{character} strings containing symbol
 #'   names.
 #'
-#' @param \code{field} The position of the name in the string, i.e. the integer
-#'   index of the field to be extracted (default is \code{1}, i.e. the name is
-#'   at the beginning of the string,)
+#' @param \code{posv} The position of the name in the string, i.e. the integer
+#'   index of the field to be extracted (the default is \code{1}, i.e. the name
+#'   is at the beginning of the string,)
 #'
 #' @param \code{sep} The name separator, i.e. the single \emph{character}
-#'   that separates the symbol name from the rest of the string (default is
+#'   that separates the symbol name from the rest of the string (the default is
 #'   "\code{[.]}").
 #'
 #' @return A vector of \emph{character} \emph{strings} containing symbol names.
@@ -32,12 +142,12 @@
 #' rutils::get_name("XLU2017_09_05.csv", sep="_")
 #' rutils::get_name("XLU 2017 09 05.csv", sep=" ")
 #' # Extract fields "Open", "High", "Low", "Close" from the column names
-#' rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), field=2)
+#' rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), posv=2)
 
-get_name <- function(strng, field=1, sep="[.]") {
+get_name <- function(strng, posv=1, sep="[.]") {
   # strng <- strsplit(strng, split=sep)
-  # sapply(strng, function(x) x[field])
-  do.call(rbind, strsplit(strng, split=sep))[, field]
+  # sapply(strng, function(x) x[posv])
+  do.call(rbind, strsplit(strng, split=sep))[, posv]
 }  # end get_name
 
 
@@ -53,7 +163,7 @@ get_name <- function(strng, field=1, sep="[.]") {
 #'   days, etc.)
 #' @param \code{stub_front} A \emph{Boolean} argument: if \code{TRUE} then add a
 #'   stub interval at the beginning, else add a stub interval at the end.
-#'   (default is \code{TRUE})
+#'   (the default is \code{TRUE})
 #'
 #' @return An \emph{integer} vector of equally spaced end points (vector of
 #'   integers).
@@ -121,95 +231,111 @@ calc_endpoints <- function(xtsv, interval, stub_front=TRUE) {
 #' them.
 #'
 #' @export
-#' @param \code{input} A \emph{numeric} or \emph{Boolean} vector or matrix, or
+#' @param \code{inputv} A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
-#' @param \code{from_last} A  \emph{Boolean} argument: should non-\code{NA}
-#'   values be carried backward rather than forward? (default is \code{FALSE})
-#' @param \code{na_rm} A \emph{Boolean} argument: should any remaining (leading
-#'   or trailing) \code{NA} values be removed? (default is \code{FALSE})
-#' @param \code{max_gap} The maximum number of neighboring \code{NA} values that
-#'   can be replaced (default is \code{NROW(input)}).
+#'
+#' @param \code{fromLast} A  \emph{Boolean} argument: should non-\code{NA}
+#'   values be carried backward rather than forward? (the default is \code{FALSE})
+#'
+#' @param \code{narm} A \emph{Boolean} argument: should any remaining (leading
+#'   or trailing) \code{NA} values be removed? (the default is \code{FALSE})
+#'
+#' @param \code{maxgap} The maximum number of neighboring \code{NA} values that
+#'   can be replaced (the default is \code{NROW(inputv)}).
 #'
 #' @return A vector, matrix, or \emph{xts} time series with the same dimensions
-#'   and data type as the argument \code{input}.
+#'   and data type as the argument \code{inputv}.
 #'
-#' @details The function \code{na_locf()} replaces \code{NA} values with the
+#' @details The function \code{nalocf()} replaces \code{NA} values with the
 #'   most recent non-\code{NA} values prior to them.
 #'
-#'   If the \code{from_last} argument is \code{FALSE} (the default), then the
+#'   If the \code{fromLast} argument is \code{FALSE} (the default), then the
 #'   previous or past non-\code{NA} values are carried forward to replace the
 #'   \code{NA} values.
-#'   If the \code{from_last} argument is \code{TRUE}, then the following or
+#'   If the \code{fromLast} argument is \code{TRUE}, then the following or
 #'   future non-\code{NA} values are carried backward to replace the \code{NA}
 #'   values.
 #'
-#'   The function \code{na_locf()} performs the same operation as function
-#'   \code{xts:::na.locf.xts()} from package
-#'   \href{https://cran.r-project.org/web/packages/zoo/index.html}{zoo}, but
-#'   it also accepts vectors as input.
+#'   The function \code{nalocf()} performs the same operations as the function
+#'   \code{zoo::na.locf()} from package
+#'   \href{https://cran.r-project.org/web/packages/zoo/index.html}{zoo}.
 #'
-#'   The function \code{na_locf()} calls the compiled function \code{na_locf()}
+#'   The function \code{nalocf()} calls the function \code{xts:::na.locf.xts()}
 #'   from package
-#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, which
-#'   allows it to perform its calculations about three times faster than
-#'   \code{xts:::na.locf.xts()}.
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
 #'
 #' @examples
 #' # Create vector containing NA values
-#' input <- sample(22)
-#' input[sample(NROW(input), 4)] <- NA
+#' inputv <- sample(22)
+#' inputv[sample(NROW(inputv), 4)] <- NA
 #' # Replace NA values with the most recent non-NA values
-#' rutils::na_locf(input)
+#' rutils::nalocf(inputv)
 #' # Create matrix containing NA values
-#' input <- sample(44)
-#' input[sample(NROW(input), 8)] <- NA
-#' input <- matrix(input, nc=2)
+#' inputv <- sample(44)
+#' inputv[sample(NROW(inputv), 8)] <- NA
+#' inputv <- matrix(inputv, nc=2)
 #' # Replace NA values with the most recent non-NA values
-#' rutils::na_locf(input)
+#' rutils::nalocf(inputv)
 #' # Create xts series containing NA values
-#' input <- xts::xts(input, order.by=seq.Date(from=Sys.Date(),
-#'   by=1, length.out=NROW(input)))
+#' inputv <- xts::xts(inputv, order.by=seq.Date(from=Sys.Date(),
+#'   by=1, length.out=NROW(inputv)))
 #' # Replace NA values with the most recent non-NA values
-#' rutils::na_locf(input)
+#' rutils::nalocf(inputv, fromLast=TRUE)
 
-na_locf <- function(input, from_last=FALSE, na_rm=FALSE, max_gap=NROW(input)) {
+nalocf <- function(inputv, fromLast=FALSE, narm=FALSE, maxgap=NROW(inputv)) {
 
-  if (!(is.numeric(input) || is.logical(input) || xts::is.timeBased(input) || xts::is.xts(input))) {  # input is not numeric
-    warning(paste("Argument", deparse(substitute(input)), "must be numeric, date, Boolean, or xts series."))
+  if (!(is.numeric(inputv) || is.logical(inputv) || xts::is.timeBased(inputv) || xts::is.xts(inputv))) {  # input is not numeric
+    warning(paste("Argument", deparse(substitute(inputv)), "must be numeric, date, Boolean, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
 
-  if (NCOL(input) > 1) {
-    for (n in 1:NCOL(input))
-      input[, n] <- .Call("na_locf", input[, n], from_last, max_gap, Inf, PACKAGE="xts")
-  }
-  else {
-    input <- .Call("na_locf", input, from_last, max_gap, Inf, PACKAGE="xts")
-  }
-  if (na_rm) {
-    return(structure(na.omit(input), na.action=NULL))
-  }
-  else
-    input
+  if (xts::is.xts(inputv)) {  # input is an xts
+    return(xts:::na.locf.xts(inputv, fromLast=fromLast, na.rm=narm, maxgap=maxgap))
+  } else {
+    return(na.locf(inputv, fromLast=fromLast, na.rm=narm, maxgap=maxgap))
+  } # end if
+
   ### old version below
-  # if (NCOL(input) > 1)
-  #   return(apply(input, MARGIN=2, rutils::na_locf))
-  # if (from_last && is.na(input[1]))
-  #   input[1] <- 0
-  # if (!from_last && is.na(input[NROW(input)]))
-  #   input[NROW(input)] <- 0
-  # indeks <- is.na(input)
+  ## "na_locf" not available for .Call() for package "xts"
+  #
+  # if (!(is.numeric(input) || is.logical(input) || xts::is.timeBased(input) || xts::is.xts(input))) {  # input is not numeric
+  #   warning(paste("Argument", deparse(substitute(input)), "must be numeric, date, Boolean, or xts series."))
+  #   return(NULL)  # Return NULL
+  # }  # end if
+  #
+  # if (NCOL(input) > 1) {
+  #   for (n in 1:NCOL(input))
+  #     input[, n] <- .Call("na_locf", input[, n], from_last, max_gap, Inf, PACKAGE="xts")
+  # }
+  # else {
+  #   input <- .Call("na_locf", input, from_last, max_gap, Inf, PACKAGE="xts")
+  # }
+  # if (na_rm) {
+  #   return(structure(na.omit(input), na.action=NULL))
+  # }
+  # else
+  #   input
+
+  ### oldest version below
+  # if (NCOL(inputv) > 1)
+  #   return(apply(inputv, MARGIN=2, rutils::nalocf))
+  # if (fromLast && is.na(inputv[1]))
+  #   inputv[1] <- 0
+  # if (!fromLast && is.na(inputv[NROW(inputv)]))
+  #   inputv[NROW(inputv)] <- 0
+  # indeks <- is.na(inputv)
   # indices <- rutils::diffit(indeks)
   # indices <- which(indices==1)
   # indices <- indices - 1
   # diff_indices <- rutils::diffit(indices)
   # diff_indices[1] <- indices[1]
-  # new_indices <- numeric(NROW(input))
+  # new_indices <- numeric(NROW(inputv))
   # new_indices[indices] <- diff_indices
   # new_indices <- cumsum(new_indices)
-  # input[indeks] <- input[new_indices[indeks]]
-  # input
-}  # end na_locf
+  # inputv[indeks] <- inputv[new_indices[indeks]]
+  # inputv
+
+}  # end nalocf
 
 
 
@@ -219,7 +345,7 @@ na_locf <- function(input, from_last=FALSE, na_rm=FALSE, max_gap=NROW(input)) {
 #' Given an \emph{OHLC} time series at high periodicity (say seconds),
 #' calculates the \emph{OHLC} prices at a lower periodicity (say minutes).
 #'
-#' @param \code{tseries} An \emph{OHLC} time series of prices in \emph{xts}
+#' @param \code{timeser} An \emph{OHLC} time series of prices in \emph{xts}
 #'   format.
 #' @param \code{period} aggregation interval ("seconds", "minutes", "hours",
 #'   "days", "weeks", "months", "quarters", and "years").
@@ -246,19 +372,20 @@ na_locf <- function(input, from_last=FALSE, na_rm=FALSE, max_gap=NROW(input)) {
 #' # Define end points at 10-minute intervals (HighFreq::SPY are minutes bars)
 #' endd <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
 #' # Aggregate over 10-minute endpoints:
-#' ohlc <- rutils::to_period(tseries=HighFreq::SPY["2009"], endpoints=endd)
+#' ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], endpoints=endd)
 #' # Aggregate over days:
-#' ohlc <- rutils::to_period(tseries=HighFreq::SPY["2009"], period="days")
+#' ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], period="days")
 #' # Equivalent to:
 #' ohlc <- xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 #' }
 #'
 #' @export
-to_period <- function(tseries,
-                      period="minutes", k=1,
-                      endpoints=xts::endpoints(tseries, period, k)) {
-  .Call("toPeriod", tseries, as.integer(endpoints), TRUE, NCOL(tseries),
-        FALSE, FALSE, colnames(tseries), PACKAGE="xts")
+to_period <- function(timeser, period="minutes", k=1,
+                      endpoints=xts::endpoints(timeser, period, k)) {
+
+  .Call("C_toPeriod", timeser, as.integer(endpoints), TRUE, NCOL(timeser),
+        FALSE, FALSE, colnames(timeser), PACKAGE="xts")
+
 }  # end to_period
 
 
@@ -271,10 +398,10 @@ to_period <- function(tseries,
 #' @param \code{ohlc} An \emph{OHLC} time series in \emph{xts} format, or a
 #'   vector of \emph{character} strings with the names of \emph{OHLC} time
 #'   series.
-#' @param \code{field_name} A vector of strings with the field names of the
-#'   columns to be be extracted (default is \code{"Close"}).
-#' @param \code{data_env} The environment containing \emph{OHLC} time series
-#'   (default is \code{NULL}).
+#' @param \code{fieldn} A vector of strings with the field names of the
+#'   columns to be be extracted (the default is \code{"Close"}).
+#' @param \code{datenv} The environment containing \emph{OHLC} time series
+#'   (the default is \code{NULL}).
 #'
 #' @return The specified columns of the \emph{OHLC} time series bound into a
 #'   single \emph{xts} time series, with the same number of rows as the input
@@ -287,64 +414,64 @@ to_period <- function(tseries,
 #'
 #'   The function \code{get_col()} extracts columns by partially matching field
 #'   names with column names. The \emph{OHLC} column names are assumed to be in
-#'   the format \code{"symbol.field_name"}, for example \code{"VTI.Close"}.
+#'   the format \code{"symbol.fieldn"}, for example \code{"VTI.Close"}.
 #'
 #'   In the simplest case when \code{ohlc} is a single \emph{xts} time series
-#'   and \emph{field_name} is a single string, the function \code{get_col()}
+#'   and \emph{fieldn} is a single string, the function \code{get_col()}
 #'   performs a similar operation to the extractor functions \code{Op()},
 #'   \code{Hi()}, \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
 #'   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
 #'   But \code{get_col()} is able to handle symbols like \emph{LOW}, which the
-#'   function \code{Lo()} can't handle. The field_name argument is partially
+#'   function \code{Lo()} can't handle. The fieldn argument is partially
 #'   matched, for example "Vol" is matched to \code{Volume} (but it's case
 #'   sensitive).
 #'
 #'   In the case when \code{ohlc} is a vector of strings with the names of
 #'   \emph{OHLC} time series, the function \code{get_col()} reads the
-#'   \emph{OHLC} time series from the environment \code{data_env}, extracts the
+#'   \emph{OHLC} time series from the environment \code{datenv}, extracts the
 #'   specified columns, and binds them into a single \emph{xts} time series.
 #'
 #' @examples
 #' # get close prices for VTI
 #' rutils::get_col(rutils::etfenv$VTI)
 #' # get volumes for VTI
-#' rutils::get_col(rutils::etfenv$VTI, field_name="Vol")
+#' rutils::get_col(rutils::etfenv$VTI, fieldn="Vol")
 #' # get close prices and volumes for VTI
-#' rutils::get_col(rutils::etfenv$VTI, field_name=c("Cl", "Vol"))
+#' rutils::get_col(rutils::etfenv$VTI, fieldn=c("Cl", "Vol"))
 #' # get close prices and volumes for VTI and IEF
-#' rutils::get_col(ohlc=c("VTI", "IEF"), field_name=c("Cl", "Vol"),
-#'   data_env=rutils::etfenv)
+#' rutils::get_col(ohlc=c("VTI", "IEF"), fieldn=c("Cl", "Vol"),
+#'   datenv=rutils::etfenv)
 
-get_col <- function(ohlc, field_name="Close", data_env=NULL) {
+get_col <- function(ohlc, fieldn="Close", datenv=NULL) {
   if (is.xts(ohlc)) {
     # Extract columns, and return them
     colv <- strsplit(colnames(ohlc), split="[.]")
     colv <- sapply(colv, function(coln) coln[2])
-    return(ohlc[, pmatch(field_name, colv)])
+    return(ohlc[, pmatch(fieldn, colv)])
   } else if (is.character(ohlc)) {
     # Loop over the symbols in ohlc, extract columns, and cbind them
     datav <- lapply(ohlc, function(symbol) {
-      ohlc <- get(symbol, envir=data_env)
+      ohlc <- get(symbol, envir=datenv)
       colv <- strsplit(colnames(ohlc), split="[.]")
       colv <- sapply(colv, function(coln) coln[2])
-      ohlc[, pmatch(field_name, colv)]
+      ohlc[, pmatch(fieldn, colv)]
     })  # end lapply
     return(rutils::do_call(cbind, datav))
   }  # end if
   ## below is a different version using as.list()
-  # datav <- lapply(as.list(data_env)[ohlc], function(ohlc) {
+  # datav <- lapply(as.list(datenv)[ohlc], function(ohlc) {
   #   colv <- strsplit(colnames(ohlc), split="[.]")
   #   colv <- sapply(colv, function(coln) coln[2])
-  #   ohlc[, pmatch(field_name, colv)]
+  #   ohlc[, pmatch(fieldn, colv)]
   # })  # end lapply
   #
   ## below is the old version using grep()
-  #   indeks <- grep(paste0(".", field_name), colnames(ohlc), ignore.case=TRUE)
+  #   indeks <- grep(paste0(".", fieldn), colnames(ohlc), ignore.case=TRUE)
   #   if (NROW(indeks)>0)
-  # #    output <- xts::.subset_xts(ohlc, 1:NROW(ohlc), indeks:indeks)
+  # #    outv <- xts::.subset_xts(ohlc, 1:NROW(ohlc), indeks:indeks)
   #     ohlc[, indeks]
   #   else
-  #     stop(paste0("No column name containing \"", field_name, "\""))
+  #     stop(paste0("No column name containing \"", fieldn, "\""))
 }  # end get_col
 
 
@@ -389,7 +516,7 @@ adjust_ohlc <- function(ohlc) {
 #'
 #' @param \code{get_rows} A \emph{Boolean} argument: if \code{TRUE} then extract the
 #'   given number of rows of data, else extract the given number of calendar
-#'   days (default is \code{TRUE}).
+#'   days (the default is \code{TRUE}).
 #'
 #' @return An \emph{xts} time series with the same number of columns as the
 #'   input time series.
@@ -472,11 +599,11 @@ sub_set <- function(xtsv, startd, endd, get_rows=TRUE) {
 #' \emph{xts} time series.
 #'
 #' @export
-#' @param \code{input} A \emph{numeric} or \emph{Boolean} vector or matrix, or
+#' @param \code{inputv} A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
 #'
 #' @param \code{lagg} An integer equal to the number of time periods (rows) of
-#'   lag (default is \code{1}).
+#'   lag (the default is \code{1}).
 #'
 #' @param \code{pad_zeros} A \emph{Boolean} argument: Should the output be padded
 #'   with zeros? (The default is \code{pad_zeros = TRUE}.)
@@ -515,55 +642,56 @@ sub_set <- function(xtsv, startd, endd, get_rows=TRUE) {
 #' # Lag an xts time series
 #' lag_ged <- rutils::lagit(rutils::etfenv$VTI, lag=10)
 
-lagit <- function(input, lagg=1, pad_zeros=TRUE, ...) {
+lagit <- function(inputv, lagg=1, pad_zeros=TRUE, ...) {
 
   if (lagg == 0) {
     # Return input if lagg is zero
-    return(input)
+    return(inputv)
   }  # end if
 
-  if (!(is.numeric(input) || is.logical(input) || xts::is.timeBased(input) || xts::is.xts(input))) {
+  if (!(is.numeric(inputv) || is.logical(inputv) || xts::is.timeBased(inputv) || xts::is.xts(inputv))) {
     # Return NULL if input is not numeric
-    warning(paste("Argument", deparse(substitute(input)), "must be numeric, date, Boolean, or xts series."))
+    warning(paste("Argument", deparse(substitute(inputv)), "must be numeric, date, Boolean, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
 
-  nrows <- NROW(input)
-  ncol <- NCOL(input)
-  if (pad_zeros)
-    padd <- 0
-  else
-    padd <- 1
-  if (is.null(dim(input))) {  # input is a vector
+  nrows <- NROW(inputv)
+  ncol <- NCOL(inputv)
+
+  padd <- 1
+  if (pad_zeros) padd <- 0
+
+  if (xts::is.xts(inputv)) {  # input is an xts
+    firstv <- inputv[1, ]
+    lastv <- inputv[nrows, ]
+    outv <- xts::lag.xts(inputv, k=lagg, ...)
     if (lagg>0) {
-      input <- c(rep(padd*input[1], lagg), input)
-      input[1:nrows]
+      outv[1:lagg, ] <- matrix(rep(padd*firstv, lagg), byrow=TRUE, nr=lagg)
     } else {
-      input <- c(input, rep(padd*input[nrows], -lagg))
-      input[-(1:(-lagg))]
+      outv[(nrows+lagg+1):nrows, ] <- matrix(rep(padd*lastv, -lagg), byrow=TRUE, nr=-lagg)
     }  # end if
-  } else if (xts::is.xts(input)) {  # input is an xts
-    firstv <- input[1, ]
-    lastv <- input[nrows, ]
-    input <- xts::lag.xts(input, k=lagg, ...)
+    return(outv)
+  } else if (is.null(dim(inputv))) {  # input is a vector
     if (lagg>0) {
-      input[1:lagg, ] <- matrix(rep(padd*firstv, lagg), byrow=TRUE, nr=lagg)
+      outv <- c(rep(padd*inputv[1], lagg), inputv)
+      return(outv[1:nrows])
     } else {
-      input[(nrows+lagg+1):nrows, ] <- matrix(rep(padd*lastv, -lagg), byrow=TRUE, nr=-lagg)
+      outv <- c(inputv, rep(padd*inputv[nrows], -lagg))
+      return(outv[-(1:(-lagg))])
     }  # end if
-    return(input)
-  } else if (is.matrix(input)) {  # input is a matrix
-      if (lagg>0) {
-        input <- rbind(matrix(rep(padd*input[1, ], lagg), byrow=TRUE, nr=lagg), input)
-        input[1:nrows, ]
-      } else {
-        input <- rbind(input, matrix(rep(padd*input[nrows, ], -lagg), byrow=TRUE, nr=-lagg))
-        input[-(1:(-lagg)), ]
-      }  # end if
-  } else {  # input is not a vector or matrix
-    warning(paste0("Argument \"", deparse(substitute(input)), "\" must be either a vector, matrix, or xts series."))
+  } else if (is.matrix(inputv)) {  # input is a matrix
+    if (lagg>0) {
+      outv <- rbind(matrix(rep(padd*inputv[1, ], lagg), byrow=TRUE, nr=lagg), inputv)
+      return(outv[1:nrows, ])
+    } else {
+      outv <- rbind(inputv, matrix(rep(padd*inputv[nrows, ], -lagg), byrow=TRUE, nr=-lagg))
+      return(outv[-(1:(-lagg)), ])
+    }  # end if
+  } else {  # input is neither a vector nor matrix
+    warning(paste0("Argument \"", deparse(substitute(inputv)), "\" must be either a vector, matrix, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
+
 }  # end lagit
 
 
@@ -573,11 +701,11 @@ lagit <- function(input, lagg=1, pad_zeros=TRUE, ...) {
 #' matrix, or \emph{xts} time series.
 #'
 #' @export
-#' @param \code{input} A \emph{numeric} or \emph{Boolean} vector or matrix, or
+#' @param \code{inputv} A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
 #'
 #' @param \code{lagg} An integer equal to the number of time periods of lag
-#'   (default is \code{1}).
+#'   (the default is \code{1}).
 #'
 #' @return A vector, matrix, or \emph{xts} time series. with the same dimensions
 #'   as the input object.
@@ -602,42 +730,43 @@ lagit <- function(input, lagg=1, pad_zeros=TRUE, ...) {
 #' # Diff an xts time series
 #' rutils::diffit(rutils::etfenv$VTI, lagg=10)
 
-diffit <- function(input, lagg=1, ...) {
+diffit <- function(inputv, lagg=1, ...) {
 
-  if (!(is.numeric(input) || is.logical(input) || xts::is.timeBased(input) || xts::is.xts(input))) {  # input is not numeric
-    warning(paste("Argument", deparse(substitute(input)), "must be numeric, date, Boolean, or xts series."))
+  if (!(is.numeric(inputv) || is.logical(inputv) || xts::is.timeBased(inputv) || xts::is.xts(inputv))) {  # input is not numeric
+    warning(paste("Argument", deparse(substitute(inputv)), "must be numeric, date, Boolean, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
 
-  nrows <- NROW(input)
-  ncol <- NCOL(input)
-  if (xts::is.xts(input)) {  # input is an xts
+  nrows <- NROW(inputv)
+  ncol <- NCOL(inputv)
+
+  if (xts::is.xts(inputv)) {  # input is an xts
     if (lagg>0) {
-      input <- xts::diff.xts(input, lag=lagg, ...)
-      input[1:lagg, ] <- 0
+      outv <- xts::diff.xts(inputv, lag=lagg, ...)
+      outv[1:lagg, ] <- 0
     } else {
-      input <- xts::diff.xts(input, lag=-lagg, ...)
-      input[(nrows+lagg+1):nrows, ] <- 0
+      outv <- xts::diff.xts(inputv, lag=-lagg, ...)
+      outv[(nrows+lagg+1):nrows, ] <- 0
     }  # end if
-    return(input)
-  } else if (is.null(dim(input))) {  # input is a vector
+    return(outv)
+  } else if (is.null(dim(inputv))) {  # input is a vector
     if (lagg>0) {
-      lagg_ed <- c(input[1:lagg], input[1:(nrows-lagg)])
+      lagv <- c(inputv[1:lagg], inputv[1:(nrows-lagg)])
     } else {
-      lagg_ed <- c(input[-(1:(-lagg))], input[(nrows+lagg+1):nrows])
+      lagv <- c(inputv[-(1:(-lagg))], inputv[(nrows+lagg+1):nrows])
     }  # end if
-  } else if (is.matrix(input)) {  # input is a matrix
+  } else if (is.matrix(inputv)) {  # input is a matrix
     if (lagg>0) {
-      lagg_ed <- rbind(input[1:lagg, , drop=FALSE], input[1:(nrows-lagg), , drop=FALSE])
+      lagv <- rbind(inputv[1:lagg, , drop=FALSE], inputv[1:(nrows-lagg), , drop=FALSE])
     } else {
-      lagg_ed <- rbind(input[-(1:(-lagg)), , drop=FALSE], input[(nrows+lagg+1):nrows, , drop=FALSE])
+      lagv <- rbind(inputv[-(1:(-lagg)), , drop=FALSE], inputv[(nrows+lagg+1):nrows, , drop=FALSE])
     }  # end if
-  } else {  # input is not a vector or matrix
-    warning(paste0("Argument \"", deparse(substitute(input)), "\" must be either a vector, matrix, or xts series."))
+  } else {  # input is neither a vector nor matrix
+    warning(paste0("Argument \"", deparse(substitute(inputv)), "\" must be either a vector, matrix, or xts series."))
     return(NULL)  # Return NULL
   }  # end if
 
-  input - lagg_ed
+  return(inputv - lagv)
 
 }  # end diffit
 
@@ -650,7 +779,7 @@ diffit <- function(input, lagg=1, ...) {
 #' @param \code{xtsv} An \emph{xts} time series.
 #'
 #' @param \code{lagg} An integer equal to the number of time periods of lag
-#'   (default is \code{1}).
+#'   (the default is \code{1}).
 #'
 #' @param \code{pad_zeros} A \emph{Boolean} argument: Should the output be
 #'   padded with zeros? (The default is \code{pad_zeros = TRUE}.)
@@ -697,9 +826,9 @@ lagxts <- function(xtsv, lagg=1, pad_zeros=TRUE, ...) {
     return(xtsv)
   }  # end if
 
-  if (!xts::is.xts(input)) {
+  if (!xts::is.xts(inputv)) {
     # Return NULL if xtsv is not an xts series
-    warning(paste("Argument", deparse(substitute(input)), "must be an xts series."))
+    warning(paste("Argument", deparse(substitute(inputv)), "must be an xts series."))
     return(NULL)  # Return NULL
   }  # end if
 
@@ -732,7 +861,7 @@ lagxts <- function(xtsv, lagg=1, pad_zeros=TRUE, ...) {
 #' @export
 #' @param \code{xtsv} An \emph{xts} time series.
 #' @param \code{lagg} An integer equal to the number of time periods of lag
-#'   (default is \code{1}).
+#'   (the default is \code{1}).
 #' @param \code{...} Additional arguments to function \code{xts::diff.xts()}.
 #'
 #' @return An \emph{xts} time series with the same dimensions and the same time
@@ -769,7 +898,7 @@ diffxts <- function(xtsv, lagg=1, ...) {
 #' @export
 #' @param \code{ohlc} An \emph{OHLC} time series of prices in \emph{xts} format.
 #' @param \code{reducit} A \emph{Boolean} argument: should the reduced form be
-#'   calculated or the standard form? (default is \code{TRUE})
+#'   calculated or the standard form? (the default is \code{TRUE})
 #' @param \code{...} Additional arguments to function \code{xts::diff.xts()}.
 #'
 #' @return An \emph{OHLC} time series with five columns for the \emph{Open},
@@ -785,9 +914,9 @@ diffxts <- function(xtsv, lagg=1, ...) {
 #'
 #' @examples
 #' # Calculate reduced form of an OHLC time series
-#' diff_VTI <- rutils::diffohlc(rutils::etfenv$VTI)
+#' diffVTI <- rutils::diffohlc(rutils::etfenv$VTI)
 #' # Calculate standard form of an OHLC time series
-#' VTI <- rutils::diffohlc(diff_VTI, reducit=FALSE)
+#' VTI <- rutils::diffohlc(diffVTI, reducit=FALSE)
 #' identical(VTI, rutils::etfenv$VTI[, 1:5])
 
 diffohlc <- function(ohlc, reducit=TRUE, ...) {
@@ -824,13 +953,13 @@ diffohlc <- function(ohlc, reducit=TRUE, ...) {
 #' @export
 #' @param \code{xtsv} A vector, matrix, or \emph{xts} time series containing one
 #'   or more columns of data.
-#' @param \code{look_back} The size of the lookback window, equal to the number
+#' @param \code{lookb} The size of the lookback window, equal to the number
 #'   of data points for calculating the rolling sum.
 #'
 #' @return A vector, matrix, or \emph{xts} time series with the same dimensions
 #'   as the input series.
 #'
-#' @details For example, if look_back=3, then the rolling sum at any point is
+#' @details For example, if lookb=3, then the rolling sum at any point is
 #'   equal to the sum of \code{xtsv} values for that point plus two preceding
 #'   points. The initial values of roll_sum() are equal to cumsum() values, so
 #'   that roll_sum() doesn't return any \code{NA} values.
@@ -843,33 +972,33 @@ diffohlc <- function(ohlc, reducit=TRUE, ...) {
 #' @examples
 #' # Rolling sum of vector
 #' vectorv <- rnorm(1000)
-#' rutils::roll_sum(vectorv, look_back=3)
+#' rutils::roll_sum(vectorv, lookb=3)
 #' # Rolling sum of matrix
 #' matrixv <- matrix(rnorm(1000), nc=5)
-#' rutils::roll_sum(matrixv, look_back=3)
+#' rutils::roll_sum(matrixv, lookb=3)
 #' # Rolling sum of xts time series
 #' xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-#' rutils::roll_sum(xtsv, look_back=3)
+#' rutils::roll_sum(xtsv, lookb=3)
 
-roll_sum <- function(xtsv, look_back) {
+roll_sum <- function(xtsv, lookb) {
   if (xts::is.xts(xtsv)) {
     cumsumv <- cumsum(xtsv)
-    roll_sum <- cumsumv - rutils::lagit(cumsumv, lag=look_back)
-    roll_sum[1:look_back, ] <- cumsumv[1:look_back, ]
+    rolls <- (cumsumv - rutils::lagit(cumsumv, lag=lookb))
+    rolls[1:lookb, ] <- cumsumv[1:lookb, ]
   }
   else {
     if (is.null(dim(xtsv))) {
       cumsumv <- cumsum(xtsv)
-      roll_sum <- cumsumv - rutils::lagit(cumsumv, lag=look_back)
-      roll_sum[1:look_back] <- cumsumv[1:look_back]
+      rolls <- (cumsumv - rutils::lagit(cumsumv, lag=lookb))
+      rolls[1:lookb] <- cumsumv[1:lookb]
     }
     else {
       cumsumv <- apply(xtsv, MARGIN=2, function(colnum) cumsum(colnum))
-      roll_sum <- cumsumv - rutils::lagit(cumsumv, lag=look_back)
-      roll_sum[1:look_back, ] <- cumsumv[1:look_back, ]
+      rolls <- cumsumv - rutils::lagit(cumsumv, lag=lookb)
+      rolls[1:lookb, ] <- cumsumv[1:lookb, ]
     }
   }
-  roll_sum
+  rolls
 }  # end roll_sum
 
 
@@ -881,13 +1010,13 @@ roll_sum <- function(xtsv, look_back) {
 #' @export
 #' @param \code{xtsv} An \emph{xts} time series containing one or more columns
 #'   of data.
-#' @param \code{look_back} The size of the lookback window, equal to the number
+#' @param \code{lookb} The size of the lookback window, equal to the number
 #'   of data points for calculating the rolling sum.
 #'
 #' @return An \emph{xts} time series with the same dimensions as the input
 #'   series.
 #'
-#' @details For example, if look_back=3, then the rolling sum at any point is
+#' @details For example, if lookb=3, then the rolling sum at any point is
 #'   equal to the sum of \code{xtsv} values for that point plus two preceding
 #'   points.
 #'
@@ -902,13 +1031,15 @@ roll_sum <- function(xtsv, look_back) {
 #' @examples
 #' # Create xts time series
 #' xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-#' rutils::roll_max(xtsv, look_back=3)
+#' rutils::roll_max(xtsv, lookb=3)
 
-roll_max <- function(xtsv, look_back) {
-  roll_max <- RcppRoll::roll_max(c(rep(0,look_back-1), coredata(xtsv)), n=look_back, align="right")
-  roll_max <- xts(x=roll_max, order.by=index(xtsv))
-  colnames(roll_max) <- colnames(xtsv)
-  roll_max
+roll_max <- function(xtsv, lookb) {
+
+  rollm <- RcppRoll::roll_max(c(rep(0,lookb-1), coredata(xtsv)), n=lookb, align="right")
+  rollm <- xts(x=rollm, order.by=index(xtsv))
+  colnames(rollm) <- colnames(xtsv)
+  return(rollm)
+
 }  # end roll_max
 
 
@@ -946,17 +1077,20 @@ roll_max <- function(xtsv, look_back) {
 #' identical(xtsv, rutils::do_call_rbind(list_xts))
 
 do_call_rbind <- function(listv) {
+
   while (NROW(listv) > 1) {
 # index of odd list elements
-    odd_index <- seq(from=1, to=NROW(listv), by=2)
+    oddel <- seq(from=1, to=NROW(listv), by=2)
 # bind odd and even elements, and divide listv by half
-    listv <- lapply(odd_index, function(indeks) {
+    listv <- lapply(oddel, function(indeks) {
       if (indeks==NROW(listv)) return(listv[[indeks]])
       rbind(listv[[indeks]], listv[[indeks+1]])
     })  # end lapply
   }  # end while
-# listv has only one element - return it
-  listv[[1]]
+
+  # listv has only one element - return it
+  return(listv[[1]])
+
 }  # end do_call_rbind
 
 
@@ -995,21 +1129,24 @@ do_call_rbind <- function(listv) {
 #' identical(xtsv, rutils::do_call(rbind, list_xts))
 
 do_call <- function(func, listv, ...) {
+
 # Produce function name from argument
   func <- match.fun(func)
   while (NROW(listv) > 1) {
 # index of odd list elements
-    odd_index <- seq(from=1, to=NROW(listv), by=2)
+    oddel <- seq(from=1, to=NROW(listv), by=2)
 # bind neighboring elements and divide listv by half
-    listv <- lapply(odd_index, function(indeks) {
+    listv <- lapply(oddel, function(indeks) {
       if (indeks==NROW(listv)) {
         return(listv[[indeks]])
       }
       return(func(listv[[indeks]], listv[[indeks+1]], ...))
     })  # end lapply
   }  # end while
-# listv has only one element - return it
-  listv[[1]]
+
+  # listv has only one element - return it
+  return(listv[[1]])
+
 }  # end do_call
 
 
@@ -1023,9 +1160,9 @@ do_call <- function(func, listv, ...) {
 #'   (\emph{vector}, \emph{xts} time series, etc.)
 #' @param \code{symbolv} A vector of \emph{character} strings with the names of
 #'   input objects.
-#' @param \code{output} The string with name of output object.
-#' @param \code{env_in} The environment containing the input \code{symbolv}.
-#' @param \code{env_out} The environment for creating the \code{output}.
+#' @param \code{outv} The string with name of output object.
+#' @param \code{inenv} The environment containing the input \code{symbolv}.
+#' @param \code{outenv} The environment for creating the \code{outv}.
 #' @param \code{...} Additional arguments to function \code{func()}.
 #'
 #' @return A single object (\emph{matrix}, \emph{xts} time series, etc.)
@@ -1033,27 +1170,27 @@ do_call <- function(func, listv, ...) {
 #' @details The function \code{do_call_assign()} performs an lapply loop over
 #'   \code{symbolv}, applies the function \code{func()}, merges the
 #'   outputs into a single object, and creates the object in the environment
-#'   \code{env_out}.  The output object is created as a side effect, while its
+#'   \code{outenv}.  The output object is created as a side effect, while its
 #'   name is returned invisibly.
 #'
 #' @examples
-#' new_env <- new.env()
+#' newenv <- new.env()
 #' rutils::do_call_assign(
 #'    func=get_col,
 #'    symbolv=rutils::etfenv$symbolv,
-#'    output="prices",
-#'    env_in=etfenv, env_out=new_env)
+#'    outv="prices",
+#'    inenv=etfenv, outenv=newenv)
 
-do_call_assign <- function(func, symbolv=NULL, output,
-                           env_in=.GlobalEnv, env_out=.GlobalEnv, ...) {
+do_call_assign <- function(func, symbolv=NULL, outv,
+                           inenv=.GlobalEnv, outenv=.GlobalEnv, ...) {
+
 # Produce function name from argument
   func <- match.fun(func)
-  if (is.null(symbolv)) symbolv <- ls(env_in)
-  assign(output,
-         do.call(merge,
-                 lapply(mget(env_in$symbolv, envir=env_in), func, ...)),
-         envir=env_out)
-  invisible(output)
+  if (is.null(symbolv)) symbolv <- ls(inenv)
+  assign(outv, do.call(merge, lapply(mget(inenv$symbolv, envir=inenv), func, ...)),
+  envir=outenv)
+  invisible(outv)
+
 }  # end do_call_assign
 
 
@@ -1064,17 +1201,17 @@ do_call_assign <- function(func, symbolv=NULL, output,
 
 
 ######################################################################
-#' Calculate the autocorrelation function (ACF) for a time series of returns,
+#' Calculate the autocorrelation function (ACF) of a time series of returns,
 #' and plot it.
 #'
 #' @export
 #' @param \code{xtsv} A vector, matrix, or time series of returns.
 #'
-#' @param \code{lagg} The maximum lag at which to calculate the ACF (default is
+#' @param \code{lagg} The maximum lag at which to calculate the ACF (the default is
 #'   \code{10}).
 #'
 #' @param \code{plotobj} A \emph{Boolean} argument: should a plot be made?
-#'   (default is \code{TRUE})
+#'   (the default is \code{TRUE})
 #'
 #' @param \code{xlab} A string with the x-axis label.
 #'
@@ -1087,7 +1224,7 @@ do_call_assign <- function(func, symbolv=NULL, output,
 #' @return Returns the ACF data invisibly and creates a plot.
 #'
 #' @details The function \code{plot_acf()} calculates the autocorrelation
-#'   function (ACF) for a time series of returns, and plots it.  The function
+#'   function (ACF) of a time series of returns, and plots it.  The function
 #'   \code{plot_acf()} is just a wrapper for the function \code{stats::acf()}.
 #'   The function \code{stats::acf()} calculates the autocorrelation function,
 #'   including the lag zero autocorrelation, which is by definition equal to
@@ -1150,7 +1287,7 @@ plot_acf <- function(xtsv, lagg=10,
 #'   specifying the shading areas, with TRUE indicating "lightgreen" shading,
 #'   and FALSE indicating "antiquewhite" shading.
 #' @param \code{x11} A \emph{Boolean} argument: if \code{TRUE} then open x11 window for
-#'   plotting, else plot in standard window (default is \code{TRUE}).
+#'   plotting, else plot in standard window (the default is \code{TRUE}).
 #' @param \code{...} Additional arguments to function \code{chart_Series()}.
 #'
 #' @return A \code{chart_Series()} object returned invisibly.
@@ -1180,6 +1317,7 @@ plot_acf <- function(xtsv, lagg=10,
 #'   rutils::etfenv$XLP[, 4])), colors=c("blue", "green"))
 
 chart_xts <- function(xtsv, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
+
   stopifnot(xts::is.xts(xtsv))
   if (x11) {
     x11(10, 7)  # open x11 plot window
@@ -1187,13 +1325,13 @@ chart_xts <- function(xtsv, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
   # Set plot margins
   par(mar=c(3, 3, 3, 3), oma=c(0, 0, 0, 0))
   # Pass color parameters into chart_Series() using chart_theme()
-  plot_theme <- quantmod::chart_theme()
+  plotheme <- quantmod::chart_theme()
   if (!is.null(colors)) {
-    plot_theme$col$line.col <- colors
+    plotheme$col$line.col <- colors
   }  # end if
   # Extract chob chart object
   chobj <- quantmod::chart_Series(x=xtsv,
-                                  theme=plot_theme,
+                                  theme=plotheme,
                                   plot=FALSE, ...)
   # Modify ylim using accessor and setter functions
   if (!is.null(ylim)) {
@@ -1208,9 +1346,11 @@ chart_xts <- function(xtsv, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
     quantmod::add_TA(indic, on=-1, col="lightgreen", border=NA)
     quantmod::add_TA(!indic, on=-1, col="antiquewhite", border=NA)
   }  # end if
-# Render the plot and return the chob invisibly
+
+  # Render the plot and return the chob invisibly
   plot(chobj)
   invisible(chobj)
+
 }  # end chart_xts
 
 
@@ -1221,9 +1361,9 @@ chart_xts <- function(xtsv, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
 #' @export
 #' @param \code{xtsv} An \emph{xts} time series with two columns.
 #' @param \code{color} A string specifying the color of the second line and
-#'   axis (default is \code{"red"}).
+#'   axis (the default is \code{"red"}).
 #' @param \code{x11} A \emph{Boolean} argument: if \code{TRUE} then open x11
-#'   window for plotting, else plot in standard window (default is \code{TRUE}).
+#'   window for plotting, else plot in standard window (the default is \code{TRUE}).
 #' @param \code{...} Additional arguments to function \code{plot.zoo()}.
 #'
 #' @return The \emph{xtsv} column names returned invisibly, and a plot
@@ -1280,7 +1420,7 @@ chart_xts2y <- function(xtsv, color="red", x11=TRUE, ...) {
 #' @param \code{ohlc} An \emph{OHLC} time series in \emph{xts} format.
 #' @param \code{indic} A \emph{Boolean} time series in \emph{xts} format for
 #'   specifying the shading areas, with TRUE indicating "lightgreen" shading,
-#'   and FALSE indicating "antiquewhite" shading (default is \code{NULL}).
+#'   and FALSE indicating "antiquewhite" shading (the default is \code{NULL}).
 #' @param \code{...} Additional arguments to function \code{dygraphs::dygraph()}.
 #'
 #' @return A \code{dygraphs} plot object, and a \code{dygraphs} plot produced as
@@ -1345,7 +1485,7 @@ chart_dygraph <- function(ohlc, indic=NULL, ...) {
 #' @examples
 #' # Plot an interactive dygraphs line plot with two "y" axes
 #' prices <- cbind(Ad(rutils::etfenv$VTI), Ad(rutils::etfenv$IEF))
-#' colnames(prices) <- get_name(colnames(prices), field=2)
+#' colnames(prices) <- get_name(colnames(prices), posv=2)
 #' rutils::chart_dygraph2y(prices)
 
 chart_dygraph2y <- function(xtsv, ...) {
@@ -1370,24 +1510,24 @@ chart_dygraph2y <- function(xtsv, ...) {
 #' @export
 #' @param \code{symbolv} A vector of strings representing instrument symbols
 #'   (tickers).
-#' @param \code{data_dir} The directory containing \emph{CSV} files (default is
+#' @param \code{datadir} The directory containing \emph{CSV} files (the default is
 #'   \code{NULL}).
-#' @param \code{data_env} The environment for loading the data into.
-#' @param \code{startd} The start date of time series data (default is
+#' @param \code{datenv} The environment for loading the data into.
+#' @param \code{startd} The start date of time series data (the default is
 #'   "2007-01-01").
-#' @param \code{endd} The end date of time series data (default is
+#' @param \code{endd} The end date of time series data (the default is
 #'   \code{Sys.Date()}).
 #' @param \code{func} The name of the function for formatting the date
-#'   fields in the \emph{CSV} files (default is \code{as.Date()}).
+#'   fields in the \emph{CSV} files (the default is \code{as.Date()}).
 #' @param \code{formatv} The format of the date fields in the \emph{CSV} files
-#'   (default is \code{\%Y-\%m-\%d}).
+#'   (the default is \code{\%Y-\%m-\%d}).
 #' @param \code{header} A \emph{Boolean} argument: if \code{TRUE} then read the
-#'   header in the \emph{CSV} files (default is \code{TRUE}).
+#'   header in the \emph{CSV} files (the default is \code{TRUE}).
 #' @param \code{echo} A \emph{Boolean} argument: if \code{TRUE} then print to
-#'   console information on the progress of \emph{CSV} file loading (default is
+#'   console information on the progress of \emph{CSV} file loading (the default is
 #'   \code{TRUE}).
 #' @param \code{scrub} A \emph{Boolean} argument: if \code{TRUE} then remove
-#'   \code{NA} values using function \code{rutils::na_locf()} (default is
+#'   \code{NA} values using function \code{rutils::nalocf()} (the default is
 #'   \code{TRUE}).
 #'
 #' @return A vector of \code{symbolv} returned invisibly.
@@ -1396,10 +1536,10 @@ chart_dygraph2y <- function(xtsv, ...) {
 #'   into an environment (as a side-effect), and returns invisibly the vector of
 #'   \code{symbolv}.
 #'
-#'   If the argument \code{data_dir} is specified, then \code{get_data()} loads
+#'   If the argument \code{datadir} is specified, then \code{get_data()} loads
 #'   from \emph{CSV} files in that directory, and overwrites \code{NA} values if
 #'   \code{scrub=TRUE}.
-#'   If the argument \code{data_dir} is \emph{not} specified, then
+#'   If the argument \code{datadir} is \emph{not} specified, then
 #'   \code{get_data()} downloads adjusted \emph{OHLC} prices from \emph{YAHOO}.
 #'
 #'   The function \code{get_data()} calls the function \code{getSymbols.yahoo()}
@@ -1414,21 +1554,21 @@ chart_dygraph2y <- function(xtsv, ...) {
 #'
 #' @examples
 #' \dontrun{
-#' new_env <- new.env()
+#' newenv <- new.env()
 #' # Load prices from local csv files
 #' rutils::get_data(symbolv=c("SPY", "EEM"),
-#'             data_dir="C:/Develop/data/bbg_records",
-#'             data_env=new_env)
+#'             datadir="C:/Develop/data/bbg_records",
+#'             datenv=newenv)
 #' # Download prices from YAHOO
 #' rutils::get_data(symbolv=c("MSFT", "XOM"),
-#'             data_env=new_env,
+#'             datenv=newenv,
 #'             startd="2012-12-01",
 #'             endd="2015-12-01")
 #' }
 
 get_data <- function(symbolv,
-                     data_dir=NULL, # The directory containing csv files
-                     data_env, # The environment for writing xts into
+                     datadir=NULL, # The directory containing csv files
+                     datenv, # The environment for writing xts into
                      startd="2007-01-01",
                      endd=Sys.Date(),
                      func=match.fun("as.Date"),
@@ -1436,27 +1576,27 @@ get_data <- function(symbolv,
                      header=TRUE,
                      echo=TRUE,
                      scrub=TRUE) {
-  if (is.null(data_dir)) {
+  if (is.null(datadir)) {
     # Download prices from YAHOO
-    output <- quantmod::getSymbols.yahoo(symbolv,
-                                          env=data_env,
+    outv <- quantmod::getSymbols.yahoo(symbolv,
+                                          env=datenv,
                                           from=startd,
                                           to=endd,
                                           adjust=TRUE)
-    # Adjust the OHLC prices and save back to data_env
-    # output <- lapply(symbolv,
+    # Adjust the OHLC prices and save back to datenv
+    # outv <- lapply(symbolv,
     #                   function(symbol) {
     #                     assign(symbol,
-    #                            value=adjust_ohlc(get(symbol, envir=data_env)),
-    #                            envir=data_env)
+    #                            value=adjust_ohlc(get(symbol, envir=datenv)),
+    #                            envir=datenv)
     #                     symbol
     #                   }
     # )  # end lapply
-    invisible(output)
+    invisible(outv)
   }
   else {
     # Load from csv files
-    file_names <- file.path(data_dir, paste0(symbolv, ".csv"))
+    file_names <- file.path(datadir, paste0(symbolv, ".csv"))
     invisible(sapply(file_names, function(file_name) {
       if (echo)
         cat("Loading instrument: \t", file_name, "\n")
@@ -1467,12 +1607,12 @@ get_data <- function(symbolv,
                                          format=formatv))
       if (scrub) {
         # overwrite NA values
-        datav <- rutils::na_locf(datav)
-        datav <- rutils::na_locf(datav, from_last=TRUE)
+        datav <- rutils::nalocf(datav)
+        datav <- rutils::nalocf(datav, fromLast=TRUE)
       }  # end if
       assign(rutils::get_name(colnames(datav)[1]),
              datav,
-             envir=data_env)
+             envir=datenv)
       file_name
     }))  # end sapply
   }  # end if
@@ -1486,12 +1626,12 @@ get_data <- function(symbolv,
 #' @export
 #' @param \code{symbol} The stock symbol (ticker).
 #'
-#' @param \code{startd} The start date (default is "1997-01-01").
+#' @param \code{startd} The start date (the default is "1997-01-01").
 #'
-#' @param \code{endd} The end date (default is \code{Sys.Date()}).
+#' @param \code{endd} The end date (the default is \code{Sys.Date()}).
 #'
 #' @param \code{tspan} The data frequency, i.e. the time span for data
-#'   aggregations (default is "day" for daily data).
+#'   aggregations (the default is "day" for daily data).
 #'
 #' @param \code{apikey} The API key issued by Polygon.
 #'

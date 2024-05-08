@@ -4,19 +4,19 @@
 \alias{get_name}
 \title{Extract symbol names (tickers) from a vector of \emph{character} strings.}
 \usage{
-get_name(str_ing, sep = "[.]", field = 1)
+get_name(strng, posv = 1, sep = "[.]")
 }
 \arguments{
-\item{\code{str_ing}}{A vector of \emph{character} strings containing symbol
+\item{\code{strng}}{A vector of \emph{character} strings containing symbol
 names.}
 
-\item{\code{sep}}{The name separator, i.e. the single \emph{character}
-that separates the symbol name from the rest of the string (default is
-"\code{[.]}").}
+\item{\code{posv}}{The position of the name in the string, i.e. the integer
+index of the field to be extracted (the default is \code{1}, i.e. the name
+is at the beginning of the string,)}
 
-\item{\code{field}}{The position of the name in the string, i.e. the integer
-index of the field to be extracted (default is \code{1}, i.e. the name is
-at the beginning of the string,)}
+\item{\code{sep}}{The name separator, i.e. the single \emph{character}
+that separates the symbol name from the rest of the string (the default is
+"\code{[.]}").}
 }
 \value{
 A vector of \emph{character} \emph{strings} containing symbol names.
@@ -41,6 +41,6 @@ rutils::get_name(c("XLU.csv", "XLP.csv"))
 # Extract symbols from file names
 rutils::get_name("XLU2017_09_05.csv", sep="_")
 rutils::get_name("XLU 2017 09 05.csv", sep=" ")
-# Extract fields "Open", "High", "Low", "Close" from column names
-rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), field=2)
+# Extract fields "Open", "High", "Low", "Close" from the column names
+rutils::get_name(c("VTI.Open", "VTI.High", "VTI.Low", "VTI.Close"), posv=2)
 }

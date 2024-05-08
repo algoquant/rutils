@@ -2,7 +2,7 @@
 % Please edit documentation in R/rutils.R
 \name{plot_acf}
 \alias{plot_acf}
-\title{Calculate the autocorrelation function (ACF) for a time series of returns,
+\title{Calculate the autocorrelation function (ACF) of a time series of returns,
 and plot it.}
 \usage{
 plot_acf(
@@ -18,11 +18,11 @@ plot_acf(
 \arguments{
 \item{\code{xtsv}}{A vector, matrix, or time series of returns.}
 
-\item{\code{lagg}}{The maximum lag at which to calculate the ACF (default is
+\item{\code{lagg}}{The maximum lag at which to calculate the ACF (the default is
 \code{10}).}
 
 \item{\code{plotobj}}{A \emph{Boolean} argument: should a plot be made?
-(default is \code{TRUE})}
+(the default is \code{TRUE})}
 
 \item{\code{xlab}}{A string with the x-axis label.}
 
@@ -36,12 +36,12 @@ plot_acf(
 Returns the ACF data invisibly and creates a plot.
 }
 \description{
-Calculate the autocorrelation function (ACF) for a time series of returns,
+Calculate the autocorrelation function (ACF) of a time series of returns,
 and plot it.
 }
 \details{
 The function \code{plot_acf()} calculates the autocorrelation
-  function (ACF) for a time series of returns, and plots it.  The function
+  function (ACF) of a time series of returns, and plots it.  The function
   \code{plot_acf()} is just a wrapper for the function \code{stats::acf()}.
   The function \code{stats::acf()} calculates the autocorrelation function,
   including the lag zero autocorrelation, which is by definition equal to

@@ -15,12 +15,12 @@ getpoly(
 \arguments{
 \item{\code{symbol}}{The stock symbol (ticker).}
 
-\item{\code{startd}}{The start date (default is "1997-01-01").}
+\item{\code{startd}}{The start date (the default is "1997-01-01").}
 
-\item{\code{endd}}{The end date (default is \code{Sys.Date()}).}
+\item{\code{endd}}{The end date (the default is \code{Sys.Date()}).}
 
 \item{\code{tspan}}{The data frequency, i.e. the time span for data
-aggregations (default is "day" for daily data).}
+aggregations (the default is "day" for daily data).}
 
 \item{\code{apikey}}{The API key issued by Polygon.}
 }

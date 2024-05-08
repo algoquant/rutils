@@ -5,14 +5,14 @@
 \title{Apply a lag to a \emph{numeric} or \emph{Boolean} vector, matrix, or
 \emph{xts} time series.}
 \usage{
-lagit(input, lagg = 1, pad_zeros = TRUE, ...)
+lagit(inputv, lagg = 1, pad_zeros = TRUE, ...)
 }
 \arguments{
-\item{\code{input}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
+\item{\code{inputv}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
 \emph{xts} time series.}
 
 \item{\code{lagg}}{An integer equal to the number of time periods (rows) of
-lag (default is \code{1}).}
+lag (the default is \code{1}).}
 
 \item{\code{pad_zeros}}{A \emph{Boolean} argument: Should the output be padded
 with zeros? (The default is \code{pad_zeros = TRUE}.)}

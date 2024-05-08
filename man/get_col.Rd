@@ -5,18 +5,18 @@
 \title{Extract columns of data from \emph{OHLC} time series using column field
 names.}
 \usage{
-get_col(ohlc, field_name = "Close", data_env = NULL)
+get_col(ohlc, fieldn = "Close", datenv = NULL)
 }
 \arguments{
 \item{\code{ohlc}}{An \emph{OHLC} time series in \emph{xts} format, or a
 vector of \emph{character} strings with the names of \emph{OHLC} time
 series.}
 
-\item{\code{field_name}}{A vector of strings with the field names of the
-columns to be be extracted (default is \code{"Close"}).}
+\item{\code{fieldn}}{A vector of strings with the field names of the
+columns to be be extracted (the default is \code{"Close"}).}
 
-\item{\code{data_env}}{The environment containing \emph{OHLC} time series
-(default is \code{NULL}).}
+\item{\code{datenv}}{The environment containing \emph{OHLC} time series
+(the default is \code{NULL}).}
 }
 \value{
 The specified columns of the \emph{OHLC} time series bound into a
@@ -35,31 +35,31 @@ The function \code{get_col()} extracts columns from \emph{OHLC} time
 
   The function \code{get_col()} extracts columns by partially matching field
   names with column names. The \emph{OHLC} column names are assumed to be in
-  the format \code{"symbol.field_name"}, for example \code{"VTI.Close"}.
+  the format \code{"symbol.fieldn"}, for example \code{"VTI.Close"}.
 
   In the simplest case when \code{ohlc} is a single \emph{xts} time series
-  and \emph{field_name} is a single string, the function \code{get_col()}
+  and \emph{fieldn} is a single string, the function \code{get_col()}
   performs a similar operation to the extractor functions \code{Op()},
   \code{Hi()}, \code{Lo()}, \code{Cl()}, and \code{Vo()}, from package
   \href{https://cran.r-project.org/web/packages/quantmod/index.html}{quantmod}.
   But \code{get_col()} is able to handle symbols like \emph{LOW}, which the
-  function \code{Lo()} can't handle. The field_name argument is partially
+  function \code{Lo()} can't handle. The fieldn argument is partially
   matched, for example "Vol" is matched to \code{Volume} (but it's case
   sensitive).
 
   In the case when \code{ohlc} is a vector of strings with the names of
   \emph{OHLC} time series, the function \code{get_col()} reads the
-  \emph{OHLC} time series from the environment \code{data_env}, extracts the
+  \emph{OHLC} time series from the environment \code{datenv}, extracts the
   specified columns, and binds them into a single \emph{xts} time series.
 }
 \examples{
 # get close prices for VTI
 rutils::get_col(rutils::etfenv$VTI)
 # get volumes for VTI
-rutils::get_col(rutils::etfenv$VTI, field_name="Vol")
+rutils::get_col(rutils::etfenv$VTI, fieldn="Vol")
 # get close prices and volumes for VTI
-rutils::get_col(rutils::etfenv$VTI, field_name=c("Cl", "Vol"))
+rutils::get_col(rutils::etfenv$VTI, fieldn=c("Cl", "Vol"))
 # get close prices and volumes for VTI and IEF
-rutils::get_col(ohlc=c("VTI", "IEF"), field_name=c("Cl", "Vol"),
-  data_env=rutils::etfenv)
+rutils::get_col(ohlc=c("VTI", "IEF"), fieldn=c("Cl", "Vol"),
+  datenv=rutils::etfenv)
 }

@@ -12,7 +12,7 @@ chart_dygraph(ohlc, indic = NULL, ...)
 
 \item{\code{indic}}{A \emph{Boolean} time series in \emph{xts} format for
 specifying the shading areas, with TRUE indicating "lightgreen" shading,
-and FALSE indicating "antiquewhite" shading (default is \code{NULL}).}
+and FALSE indicating "antiquewhite" shading (the default is \code{NULL}).}
 
 \item{\code{...}}{Additional arguments to function \code{dygraphs::dygraph()}.}
 }

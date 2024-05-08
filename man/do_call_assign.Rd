@@ -8,9 +8,9 @@ object, and assign the object to the output environment.}
 do_call_assign(
   func,
   symbolv = NULL,
-  output,
-  env_in = .GlobalEnv,
-  env_out = .GlobalEnv,
+  outv,
+  inenv = .GlobalEnv,
+  outenv = .GlobalEnv,
   ...
 )
 }
@@ -21,11 +21,11 @@ do_call_assign(
 \item{\code{symbolv}}{A vector of \emph{character} strings with the names of
 input objects.}
 
-\item{\code{output}}{The string with name of output object.}
+\item{\code{outv}}{The string with name of output object.}
 
-\item{\code{env_in}}{The environment containing the input \code{symbolv}.}
+\item{\code{inenv}}{The environment containing the input \code{symbolv}.}
 
-\item{\code{env_out}}{The environment for creating the \code{output}.}
+\item{\code{outenv}}{The environment for creating the \code{outv}.}
 
 \item{\code{...}}{Additional arguments to function \code{func()}.}
 }
@@ -40,14 +40,14 @@ object, and assign the object to the output environment.
 The function \code{do_call_assign()} performs an lapply loop over
   \code{symbolv}, applies the function \code{func()}, merges the
   outputs into a single object, and creates the object in the environment
-  \code{env_out}.  The output object is created as a side effect, while its
+  \code{outenv}.  The output object is created as a side effect, while its
   name is returned invisibly.
 }
 \examples{
-new_env <- new.env()
+newenv <- new.env()
 rutils::do_call_assign(
    func=get_col,
    symbolv=rutils::etfenv$symbolv,
-   output="prices",
-   env_in=etfenv, env_out=new_env)
+   outv="prices",
+   inenv=etfenv, outenv=newenv)
 }

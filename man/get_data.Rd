@@ -8,8 +8,8 @@ local drive.}
 \usage{
 get_data(
   symbolv,
-  data_dir = NULL,
-  data_env,
+  datadir = NULL,
+  datenv,
   startd = "2007-01-01",
   endd = Sys.Date(),
   func = match.fun("as.Date"),
@@ -23,32 +23,32 @@ get_data(
 \item{\code{symbolv}}{A vector of strings representing instrument symbols
 (tickers).}
 
-\item{\code{data_dir}}{The directory containing \emph{CSV} files (default is
+\item{\code{datadir}}{The directory containing \emph{CSV} files (the default is
 \code{NULL}).}
 
-\item{\code{data_env}}{The environment for loading the data into.}
+\item{\code{datenv}}{The environment for loading the data into.}
 
-\item{\code{startd}}{The start date of time series data (default is
+\item{\code{startd}}{The start date of time series data (the default is
 "2007-01-01").}
 
-\item{\code{endd}}{The end date of time series data (default is
+\item{\code{endd}}{The end date of time series data (the default is
 \code{Sys.Date()}).}
 
 \item{\code{func}}{The name of the function for formatting the date
-fields in the \emph{CSV} files (default is \code{as.Date()}).}
+fields in the \emph{CSV} files (the default is \code{as.Date()}).}
 
 \item{\code{formatv}}{The format of the date fields in the \emph{CSV} files
-(default is \code{\%Y-\%m-\%d}).}
+(the default is \code{\%Y-\%m-\%d}).}
 
 \item{\code{header}}{A \emph{Boolean} argument: if \code{TRUE} then read the
-header in the \emph{CSV} files (default is \code{TRUE}).}
+header in the \emph{CSV} files (the default is \code{TRUE}).}
 
 \item{\code{echo}}{A \emph{Boolean} argument: if \code{TRUE} then print to
-console information on the progress of \emph{CSV} file loading (default is
+console information on the progress of \emph{CSV} file loading (the default is
 \code{TRUE}).}
 
 \item{\code{scrub}}{A \emph{Boolean} argument: if \code{TRUE} then remove
-\code{NA} values using function \code{rutils::na_locf()} (default is
+\code{NA} values using function \code{rutils::nalocf()} (the default is
 \code{TRUE}).}
 }
 \value{
@@ -64,10 +64,10 @@ The function \code{get_data()} loads \emph{OHLC} time series data
   into an environment (as a side-effect), and returns invisibly the vector of
   \code{symbolv}.
 
-  If the argument \code{data_dir} is specified, then \code{get_data()} loads
+  If the argument \code{datadir} is specified, then \code{get_data()} loads
   from \emph{CSV} files in that directory, and overwrites \code{NA} values if
   \code{scrub=TRUE}.
-  If the argument \code{data_dir} is \emph{not} specified, then
+  If the argument \code{datadir} is \emph{not} specified, then
   \code{get_data()} downloads adjusted \emph{OHLC} prices from \emph{YAHOO}.
 
   The function \code{get_data()} calls the function \code{getSymbols.yahoo()}
@@ -82,14 +82,14 @@ The function \code{get_data()} loads \emph{OHLC} time series data
 }
 \examples{
 \dontrun{
-new_env <- new.env()
+newenv <- new.env()
 # Load prices from local csv files
 rutils::get_data(symbolv=c("SPY", "EEM"),
-            data_dir="C:/Develop/data/bbg_records",
-            data_env=new_env)
+            datadir="C:/Develop/data/bbg_records",
+            datenv=newenv)
 # Download prices from YAHOO
 rutils::get_data(symbolv=c("MSFT", "XOM"),
-            data_env=new_env,
+            datenv=newenv,
             startd="2012-12-01",
             endd="2015-12-01")
 }

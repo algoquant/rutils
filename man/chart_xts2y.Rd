@@ -10,10 +10,10 @@ chart_xts2y(xtsv, color = "red", x11 = TRUE, ...)
 \item{\code{xtsv}}{An \emph{xts} time series with two columns.}
 
 \item{\code{color}}{A string specifying the color of the second line and
-axis (default is \code{"red"}).}
+axis (the default is \code{"red"}).}
 
 \item{\code{x11}}{A \emph{Boolean} argument: if \code{TRUE} then open x11
-window for plotting, else plot in standard window (default is \code{TRUE}).}
+window for plotting, else plot in standard window (the default is \code{TRUE}).}
 
 \item{\code{...}}{Additional arguments to function \code{plot.zoo()}.}
 }

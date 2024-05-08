@@ -10,7 +10,7 @@ lagxts(xtsv, lagg = 1, pad_zeros = TRUE, ...)
 \item{\code{xtsv}}{An \emph{xts} time series.}
 
 \item{\code{lagg}}{An integer equal to the number of time periods of lag
-(default is \code{1}).}
+(the default is \code{1}).}
 
 \item{\code{pad_zeros}}{A \emph{Boolean} argument: Should the output be
 padded with zeros? (The default is \code{pad_zeros = TRUE}.)}

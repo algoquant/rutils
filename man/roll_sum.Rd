@@ -5,13 +5,13 @@
 \title{Calculate the rolling sum of a \emph{numeric} vector, matrix, or \emph{xts}
 time series over a sliding window (lookback period).}
 \usage{
-roll_sum(xtsv, look_back)
+roll_sum(xtsv, lookb)
 }
 \arguments{
 \item{\code{xtsv}}{A vector, matrix, or \emph{xts} time series containing one
 or more columns of data.}
 
-\item{\code{look_back}}{The size of the lookback window, equal to the number
+\item{\code{lookb}}{The size of the lookback window, equal to the number
 of data points for calculating the rolling sum.}
 }
 \value{
@@ -23,7 +23,7 @@ Calculate the rolling sum of a \emph{numeric} vector, matrix, or \emph{xts}
 time series over a sliding window (lookback period).
 }
 \details{
-For example, if look_back=3, then the rolling sum at any point is
+For example, if lookb=3, then the rolling sum at any point is
   equal to the sum of \code{xtsv} values for that point plus two preceding
   points. The initial values of roll_sum() are equal to cumsum() values, so
   that roll_sum() doesn't return any \code{NA} values.
@@ -36,11 +36,11 @@ For example, if look_back=3, then the rolling sum at any point is
 \examples{
 # Rolling sum of vector
 vectorv <- rnorm(1000)
-rutils::roll_sum(vectorv, look_back=3)
+rutils::roll_sum(vectorv, lookb=3)
 # Rolling sum of matrix
 matrixv <- matrix(rnorm(1000), nc=5)
-rutils::roll_sum(matrixv, look_back=3)
+rutils::roll_sum(matrixv, lookb=3)
 # Rolling sum of xts time series
 xtsv <- xts(x=rnorm(1000), order.by=(Sys.time()-3600*(1:1000)))
-rutils::roll_sum(xtsv, look_back=3)
+rutils::roll_sum(xtsv, lookb=3)
 }
