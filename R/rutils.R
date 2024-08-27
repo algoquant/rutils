@@ -364,8 +364,9 @@ nalocf <- function(inputv, fromLast=FALSE, narm=FALSE, maxgap=NROW(inputv)) {
 #'   function \code{to_period()} simply calls the compiled function
 #'   \code{toPeriod()} (from package
 #'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}), to
-#'   perform the actual aggregations.  If \code{endpoints} are passed in
-#'   explicitly, then the \code{period} argument is ignored.
+#'   perform the actual aggregations.
+#'   If the \code{endpoints} parameter is passed in explicitly, then the
+#'   \code{period} argument is ignored.
 #'
 #' @examples
 #' \dontrun{
