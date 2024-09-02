@@ -17,7 +17,19 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 ### Tasks to-do
 
-+ [ ] Add SPY to the ETF database.
++ [ ] Create in R the function tdistr() for non-standard Student’s t-distribution
+tdistr <- function(x, dfree, loc=0, scalev=1) {
+  dt((x-loc)/scalev, df=dfree)/scalev
+}  # end tdistr
+tdistr <- function(x, dfree, loc=0, scalev=1) {
+  gamma((dfree+1)/2)/(sqrt(pi*dfree)*gamma(dfree/2)*scalev)*
+    (1+((x-loc)/scalev)^2/dfree)^(-(dfree+1)/2)
+}  # end tdistr
+
++ [x] Add SPY to the ETF database.
+
++ [ ] Rewrite to_period() and perform aggregation over the end points in C++.  Can't call xts executables.
+If the argument period is passed, then call xts::to_period(), else perform aggregation over the end points in C++.
 
 + [ ] Fix to_period() - it produces an error because it can't call xts executables anymore, after xts update.
 The solution is not to call xts executables, and rewrite to_period() in C++, using end points.
@@ -30,19 +42,7 @@ But C_toPeriod is not available for .Call() either:
   .Call(C_toPeriod, x, ep, has.Vo(x), has.Vo(x, which=TRUE), has.Ad(x) && is.OHLC(x), index_at, cnames, PACKAGE="xts")
   "C_toPeriod" not available for .Call() for package "xts"
 
-+ [ ] Create in R the function tdistr() for non-standard Student’s t-distribution
-tdistr <- function(x, dfree, loc=0, scalev=1) {
-  dt((x-loc)/scalev, df=dfree)/scalev
-}  # end tdistr
-tdistr <- function(x, dfree, loc=0, scalev=1) {
-  gamma((dfree+1)/2)/(sqrt(pi*dfree)*gamma(dfree/2)*scalev)*
-    (1+((x-loc)/scalev)^2/dfree)^(-(dfree+1)/2)
-}  # end tdistr
-
 + [ ] Create the function calc_returns() to calculate the percentage returns.
-
-+ [ ] Rewrite to_period() and perform aggregation over the end points in C++.  Can't call xts executables.
-If the argument period is passed, then call xts::to_period(), else perform aggregation over the end points in C++.
 
 + [ ] Create function getpoly() for downloading prices from Polygon
 
