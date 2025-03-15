@@ -15,8 +15,8 @@ points. or a \emph{string} representing a time period (minutes, hours,
 days, etc.)}
 
 \item{\code{stub_front}}{A \emph{Boolean} argument: if \code{TRUE} then add a
-stub interval at the beginning, else add a stub interval at the end.
-(the default is \code{TRUE})}
+stub interval at the beginning, else add a stub interval at the end. (the
+default is \code{TRUE})}
 }
 \value{
 An \emph{integer} vector of equally spaced end points (vector of

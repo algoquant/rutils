@@ -9,8 +9,8 @@ diffxts(xtsv, lagg = 1, ...)
 \arguments{
 \item{\code{xtsv}}{An \emph{xts} time series.}
 
-\item{\code{lagg}}{An integer equal to the number of time periods of lag
-(the default is \code{1}).}
+\item{\code{lagg}}{An \emph{integer} equal to the number of time periods of
+lag (the default is \code{1}).}
 
 \item{\code{...}}{Additional arguments to function \code{xts::diff.xts()}.}
 }

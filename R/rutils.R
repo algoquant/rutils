@@ -162,8 +162,8 @@ get_name <- function(strng, posv=1, sep="[.]") {
 #'   points. or a \emph{string} representing a time period (minutes, hours,
 #'   days, etc.)
 #' @param \code{stub_front} A \emph{Boolean} argument: if \code{TRUE} then add a
-#'   stub interval at the beginning, else add a stub interval at the end.
-#'   (the default is \code{TRUE})
+#'   stub interval at the beginning, else add a stub interval at the end. (the
+#'   default is \code{TRUE})
 #'
 #' @return An \emph{integer} vector of equally spaced end points (vector of
 #'   integers).
@@ -340,52 +340,62 @@ nalocf <- function(inputv, fromLast=FALSE, narm=FALSE, maxgap=NROW(inputv)) {
 
 
 ######################################################################
-#' Aggregate an \emph{OHLC} time series to a lower periodicity.
+#' Aggregate an \emph{xts} time series to a lower periodicity.
 #'
-#' Given an \emph{OHLC} time series at high periodicity (say seconds),
-#' calculates the \emph{OHLC} prices at a lower periodicity (say minutes).
+#' Given an \emph{xts} time series at high periodicity (say seconds),
+#' calculate the \emph{OHLC} prices at a lower periodicity (say minutes).
 #'
-#' @param \code{timeser} An \emph{OHLC} time series of prices in \emph{xts}
-#'   format.
-#' @param \code{period} aggregation interval ("seconds", "minutes", "hours",
+#' @param \code{timeser} An \emph{xts} time series of prices.
+#'
+#' @param \code{period} Aggregation interval ("seconds", "minutes", "hours",
 #'   "days", "weeks", "months", "quarters", and "years").
+#'
 #' @param \code{k} The number of periods to aggregate over (for example if
 #'   \code{period="minutes"} and \code{k=2}, then aggregate over two minute
 #'   intervals.)
-#' @param \code{endpoints} An integer vector of end points.
 #'
 #' @return A \emph{OHLC} time series of prices in \emph{xts} format, with a
-#'   lower periodicity defined by the endpoints.
+#'   lower periodicity.
 #'
-#' @details The function \code{to_period()} performs a similar aggregation as
-#'   function \code{xts::to.period()} from package
-#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but has
-#'   the flexibility to aggregate to a user-specified vector of end points. The
-#'   function \code{to_period()} simply calls the compiled function
-#'   \code{toPeriod()} (from package
-#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}), to
-#'   perform the actual aggregations.
-#'   If the \code{endpoints} parameter is passed in explicitly, then the
-#'   \code{period} argument is ignored.
+#' @details The function \code{to_period()} is a wrapper for the function
+#'   \code{xts::to.period()} from package
+#'   \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
 #'
 #' @examples
 #' \dontrun{
-#' # Define end points at 10-minute intervals (HighFreq::SPY are minutes bars)
-#' endd <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
-#' # Aggregate over 10-minute endpoints:
-#' ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], endpoints=endd)
-#' # Aggregate over days:
+#' # Aggregate the OHLC prices from minutes to days:
 #' ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], period="days")
-#' # Equivalent to:
-#' ohlc <- xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 #' }
 #'
 #' @export
-to_period <- function(timeser, period="minutes", k=1,
-                      endpoints=xts::endpoints(timeser, period, k)) {
+to_period <- function(timeser, period="minutes", k=1) {
 
-  .Call("C_toPeriod", timeser, as.integer(endpoints), TRUE, NCOL(timeser),
-        FALSE, FALSE, colnames(timeser), PACKAGE="xts")
+  # Calculate the column names
+  if (NCOL(timeser) > 2) {
+    colv <- colnames(timeser)
+  } else if (NCOL(timeser) == 2) {
+    # Second column is the volume
+    namev <- deparse(substitute(timeser))
+    colv <- paste0(namev, ".", c("Open", "High", "Low", "Close", "Volume"))
+  } else {
+    # Single column in the input time series
+    # No volume column in the input time series
+    namev <- deparse(substitute(timeser))
+    colv <- paste0(namev, ".", c("Open", "High", "Low", "Close"))
+  } # end if
+
+  # Aggregate to lower periodicity
+  outv <- xts::to_period(x=timeser, period=period, k=k)
+  colnames(outv) <- colv
+  outv
+
+  # Alternative code below - doesn't preserve original column names
+  # namev <- deparse(substitute(timeser))
+  # xts::to_period(x=timeser, period=period, k=k, name=namev)
+
+  # Old code below
+  # .Call("C_toPeriod", timeser, as.integer(endpoints), TRUE, NCOL(timeser),
+  #       FALSE, FALSE, colnames(timeser), PACKAGE="xts")
 
 }  # end to_period
 
@@ -603,11 +613,11 @@ sub_set <- function(xtsv, startd, endd, get_rows=TRUE) {
 #' @param \code{inputv} A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
 #'
-#' @param \code{lagg} An integer equal to the number of time periods (rows) of
-#'   lag (the default is \code{1}).
+#' @param \code{lagg} An \emph{integer} equal to the number of time periods
+#'   (rows) of lag (the default is \code{1}).
 #'
-#' @param \code{pad_zeros} A \emph{Boolean} argument: Should the output be padded
-#'   with zeros? (The default is \code{pad_zeros = TRUE}.)
+#' @param \code{pad_zeros} A \emph{Boolean} argument: Should the output be
+#'   padded with zeros? (The default is \code{pad_zeros = TRUE}.)
 #'
 #' @return A vector, matrix, or \emph{xts} time series. with the same dimensions
 #'   as the input object.
@@ -705,8 +715,8 @@ lagit <- function(inputv, lagg=1, pad_zeros=TRUE, ...) {
 #' @param \code{inputv} A \emph{numeric} or \emph{Boolean} vector or matrix, or
 #'   \emph{xts} time series.
 #'
-#' @param \code{lagg} An integer equal to the number of time periods of lag
-#'   (the default is \code{1}).
+#' @param \code{lagg} An \emph{integer} equal to the number of time periods of
+#'   lag (the default is \code{1}).
 #'
 #' @return A vector, matrix, or \emph{xts} time series. with the same dimensions
 #'   as the input object.
@@ -779,8 +789,8 @@ diffit <- function(inputv, lagg=1, ...) {
 #' @export
 #' @param \code{xtsv} An \emph{xts} time series.
 #'
-#' @param \code{lagg} An integer equal to the number of time periods of lag
-#'   (the default is \code{1}).
+#' @param \code{lagg} An \emph{integer} equal to the number of time periods of
+#'   lag (the default is \code{1}).
 #'
 #' @param \code{pad_zeros} A \emph{Boolean} argument: Should the output be
 #'   padded with zeros? (The default is \code{pad_zeros = TRUE}.)
@@ -861,8 +871,8 @@ lagxts <- function(xtsv, lagg=1, pad_zeros=TRUE, ...) {
 #'
 #' @export
 #' @param \code{xtsv} An \emph{xts} time series.
-#' @param \code{lagg} An integer equal to the number of time periods of lag
-#'   (the default is \code{1}).
+#' @param \code{lagg} An \emph{integer} equal to the number of time periods of
+#'   lag (the default is \code{1}).
 #' @param \code{...} Additional arguments to function \code{xts::diff.xts()}.
 #'
 #' @return An \emph{xts} time series with the same dimensions and the same time
@@ -1485,9 +1495,9 @@ chart_dygraph <- function(ohlc, indic=NULL, ...) {
 #'
 #' @examples
 #' # Plot an interactive dygraphs line plot with two "y" axes
-#' prices <- cbind(Ad(rutils::etfenv$VTI), Ad(rutils::etfenv$IEF))
-#' colnames(prices) <- get_name(colnames(prices), posv=2)
-#' rutils::chart_dygraph2y(prices)
+#' pricev <- cbind(Ad(rutils::etfenv$VTI), Ad(rutils::etfenv$IEF))
+#' colnames(pricev) <- get_name(colnames(pricev), posv=2)
+#' rutils::chart_dygraph2y(pricev)
 
 chart_dygraph2y <- function(xtsv, ...) {
   stopifnot(xts::is.xts(xtsv))
@@ -1694,5 +1704,59 @@ getpoly <- function(symbol="SPY", startd=as.Date("1997-01-01"), endd=Sys.Date(),
   xts::xts(ohlc, order.by=dates)
 
 }  # end getpoly
+
+
+
+######################################################################
+#' Calculate the density of the non-standard Student's t-distribution.
+#'
+#' @param \code{x} A \emph{numeric} value for which to calculate the density of
+#'   the t-distribution.
+#'
+#' @param \code{dfree} An \emph{integer} value equal to the degrees of freedom
+#'   (the default is \code{3}).
+#'
+#' @param \code{loc} A \emph{numeric} value equal to the location (center) of
+#'   the distribution (the default is \code{0}).
+#'
+#' @param \code{scalev} A \emph{numeric} value equal to the scale (width) of the
+#'   distribution (the default is \code{1}).
+#'
+#' @return A \emph{numeric} value equal to the density of the non-standard
+#'   Student's t-distribution.
+#'
+#' @details The function \code{tdistr()} calculates the density of the
+#'   non-standard Student's t-distribution by calling the function
+#'   \code{gamma()}.
+#'   The density function of the non-standard Student's t-distribution is given
+#'   by:
+#'   \deqn{
+#'     f(t) = \frac{\Gamma((\nu+1)/2)}{\sqrt{\pi \nu} \, \sigma \, \Gamma(\nu/2)} \, (1 + (\frac{t - \mu}{\sigma})^2/\nu)^{-(\nu+1)/2}
+#'   }
+#' Where \eqn{\Gamma()} is the gamma function, and \eqn{\nu} are the degrees of
+#' freedom.
+#'
+#' The non-standard Student's density function has a mean equal to the location
+#' parameter \eqn{\mu}, and a standard deviation proportional to the scale
+#' parameter \eqn{\sigma}.
+#'
+#' @examples
+#' \dontrun{
+#' # Student t-distribution at x=1, with df=4, location=-1 and scale=2
+#' tdistr(1, df=4, loc=-1, scalev=2)
+#' # Student t-distribution at x=1, with location=0 and scale=1 - same as dt()
+#' all.equal(tdistr(1, df=3), dt(1, df=3))
+#' }
+#'
+#' @export
+tdistr <- function(x, dfree=3, loc=0, scalev=1) {
+
+  gamma((dfree+1)/2)/(sqrt(pi*dfree)*gamma(dfree/2)*scalev)*
+    (1+((x-loc)/scalev)^2/dfree)^(-(dfree+1)/2)
+
+  # Equivalent code, bust slightly slower.
+  # dt((x-loc)/scalev, df=dfree)/scalev
+
+}  # end tdistr
 
 

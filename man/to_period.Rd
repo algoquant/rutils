@@ -2,57 +2,37 @@
 % Please edit documentation in R/rutils.R
 \name{to_period}
 \alias{to_period}
-\title{Aggregate an \emph{OHLC} time series to a lower periodicity.}
+\title{Aggregate an \emph{xts} time series to a lower periodicity.}
 \usage{
-to_period(
-  timeser,
-  period = "minutes",
-  k = 1,
-  endpoints = xts::endpoints(timeser, period, k)
-)
+to_period(timeser, period = "minutes", k = 1)
 }
 \arguments{
-\item{\code{timeser}}{An \emph{OHLC} time series of prices in \emph{xts}
-format.}
+\item{\code{timeser}}{An \emph{xts} time series of prices.}
 
-\item{\code{period}}{aggregation interval ("seconds", "minutes", "hours",
+\item{\code{period}}{Aggregation interval ("seconds", "minutes", "hours",
 "days", "weeks", "months", "quarters", and "years").}
 
 \item{\code{k}}{The number of periods to aggregate over (for example if
 \code{period="minutes"} and \code{k=2}, then aggregate over two minute
 intervals.)}
-
-\item{\code{endpoints}}{An integer vector of end points.}
 }
 \value{
 A \emph{OHLC} time series of prices in \emph{xts} format, with a
-  lower periodicity defined by the endpoints.
+  lower periodicity.
 }
 \description{
-Given an \emph{OHLC} time series at high periodicity (say seconds),
-calculates the \emph{OHLC} prices at a lower periodicity (say minutes).
+Given an \emph{xts} time series at high periodicity (say seconds),
+calculate the \emph{OHLC} prices at a lower periodicity (say minutes).
 }
 \details{
-The function \code{to_period()} performs a similar aggregation as
-  function \code{xts::to.period()} from package
-  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}, but has
-  the flexibility to aggregate to a user-specified vector of end points. The
-  function \code{to_period()} simply calls the compiled function
-  \code{toPeriod()} (from package
-  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}), to
-  perform the actual aggregations.  If \code{endpoints} are passed in
-  explicitly, then the \code{period} argument is ignored.
+The function \code{to_period()} is a wrapper for the function
+  \code{xts::to.period()} from package
+  \href{https://cran.r-project.org/web/packages/xts/index.html}{xts}.
 }
 \examples{
 \dontrun{
-# Define end points at 10-minute intervals (HighFreq::SPY are minutes bars)
-endd <- rutils::calc_endpoints(HighFreq::SPY["2009"], interval=10)
-# Aggregate over 10-minute endpoints:
-ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], endpoints=endd)
-# Aggregate over days:
+# Aggregate the OHLC prices from minutes to days:
 ohlc <- rutils::to_period(timeser=HighFreq::SPY["2009"], period="days")
-# Equivalent to:
-ohlc <- xts::to.period(x=HighFreq::SPY["2009"], period="days", name=rutils::get_name(colnames(HighFreq::SPY)[1])
 }
 
 }

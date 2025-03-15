@@ -11,8 +11,8 @@ diffit(inputv, lagg = 1, ...)
 \item{\code{inputv}}{A \emph{numeric} or \emph{Boolean} vector or matrix, or
 \emph{xts} time series.}
 
-\item{\code{lagg}}{An integer equal to the number of time periods of lag
-(the default is \code{1}).}
+\item{\code{lagg}}{An \emph{integer} equal to the number of time periods of
+lag (the default is \code{1}).}
 }
 \value{
 A vector, matrix, or \emph{xts} time series. with the same dimensions

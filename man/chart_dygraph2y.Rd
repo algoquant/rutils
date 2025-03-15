@@ -28,7 +28,7 @@ The function \code{chart_dygraph2y()} creates an interactive dygraphs
 }
 \examples{
 # Plot an interactive dygraphs line plot with two "y" axes
-prices <- cbind(Ad(rutils::etfenv$VTI), Ad(rutils::etfenv$IEF))
-colnames(prices) <- get_name(colnames(prices), posv=2)
-rutils::chart_dygraph2y(prices)
+pricev <- cbind(Ad(rutils::etfenv$VTI), Ad(rutils::etfenv$IEF))
+colnames(pricev) <- get_name(colnames(pricev), posv=2)
+rutils::chart_dygraph2y(pricev)
 }
