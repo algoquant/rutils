@@ -3,15 +3,15 @@
 
 ### scripts for package building
 # Install package from source on local drive
-install.packages(pkgs="C:/Develop/R/rutils", repos=NULL, type="source")
+install.packages(pkgs="/Users/jerzy/Develop/rutils", repos=NULL, type="source")
 # Install package from source on local drive using R CMD
 R CMD INSTALL /Users/jerzy/Develop/rutils
 # Install package from github
 devtools::install_github(repo="algoquant/rutils", force=TRUE)
 # build vignette package reference manual from *.Rd files
-cd C:/Develop/R/rutils
-system("R CMD Rd2pdf C:/Develop/R/rutils")
-cd /Users/jerzy/Develop/rutils\vignettes
+cd /Users/jerzy/Develop/rutils
+system("R CMD Rd2pdf /Users/jerzy/Develop/rutils")
+cd /Users/jerzy/Develop/rutils/vignettes
 R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 
