@@ -17,7 +17,14 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 ### Tasks to-do
 
-+ [ ] Create the function calc_returns() to calculate the percentage returns.
++ [ ] Add vixenv with VIX index and futures prices.
+
++ [ ] Add DYNF Equity Factor Rotation Active ETF.
+
++ [ ] Rename calc_skew() to calc_mom()
+
++ [ ] Create the function calc_returns() to calculate the percentage returns from prices.
+
 
 + [ ] Create function getpoly() for downloading prices from Polygon
 
