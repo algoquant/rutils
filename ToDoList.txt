@@ -17,9 +17,9 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 ### Tasks to-do
 
-+ [ ] Add vixenv with VIX index and futures prices.
++ [ ] Add the environment vixenv, with VIX index and futures prices.
 
-+ [ ] Add DYNF Equity Factor Rotation Active ETF.
++ [x] Add DYNF Equity Factor Rotation Active ETF.
 
 + [ ] Rename calc_skew() to calc_mom()
 
