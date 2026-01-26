@@ -1,4 +1,4 @@
-######################################################################
+############################################################
 #' Calculate the Sharpe and Sortino ratios of a time series of returns.
 #'
 #' @export
@@ -60,7 +60,7 @@ calc_sharpe <- function(retp, riskf=0.0, nperiods=252) {
 
 
 
-######################################################################
+############################################################
 #' Calculate the skewness or kurtosis of a time series of returns.
 #'
 #' @export
@@ -108,7 +108,7 @@ calc_skew <- function(retp, expn=3) {
 
 
 
-######################################################################
+############################################################
 #' Extract symbol names (tickers) from a vector of \emph{character} strings.
 #'
 #' @export
@@ -152,7 +152,7 @@ get_name <- function(strng, posv=1, sep="[.]") {
 
 
 
-######################################################################
+############################################################
 #' Calculate a vector of equally spaced end points along the elements of a
 #' vector, matrix, or time series.
 #'
@@ -226,7 +226,7 @@ calc_endpoints <- function(xtsv, interval, stub_front=TRUE) {
 
 
 
-######################################################################
+############################################################
 #' Replace \code{NA} values with the most recent non-\code{NA} values prior to
 #' them.
 #'
@@ -339,7 +339,7 @@ nalocf <- function(inputv, fromLast=FALSE, narm=FALSE, maxgap=NROW(inputv)) {
 
 
 
-######################################################################
+############################################################
 #' Aggregate an \emph{xts} time series to a lower periodicity.
 #'
 #' Given an \emph{xts} time series at high periodicity (say seconds),
@@ -401,7 +401,7 @@ to_period <- function(timeser, period="minutes", k=1) {
 
 
 
-######################################################################
+############################################################
 #' Extract columns of data from \emph{OHLC} time series using column field
 #' names.
 #'
@@ -487,7 +487,7 @@ get_col <- function(ohlc, fieldn="Close", datenv=NULL) {
 
 
 
-######################################################################
+############################################################
 #' Adjust the first four columns of \emph{OHLC} data using the "adjusted" price
 #' column.
 #'
@@ -513,7 +513,7 @@ adjust_ohlc <- function(ohlc) {
 
 
 
-######################################################################
+############################################################
 #' Subset an \emph{xts} time series (extract an \emph{xts} sub-series
 #' corresponding to the input dates).
 #'
@@ -605,7 +605,7 @@ sub_set <- function(xtsv, startd, endd, get_rows=TRUE) {
 
 
 
-######################################################################
+############################################################
 #' Apply a lag to a \emph{numeric} or \emph{Boolean} vector, matrix, or
 #' \emph{xts} time series.
 #'
@@ -707,7 +707,7 @@ lagit <- function(inputv, lagg=1, pad_zeros=TRUE, ...) {
 
 
 
-######################################################################
+############################################################
 #' Calculate the row differences of a \emph{numeric} or \emph{Boolean} vector,
 #' matrix, or \emph{xts} time series.
 #'
@@ -783,7 +783,7 @@ diffit <- function(inputv, lagg=1, ...) {
 
 
 
-######################################################################
+############################################################
 #' Apply a time lag to an \emph{xts} time series.
 #'
 #' @export
@@ -866,7 +866,7 @@ lagxts <- function(xtsv, lagg=1, pad_zeros=TRUE, ...) {
 
 
 
-######################################################################
+############################################################
 #' Calculate the time differences of an \emph{xts} time series.
 #'
 #' @export
@@ -902,7 +902,7 @@ diffxts <- function(xtsv, lagg=1, ...) {
 
 
 
-######################################################################
+############################################################
 #' Calculate the reduced form of an \emph{OHLC} time series, or calculate the
 #' standard form from the reduced form of an \emph{OHLC} time series.
 #'
@@ -957,7 +957,7 @@ diffohlc <- function(ohlc, reducit=TRUE, ...) {
 
 
 
-######################################################################
+############################################################
 #' Calculate the rolling sum of a \emph{numeric} vector, matrix, or \emph{xts}
 #' time series over a sliding window (lookback period).
 #'
@@ -1014,7 +1014,7 @@ roll_sum <- function(xtsv, lookb) {
 
 
 
-######################################################################
+############################################################
 #' Calculate the rolling maximum of an \emph{xts} time series over a sliding
 #' window (lookback period).
 #'
@@ -1055,7 +1055,7 @@ roll_max <- function(xtsv, lookb) {
 
 
 
-######################################################################
+############################################################
 #' Recursively \sQuote{\code{rbind}} a list of objects, such as \emph{xts} time
 #' series.
 #'
@@ -1106,7 +1106,7 @@ do_call_rbind <- function(listv) {
 
 
 
-######################################################################
+############################################################
 #' Recursively apply a function to a list of objects, such as \emph{xts} time
 #' series.
 #'
@@ -1162,7 +1162,7 @@ do_call <- function(func, listv, ...) {
 
 
 
-######################################################################
+############################################################
 #' Apply a function to a list of objects, merge the outputs into a single
 #' object, and assign the object to the output environment.
 #'
@@ -1206,12 +1206,12 @@ do_call_assign <- function(func, symbolv=NULL, outv,
 
 
 
-######################################################################
+############################################################
 ## Functions for plotting
-######################################################################
+############################################################
 
 
-######################################################################
+############################################################
 #' Calculate the autocorrelation function (ACF) of a time series of returns,
 #' and plot it.
 #'
@@ -1282,7 +1282,7 @@ plot_acf <- function(xtsv, lagg=10,
 
 
 
-######################################################################
+############################################################
 #' Plot either a line plot or a candlestick plot of an \emph{xts} time series,
 #' with custom line colors, y-axis range, and with vertical background shading.
 #'
@@ -1366,7 +1366,7 @@ chart_xts <- function(xtsv, colors=NULL, ylim=NULL, indic=NULL, x11=TRUE, ...) {
 
 
 
-######################################################################
+############################################################
 #' Plot two \emph{xts} time series with two y-axes in an x11 window.
 #'
 #' @export
@@ -1423,7 +1423,7 @@ chart_xts2y <- function(xtsv, color="red", x11=TRUE, ...) {
 
 
 
-######################################################################
+############################################################
 #' Plot an interactive \emph{dygraphs} candlestick plot with background shading
 #' for an \emph{OHLC} time series in \emph{xts} format.
 #'
@@ -1477,7 +1477,7 @@ chart_dygraph <- function(ohlc, indic=NULL, ...) {
 
 
 
-######################################################################
+############################################################
 #' Plot an interactive \emph{dygraphs} line plot for two \emph{xts} time series,
 #' with two \emph{"y"} axes.
 #'
@@ -1513,7 +1513,7 @@ chart_dygraph2y <- function(xtsv, ...) {
 
 
 
-######################################################################
+############################################################
 #' Load \emph{OHLC} time series data into an environment, either from an
 #' external source (download from \emph{YAHOO}), or from \emph{CSV} files in a
 #' local drive.
@@ -1631,7 +1631,7 @@ get_data <- function(symbolv,
 
 
 
-######################################################################
+############################################################
 #' Download an \emph{OHLC} time series of prices from Polygon.
 #'
 #' @export
@@ -1707,7 +1707,7 @@ getpoly <- function(symbol="SPY", startd=as.Date("1997-01-01"), endd=Sys.Date(),
 
 
 
-######################################################################
+############################################################
 #' Calculate the density of the non-standard Student's t-distribution.
 #'
 #' @param \code{x} A \emph{numeric} value for which to calculate the density of
@@ -1758,5 +1758,491 @@ tdistr <- function(x, dfree=3, loc=0, scalev=1) {
   # dt((x-loc)/scalev, df=dfree)/scalev
 
 }  # end tdistr
+
+
+############################################################
+## Optimization
+############################################################
+
+
+############################################################
+#' Perform one-dimensional optimization using the Newton-Raphson method.
+#'
+#' @param \code{f} An objective function to minimize.
+#'
+#' @param \code{x0} The initial starting value for the optimization.
+#'
+#' @param \code{h} The step size for calculating numerical derivatives (default 1e-5).
+#'
+#' @param \code{maxiter} The maximum number of iterations (default 50).
+#'
+#' @param \code{tol} The tolerance for convergence based on the first derivative (default 1e-8).
+#'
+#' @return A list containing:
+#'   \itemize{
+#'     \item \code{par}: The optimal value of \code{x} that minimizes the function.
+#'     \item \code{history}: A vector of \code{x} values at each iteration.
+#'   }
+#'
+#' @details
+#'   The function \code{optim_newton()} finds the minimum of a univariate
+#'   function using the Newton-Raphson method. It updates the estimate in a loop
+#'   using the recursive formula:
+#'   \deqn{
+#'     x_{n+1} = x_n - \frac{f'(x_n)}{f''(x_n)}
+#'   }
+#'
+#'   The derivatives are calculated numerically using central finite differences:
+#'   \itemize{
+#'     \item First derivative: \eqn{f'(x) \approx \frac{f(x+h) - f(x-h)}{2h}}
+#'     \item Second derivative: \eqn{f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}}
+#'   }
+#'
+#'   The algorithm converges when the absolute value of the first derivative
+#'   falls below the tolerance \code{tol}, indicating a stationary point.
+#'
+#' @examples
+#' # Calculate the minimum using quasi-Newton method
+#' funx <- function(x) x^4 - 3*x^3 + 2
+#' optiml <- rutils::optim_newton(funx, x0 = 3)
+#' optiml$par  # Solution
+#' optiml$history  # Optimization path
+#' plot(optiml$history, type="b", main="Newton-Raphson Optimization Path",
+#'      xlab="iteration", ylab="x value")
+#'
+#' @export
+optim_newton <- function(f, x0, h = 1e-5, maxiter = 50, tol = 1e-8) {
+  # Initialize the variables
+  x <- x0                     # Initial guess for coordinate
+  histv <- numeric(maxiter + 1) # History of coordinate updates
+  histv[1] <- x
+  # Iterate using Newton-Raphson formula
+  for (n in 1:maxiter) {
+
+    # Calculate the first derivative
+    fph <- f(x + h)
+    fmh <- f(x - h)
+    fp <- (fph - fmh) / (2 * h)
+    # Calculate the second derivative
+    fpp <- (fph - 2 * f(x) + fmh) / (h^2)
+    # Update the coordinate
+    x <- x - fp / fpp
+    histv[n + 1] <- x
+    # Check for convergence
+    if (abs(fp) < tol) {
+      return(list(par = x, history = histv[1:n]))
+    } # end if
+
+  } # end for n
+
+  # Return the results
+  return(list(par = x, history = histv))
+
+} # end optim_newton
+
+
+
+############################################################
+#' Perform multivariate optimization using the BFGS method.
+#'
+#' @param \code{f} An objective function to minimize (must accept a single
+#'   vector argument).
+#'
+#' @param \code{x0} A vector of initial starting values for the optimization.
+#'
+#' @param \code{maxiter} The maximum number of iterations (default 200).
+#'
+#' @param \code{tol} The tolerance for convergence based on the step size and
+#'   increment norm (default 1e-6).
+#'
+#' @param \code{h} The step size for calculating numerical gradients using
+#'   central differences (default 1e-5).
+#'
+#' @param \code{c1} The Armijo condition tolerance parameter (default 1e-4).
+#'
+#' @param \code{rho} The scaling factor for the Armijo condition (default 0.5).
+#'
+#'
+#' @return A list containing:
+#'   \itemize{
+#'     \item \code{par}: The optimal parameter vector that minimizes the function.
+#'     \item \code{value}: The function value at the minimum.
+#'     \item \code{grad}: The gradient at the minimum.
+#'     \item \code{history}: A matrix of parameter values at each iteration.
+#'     \item \code{iter}: The number of iterations performed.
+#'   }
+#'
+#' @details
+#'   The function \code{optim_bfgs()} finds the minimum of a multivariate
+#'   function using the Broyden-Fletcher-Goldfarb-Shanno (BFGS) quasi-Newton
+#'   method.
+#'
+#'   The input objective function \code{f} must accept a single vector argument.
+#'   The vector argument contains the variables (coordinates) of the function to
+#'   be minimized.
+#'
+#'   It updates the estimate of the minimum coordinates using a
+#'   recursive formula:
+#'   \deqn{
+#'     x_{n+1} = x_n + \alpha \delta_n
+#'   }
+#'   Where \eqn{\delta_n = -H^{-1}_n \nabla f(x_n)} is the increment of $x$,
+#'   \eqn{H^{-1}_n} is the inverse Hessian, and \eqn{\alpha} is the scaling
+#'   factor to satisfy the Armijo condition.
+#'
+#'   The Armijo condition ensures that the objective function decreases with
+#'   each iteration and that it doesn't overshoot the minimum:
+#'   \deqn{
+#'     f(x_n + \alpha \delta_n) \leq f(x_n) + c_1 \alpha \nabla f_n^T \delta_n
+#'   }
+#'   If the Armijo condition is not satisfied, then the factor \eqn{\alpha} is
+#'   multiplied by the factor \eqn{rho} until the condition is satisfied or the
+#'   step size becomes too small.
+#'
+#'   The gradient is calculated numerically using central differences:
+#'   \deqn{
+#'     \nabla f = \frac{\partial f}{\partial x} \approx \frac{f(x + h) - f(x - h)}{2h}
+#'   }
+#'
+#'   The inverse Hessian is updated using the BFGS formula:
+#'   \deqn{
+#'     H^{-1}_{n+1} = V_n H^{-1}_n V_n^T + \rho_n s_n s_n^T
+#'   }
+#'   where \eqn{s_n = \alpha \delta_n}, \eqn{y_n = \nabla f_{n+1} - \nabla f_n},
+#'   \eqn{\rho_n = 1 / (y_n^T s_n)}, and \eqn{V_n = I - \rho_n s_n y_n^T}.
+#'
+#'   The BFGS iteration terminates when the increment norm or step size fall
+#'   below the tolerance, or when the maximum iterations are reached.
+#'
+#'   The advantage of the BFGS method is that it converges more rapidly than
+#'   simple gradient descent because it approximates second-order information of
+#'   the objective function.
+#'   The disadvantage is that it requires more memory to store the whole inverse
+#'   Hessian matrix. This is a limitation for very high-dimensional objective
+#'   functions.
+#'
+#' @examples
+#' # Define the Rosenbrock function
+#' rosenbrock <- function(x) {
+#'   (1 - x[1])^2 + 100 * (x[2] - x[1]^2)^2
+#' } # end rosenbrock
+#' # Calculate the minimum using BFGS method
+#' optiml <- rutils::optim_bfgs(rosenbrock, x0 = c(-1.2, 1))
+#' optiml$par      # Minimum coordinates
+#' optiml$value    # Function value at the minimum
+#' optiml$iter     # Number of iterations
+#' # Solve using optim() for comparison
+#' optim(c(-1.2, 1), rosenbrock, method = "L-BFGS-B")
+#'
+#' @export
+optim_bfgs <- function(f, x0, maxiter = 200, tol = 1e-6,
+                       h = 1e-5, c1 = 1e-4, rho = 0.5) {
+
+  # Initialize the variables
+  tol2 <- tol^2               # Square of tolerance for solution
+  x <- x0                     # Initial guess for solution
+  narg <- NROW(x)             # Number of coordinates
+
+  # Calculate the gradient using central difference
+  calc_grad <- function(x) {
+    grad <- numeric(narg)
+    for (j in 1:narg) {
+      e <- rep(0, narg); e[j] <- 1
+      fp <- f(x + h * e)
+      fm <- f(x - h * e)
+      grad[j] <- (fp - fm) / (2 * h)
+    } # end for j
+    return(grad)
+  } # end calc_grad
+
+  # Initialize the function value, gradient and inverse Hessian
+  fx <- f(x)                  # Function value
+  grad <- calc_grad(x)          # Gradient
+  H <- diag(narg)            # Inverse Hessian
+
+  # Initialize the history matrix
+  history <- matrix(NA_real_, nrow = maxiter + 1, ncol = narg)
+  history[1, ] <- x; itern <- 1
+
+  # Iterate to find the minimum
+  for (n in 1:maxiter) {
+
+    dn <- - H %*% grad  # Increment of x
+    # Stop if the increment is too small
+    if (sum(dn^2) < tol2) break
+
+    # Perform loop to satisfy the Armijo condition
+    alpha <- 1
+    unchflag <- FALSE # Flag if x is unchanged
+    while (alpha > 1e-12) {
+      xn <- as.vector(x + alpha * dn) # New solution
+      fxn <- f(xn)                  # New function value
+
+      # Check for convergence based on step size
+      if (sum((xn - x)^2) < tol2) { # Step size norm
+        unchflag <- TRUE # x is unchanged - stop loop
+        break
+      } # end if
+
+      # Armijo condition for sufficient decrease in function value
+      if (fxn <= fx + c1 * alpha * sum(grad * dn)) break
+      # Decrease the step size
+      alpha <- alpha * rho
+    } # end while
+
+    # If unchanged condition is detected, accept the current values and stop loop
+    if (unchflag) {
+      x <- xn; fx <- fxn
+      history[itern, ] <- x; itern <- itern + 1
+      break
+    } # end if
+
+    # If the Armijo condition failed then stop
+    if (alpha <= 1e-12) break
+
+    # BFGS update of the gradient and inverse Hessian
+    dx <- xn - x
+    gradn <- calc_grad(xn)
+    dg <- gradn - grad
+    ys <- sum(dg * dx)
+    if (ys > 1e-12) {
+      I <- diag(narg)
+      V <- I - outer(dx, dg) / ys
+      H <- V %*% H %*% t(V) + outer(dx, dx) / ys
+    } # end if
+
+    # Copy variables for next iteration
+    x <- xn; grad <- gradn; fx <- fxn
+
+    # Store the history
+    history[itern, ] <- x; itern <- itern + 1
+
+  } # end for n
+
+  # Trim unused rows
+  history <- history[1:(itern - 1), , drop = FALSE]
+  # Return the results
+  return(list(par = x, value = fx, grad = grad,
+              history = history, iter = itern - 1))
+
+} # end optim_bfgs
+
+
+
+############################################################
+#' Perform multivariate optimization using coordinate descent with
+#' quasi-Newton updates.
+#'
+#' @param \code{f} An objective function to minimize (must accept a single
+#'   vector argument).
+#'
+#' @param \code{x0} A vector of initial starting values for the optimization.
+#'
+#' @param \code{maxiter} The maximum number of outer iterations (default 100).
+#'
+#' @param \code{tol} The tolerance for convergence based on the step size
+#'   (default 1e-6).
+#'
+#' @param \code{h} The step size for calculating numerical gradients using
+#'   central differences (default 1e-5).
+#'
+#' @param \code{c1} The Armijo condition tolerance parameter (default 1e-4).
+#'
+#' @param \code{rho} The scaling factor for the Armijo condition (default 0.5).
+#'
+#' @return A list containing:
+#'   \itemize{
+#'     \item \code{par}: The optimal parameter vector that minimizes the function.
+#'     \item \code{value}: The function value at the minimum.
+#'     \item \code{grad}: The gradient at the minimum.
+#'     \item \code{history}: A matrix of parameter values at each iteration.
+#'     \item \code{iter}: The number of iterations performed.
+#'   }
+#'
+#' @details
+#'   The function \code{optim_coordescent()} finds the minimum of a multivariate
+#'   function by optimizing along each coordinate direction, one at a time in a
+#'   loop.
+#'
+#'   The input objective function \code{f} must accept a single vector argument.
+#'   The vector argument contains the variables (coordinates) of the function to
+#'   be minimized.
+#'
+#'   It uses the BFGS quasi-Newton formula to approximate the inverse Hessian
+#'   along each coordinate direction separately.
+#'
+#'   The update for coordinate \eqn{x_{j, n}} is calculated using the increment
+#'   \eqn{\delta_j = -H^{-1}_j \nabla f_j}:
+#'   \deqn{
+#'     x_{j, n+1} = x_{j, n} + \alpha \delta_j
+#'   }
+#'   Where \eqn{H^{-1}_j} is the approximation of the inverse Hessian for
+#'   coordinate \eqn{j}, \eqn{\nabla f_j} is the gradient (partial derivative),
+#'   and \eqn{\alpha} is the scaling factor to satisfy the Armijo condition.
+#'
+#'   For each coordinate, the Armijo condition is applied to ensure that the
+#'   objective function decreases with each iteration and that it doesn't
+#'   overshoot the minimum:
+#'   \deqn{
+#'     f(x + \alpha \delta_j) \leq f(x) + c_1 \alpha \nabla f_j \delta_j
+#'   }
+#'   Where \eqn{\delta_j = x_{j, n+1} - x_{j, n}} is the increment of the
+#'   coordinate \eqn{j}.
+#'
+#'   If the Armijo condition is not satisfied, the factor \eqn{\alpha} is
+#'   multiplied by the factor \eqn{rho} until the condition is satisfied or the
+#'   step size becomes too small.
+#'
+#'   The gradient is calculated numerically using central differences:
+#'   \deqn{
+#'     \nabla f_j = \frac{\partial f}{\partial x_j} \approx \frac{f(x + h e_j) - f(x - h e_j)}{2h}
+#'   }
+#'   Where \eqn{e_j} is the unit vector along coordinate \eqn{j}.
+#'
+#'   The inverse Hessian \eqn{H^{-1}_{j, n+1}} for coordinate \eqn{j} at step
+#'   \eqn{n+1} is updated using the secant formula:
+#'   \deqn{
+#'     H^{-1}_{j, n+1} = \frac{\alpha \delta_j}{\nabla f_{j, n+1} - \nabla f_{j, n}}
+#'   }
+#'   The secant formula states that the inverse Hessian is equal to the ratio of
+#'   the change of the coordinate divided by the change of the gradient.
+#'
+#'   This is equivalent to saying that the Hessian (second derivative) is equal
+#'   to the ratio of the change of the gradient divided by the change of the
+#'   coordinate:
+#'   \deqn{
+#'     H_{j, n+1} = \frac{\nabla f_{j, n+1} - \nabla f_{j, n}}{\alpha \delta_j}
+#'   }
+#'
+#'   The coordinate descent loop terminates when the norm of the total step
+#'   across all coordinates falls below the tolerance, or when maximum
+#'   iterations are reached.
+#'
+#'   The advantage of the coordinate descent method is that it doesn't require
+#'   memory to store the whole inverse Hessian matrix. Each coordinate update is
+#'   very fast since it doesn't have to multiply large matrices. So it's
+#'   suitable for very high-dimensional objective functions.
+#'
+#'   The disadvantage is that it can be slower to converge than quasi-Newton
+#'   methods like BFGS. For certain functions like the Rosenbrock function, it
+#'   may get stuck in suboptimal solutions.
+#'
+#' @examples
+#' # Define the objective function
+#' funx <- function(v) {
+#'   (v[1] - 2)^2 + (v[2] + 1)^2
+#' } # end funx
+#' # Calculate the minimum using coordinate descent method
+#' optiml <- rutils::optim_coordescent(funx, x0 = c(-2, 1))
+#' optiml$par      # Minimum coordinates
+#' optiml$value    # Function value at the minimum
+#' optiml$iter     # Number of iterations
+#' # Solve using optim() for comparison
+#' optim(c(0, 0), funx, method = "L-BFGS-B")
+#'
+#' @export
+optim_coordescent <- function(f, x0, maxiter = 100, tol = 1e-6,
+                              h = 1e-5, c1 = 1e-4, rho = 0.5) {
+
+  # Initialize the variables
+  tol2 <- tol^2               # Square of tolerance for solution
+  x <- x0                     # Initial guess for solution
+  narg <- NROW(x)             # Number of coordinates
+  H <- rep(1, narg)           # Diagonal inverse-Hessian approximation
+
+  # Calculate the gradient using central difference
+  calc_grad <- function(x) {
+    grad <- numeric(narg)
+    for (j in 1:narg) {
+      e <- rep(0, narg); e[j] <- 1
+      fp <- f(x + h * e)
+      fm <- f(x - h * e)
+      grad[j] <- (fp - fm) / (2 * h)
+    } # end for j
+    return(grad)
+  } # end calc_grad
+
+  # Initialize the function value and gradient
+  fx <- f(x) # Function value
+  grad <- calc_grad(x) # Gradient
+
+  # Initialize the history matrix
+  history <- matrix(NA_real_, nrow = maxiter + 1, ncol = narg)
+  history[1, ] <- x; itern <- 1
+
+  # Iterate to find the minimum
+  for (n in 1:maxiter) {
+    xold <- x # Previous value of x
+
+    # Loop over the coordinates
+    for (j in 1:narg) {
+      gj <- grad[j]
+      if (abs(gj) < tol2) next # Skip this coordinate if gradient is too small
+
+      # The increment of the coordinate j
+      dj <- - H[j] * gj
+      if (abs(dj) < tol2) next # Skip this coordinate if step is too small
+
+      # Perform Armijo condition loop along coordinate j
+      alpha <- 1
+      repeat {
+        xtr <- x # Trial value of x
+        xtr[j] <- x[j] + alpha * dj
+        fxtr <- f(xtr)  # Trial function value
+        # Break if Armijo condition is satisfied
+        if ((fxtr <= fx + c1 * alpha * gj * dj) || (alpha < 1e-12))
+          break
+        # Reduce the step size and repeat test
+        alpha <- alpha * rho
+      } # end repeat
+      # If the Armijo condition failed then skip this coordinate
+      dx <- alpha * dj
+      if (abs(dx) < tol2) next
+
+      # Accept the step
+      x[j] <- x[j] + dx
+      fx <- fxtr
+
+      # Update gradient component using central difference
+      e <- rep(0, narg); e[j] <- 1
+      fp <- f(x + h * e)[1]
+      fm <- f(x - h * e)[1]
+      gn <- (fp - fm) / (2 * h) # New gradient component
+      dg <- (gn - gj) # Change in gradient
+
+      # Hessian secant update
+      if (dg * dx > 1e-12) {
+        H[j] <- max(1e-12, dx / dg)
+      } else {
+        H[j] <- 1
+      } # end if
+      # Update the gradient
+      grad[j] <- gn
+
+    } # end loop over the coordinates
+
+    # Step-size stopping condition
+    if (sum((x - xold)^2) < tol2) {
+      itern <- itern + 1
+      history[itern, ] <- x
+      break
+    } # end if
+
+    # Recompute full gradient
+    grad <- calc_grad(x)
+
+    # Store the history
+    itern <- itern + 1
+    history[itern, ] <- x
+
+  } # end for n
+
+  # Trim unused rows
+  history <- history[1:itern, , drop = FALSE]
+  # Return the results
+  return(list(par = x, value = fx, grad = grad,
+              history = history, iter = itern - 1))
+
+} # end optim_coordescent
 
 

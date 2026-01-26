@@ -12,6 +12,7 @@ devtools::install_github(repo="algoquant/rutils", force=TRUE)
 cd /Users/jerzy/Develop/rutils
 system("R CMD Rd2pdf /Users/jerzy/Develop/rutils")
 cd /Users/jerzy/Develop/rutils/vignettes
+rm rutils.pdf
 R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 
@@ -19,12 +20,9 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 + [ ] Add the environment vixenv, with VIX index and futures prices.
 
-+ [x] Add DYNF Equity Factor Rotation Active ETF.
-
 + [ ] Rename calc_skew() to calc_mom()
 
 + [ ] Create the function calc_returns() to calculate the percentage returns from prices.
-
 
 + [ ] Create function getpoly() for downloading prices from Polygon
 
@@ -64,6 +62,10 @@ gsa() stands for "get, subset, assign".
 To, get data for some tickers, subset the data, and then assign into an environment
 http://stackoverflow.com/questions/15980985/get-xts-objects-from-within-an-environment
 
+
++ [x] Create the optimization functions optim_newton(), optim_bfgs(), optim_coordescent(), and calc_grad().
+
++ [x] Add DYNF Equity Factor Rotation Active ETF.
 
 + [x] Create in R the function tdistr() for non-standard Student's t-distribution.
 
