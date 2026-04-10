@@ -18,6 +18,12 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 ### Tasks to-do
 
++ [ ] Create the function fit_coordescent() for fitting a regression using using coordinate descent.  Pass the initial coefficient values for warm start.
+
++ [ ] Create the function fit_ridge() for fitting a Risdge regression using using coordinate descent.  
+
++ [ ] Create the function fit_lasso() for fitting a LASSO regression using using coordinate descent.  
+
 + [ ] Add the environment vixenv, with VIX index and futures prices.
 
 + [ ] Rename calc_skew() to calc_mom()
