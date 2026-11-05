@@ -20,6 +20,8 @@ R CMD Rd2pdf /Users/jerzy/Develop/rutils
 
 + [x] Add sandbox directory.
 
++ [ ] Add leveraged ETFs to database.
+
 + [ ] Create the function fit_coordescent() for fitting a regression using using coordinate descent.  Pass the initial coefficient values for warm start.
 
 + [ ] Create the function fit_ridge() for fitting a Risdge regression using using coordinate descent.  

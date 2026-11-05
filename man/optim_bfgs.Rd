@@ -30,7 +30,8 @@ A list containing:
     \item \code{par}: The optimal parameter vector that minimizes the function.
     \item \code{value}: The function value at the minimum.
     \item \code{grad}: The gradient at the minimum.
-    \item \code{history}: A matrix of parameter values at each iteration.
+    \item \code{history}: A matrix containing \code{x0} followed by the
+      parameter values at each iteration, with \code{iter + 1} rows.
     \item \code{iter}: The number of iterations performed.
   }
 }
@@ -55,8 +56,8 @@ The function \code{optim_bfgs()} finds the minimum of a multivariate
   \eqn{H^{-1}_n} is the inverse Hessian, and \eqn{\alpha} is the scaling
   factor to satisfy the Armijo condition.
 
-  The Armijo condition ensures that the objective function decreases with
-  each iteration and that it doesn't overshoot the minimum:
+  The Armijo condition requires sufficient decrease in the objective
+  function, but does not prevent steps from passing the minimum:
   \deqn{
     f(x_n + \alpha \delta_n) \leq f(x_n) + c_1 \alpha \nabla f_n^T \delta_n
   }

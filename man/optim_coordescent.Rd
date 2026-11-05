@@ -39,8 +39,10 @@ A list containing:
     \item \code{par}: The optimal parameter vector that minimizes the function.
     \item \code{value}: The function value at the minimum.
     \item \code{grad}: The gradient at the minimum.
-    \item \code{history}: A matrix of parameter values at each iteration.
-    \item \code{iter}: The number of iterations performed.
+    \item \code{history}: A matrix containing \code{x0} followed by the
+      parameter vector after each accepted coordinate update.
+    \item \code{iter}: The number of outer iterations (full coordinate
+      sweeps) performed, not the number of rows in \code{history} minus one.
   }
 }
 \description{

@@ -1868,7 +1868,8 @@ optim_newton <- function(f, x0, h = 1e-5, maxiter = 50, tol = 1e-8) {
 #'     \item \code{par}: The optimal parameter vector that minimizes the function.
 #'     \item \code{value}: The function value at the minimum.
 #'     \item \code{grad}: The gradient at the minimum.
-#'     \item \code{history}: A matrix of parameter values at each iteration.
+#'     \item \code{history}: A matrix containing \code{x0} followed by the
+#'       parameter values at each iteration, with \code{iter + 1} rows.
 #'     \item \code{iter}: The number of iterations performed.
 #'   }
 #'
@@ -1890,8 +1891,8 @@ optim_newton <- function(f, x0, h = 1e-5, maxiter = 50, tol = 1e-8) {
 #'   \eqn{H^{-1}_n} is the inverse Hessian, and \eqn{\alpha} is the scaling
 #'   factor to satisfy the Armijo condition.
 #'
-#'   The Armijo condition ensures that the objective function decreases with
-#'   each iteration and that it doesn't overshoot the minimum:
+#'   The Armijo condition requires sufficient decrease in the objective
+#'   function, but does not prevent steps from passing the minimum:
 #'   \deqn{
 #'     f(x_n + \alpha \delta_n) \leq f(x_n) + c_1 \alpha \nabla f_n^T \delta_n
 #'   }
@@ -1993,7 +1994,7 @@ optim_bfgs <- function(f, x0, maxiter = 200, tol = 1e-6,
     # If unchanged condition is detected, accept the current values and stop loop
     if (unchflag) {
       x <- xn; fx <- fxn
-      history[itern, ] <- x; itern <- itern + 1
+      itern <- itern + 1; history[itern, ] <- x
       break
     } # end if
 
@@ -2015,12 +2016,12 @@ optim_bfgs <- function(f, x0, maxiter = 200, tol = 1e-6,
     x <- xn; grad <- gradn; fx <- fxn
 
     # Store the history
-    history[itern, ] <- x; itern <- itern + 1
+    itern <- itern + 1; history[itern, ] <- x
 
   } # end for n
 
   # Trim unused rows
-  history <- history[1:(itern - 1), , drop = FALSE]
+  history <- history[seq_len(itern), , drop = FALSE]
   # Return the results
   return(list(par = x, value = fx, grad = grad,
               history = history, iter = itern - 1))
@@ -2055,8 +2056,10 @@ optim_bfgs <- function(f, x0, maxiter = 200, tol = 1e-6,
 #'     \item \code{par}: The optimal parameter vector that minimizes the function.
 #'     \item \code{value}: The function value at the minimum.
 #'     \item \code{grad}: The gradient at the minimum.
-#'     \item \code{history}: A matrix of parameter values at each iteration.
-#'     \item \code{iter}: The number of iterations performed.
+#'     \item \code{history}: A matrix containing \code{x0} followed by the
+#'       parameter vector after each accepted coordinate update.
+#'     \item \code{iter}: The number of outer iterations (full coordinate
+#'       sweeps) performed, not the number of rows in \code{history} minus one.
 #'   }
 #'
 #' @details
@@ -2167,8 +2170,8 @@ optim_coordescent <- function(f, x0, maxiter = 100, tol = 1e-6,
   grad <- calc_grad(x) # Gradient
 
   # Initialize the history matrix
-  history <- matrix(NA_real_, nrow = maxiter + 1, ncol = narg)
-  history[1, ] <- x; itern <- 1
+  history <- matrix(NA_real_, nrow = maxiter * narg + 1, ncol = narg)
+  history[1, ] <- x; histn <- 1
 
   # Iterate to find the minimum
   for (n in 1:maxiter) {
@@ -2202,6 +2205,8 @@ optim_coordescent <- function(f, x0, maxiter = 100, tol = 1e-6,
       # Accept the step
       x[j] <- x[j] + dx
       fx <- fxtr
+      histn <- histn + 1
+      history[histn, ] <- x
 
       # Update gradient component using central difference
       e <- rep(0, narg); e[j] <- 1
@@ -2223,26 +2228,18 @@ optim_coordescent <- function(f, x0, maxiter = 100, tol = 1e-6,
 
     # Step-size stopping condition
     if (sum((x - xold)^2) < tol2) {
-      itern <- itern + 1
-      history[itern, ] <- x
       break
     } # end if
 
     # Recompute full gradient
     grad <- calc_grad(x)
 
-    # Store the history
-    itern <- itern + 1
-    history[itern, ] <- x
-
   } # end for n
 
   # Trim unused rows
-  history <- history[1:itern, , drop = FALSE]
+  history <- history[seq_len(histn), , drop = FALSE]
   # Return the results
   return(list(par = x, value = fx, grad = grad,
-              history = history, iter = itern - 1))
+              history = history, iter = n))
 
 } # end optim_coordescent
-
-

@@ -13,3 +13,6 @@ rutils.Rcheck/
 .Rproj.user/
 .httr-oauth
 inst/doc
+.DS_Store
+.DS_Store
+.positai
